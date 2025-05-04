@@ -10,13 +10,14 @@ Memory Mart is a whimsical marketplace offering “objects” that exist somewhe
 From spontaneous surprises to emotionally evocative filters — our store is designed to be felt, not just browsed.
 
 🤝 **Team LazyLoad**
+
 Alena Volf — @alvorie
 
 Ekaterina Podorova — @gnarkill33
 
 Nadezhda Novoselova — @nadin-nov
 
-🛠️ **Tech Stack**
+**Tech Stack**
 React
 Vite
 Vitest
@@ -25,11 +26,11 @@ CommerceTools API
 ESLint + Prettier
 Husky
 
-🛠️ **Project Status**
-We are currently in Sprint 1: Project Setup and CommerceTools Integration 🚀
+**Project Status**
+We are currently in Sprint 1: Project Setup and CommerceTools Integration
 This sprint focuses on laying the groundwork for the project:
 
-🔜 **Future Sprints:**
+**Future Sprints:**
 
 Sprint 2: Login, registration, and main pages
 
@@ -39,14 +40,56 @@ Sprint 4: Basket functionality, catalog improvements, and About Us page
 
 Stay tuned as Memory Mart takes shape — piece by dreamy piece ✨
 
-📝 **Setup & Usage** (coming soon...)
-How to run the project locally
+## Setup & Usage
 
-How to configure environment variables
+**To run the project locally:**
 
-How to build and test the project
+1. Clone the repository:
 
-Available scripts
+    `git clone https://github.com/your-username/memory-mart.git`
 
-**Just like our code, we believe in efficient loading – we only render what you need.
-But sometimes, a little bug might slip through... so if you find yourself buying too many whimsical items, blame it on the random() function.** 😜
+    `cd memory-mart`
+
+2. Install dependencies:
+
+    `npm install`
+
+3. Run the development server:
+
+    `npm run dev`
+
+4. Open the application in your browser at [http://localhost:3000](http://localhost:3000).
+
+**To configure environment variables:**
+(Coming soon...)
+
+**To build the project:**
+Run the following command to create a production build:
+
+    `npm run build`
+
+**To preview the production build:**
+    `npm run preview`
+
+---
+
+## Available Scripts
+
+In the project directory, you can run the following commands:
+
+- **`npm run dev`** — Starts the development server with hot-reloading.
+- **`npm run build`** — Compiles the TypeScript files and builds the production bundle.
+- **`npm run format`** — Formats the code using Prettier.
+- **`npm run ci:format`** — Checks for code formatting issues without applying changes.
+- **`npm run lint`** — Runs ESLint to identify potential issues.
+- **`npm run lint:fix`** — Automatically fixes ESLint issues.
+- **`npm run stylelint`** — Lints CSS files using Stylelint.
+- **`npm run test`** — Runs tests using Vitest.
+
+### **Husky and Commit Hooks**
+
+Husky is set up to ensure that code is linted and formatted before committing. The pre-commit hook will automatically run **Lint-Staged**, which runs ESLint and Prettier on your staged files.
+
+---
+
+**Note:** Just like our code, we believe in efficient loading — we only render what you need. But sometimes, a little bug might slip through... so if you find yourself buying too many whimsical items, blame it on the random() function.
