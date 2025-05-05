@@ -44,21 +44,22 @@ Stay tuned as Memory Mart takes shape — piece by dreamy piece ✨
 
 The project uses [**Commercetools**](https://commercetools.com/) — a headless e-commerce platform that provides REST and GraphQL APIs for managing products, carts, orders, and users.
 
-### **Project Configuration (in Merchant Center):**
+**Project Configuration (in Merchant Center):**
 
 - **Languages (Languages)**: en (English)
 - **Currencies (Currencies)**: USD (US Dollar)
 - **Countries (Countries)**: US, RU, BY
   (Products are available in the US, Russia, and Belarus)
 
-### **Environment Variables (.env):**
+**Environment Variables (.env):**
 
 ```env
 VITE_CT_PROJECT_KEY=your_project_key
 VITE_CT_CLIENT_ID=your_client_id
 VITE_CT_CLIENT_SECRET=your_client_secret
 VITE_CT_API_URL=https://api.europe-west1.gcp.commercetools.com/
-VITE_CT_AUTH_URL=https://auth.europe-west1.gcp.commercetools.com/```
+VITE_CT_AUTH_URL=https://auth.europe-west1.gcp.commercetools.com/
+```
 
 ### **Authorization and API Usage**
 
@@ -87,7 +88,7 @@ The project uses **manual authorization** via OAuth 2.0, without using the nativ
 **To build the project:**
 Run the following command to create a production build:
 
-    `npm run build`
+`npm run build`
 
 **To preview the production build:**
     `npm run preview`
