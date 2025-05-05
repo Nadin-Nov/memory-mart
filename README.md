@@ -40,6 +40,30 @@ Sprint 4: Basket functionality, catalog improvements, and About Us page
 
 Stay tuned as Memory Mart takes shape — piece by dreamy piece ✨
 
+## **Commercetools API Integration**
+
+The project uses [**Commercetools**](https://commercetools.com/) — a headless e-commerce platform that provides REST and GraphQL APIs for managing products, carts, orders, and users.
+
+### **Project Configuration (in Merchant Center):**
+
+- **Languages (Languages)**: en (English)
+- **Currencies (Currencies)**: USD (US Dollar)
+- **Countries (Countries)**: US, RU, BY
+  (Products are available in the US, Russia, and Belarus)
+
+### **Environment Variables (.env):**
+
+```env
+VITE_CT_PROJECT_KEY=your_project_key
+VITE_CT_CLIENT_ID=your_client_id
+VITE_CT_CLIENT_SECRET=your_client_secret
+VITE_CT_API_URL=https://api.europe-west1.gcp.commercetools.com/
+VITE_CT_AUTH_URL=https://auth.europe-west1.gcp.commercetools.com/```
+
+### **Authorization and API Usage**
+
+The project uses **manual authorization** via OAuth 2.0, without using the native Commercetools SDK.
+
 ## Setup & Usage
 
 **To run the project locally:**
@@ -59,9 +83,6 @@ Stay tuned as Memory Mart takes shape — piece by dreamy piece ✨
     `npm run dev`
 
 4. Open the application in your browser at [http://localhost:3000](http://localhost:3000).
-
-**To configure environment variables:**
-(Coming soon...)
 
 **To build the project:**
 Run the following command to create a production build:
