@@ -9,6 +9,11 @@ import path from 'node:path';
 export default defineConfig({
   plugins: [react()],
   test: {
+    coverage: {
+      provider: 'v8',
+      reporter: ['html', 'text'],
+      include: ['./src/test/setup.ts'],
+    },
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
