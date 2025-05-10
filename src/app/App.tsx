@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+import Logo from '../components/header/Logo'; //временное
 
 const LoginPage = (): ReactElement => <h2>Login Page</h2>;
 const RegistrationPage = (): ReactElement => <h2>Registration Page</h2>;
@@ -16,6 +17,7 @@ function App(): ReactElement {
     <Router>
       <div>
         <nav>
+          <Logo />
           <ul>
             <li>
               <Link to='/'>Main</Link>
