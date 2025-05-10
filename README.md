@@ -1,6 +1,6 @@
 # 🛍️ **RS E-Commerce — Memory Mart**
 
-**Welcome to the Memory Mart, an online store created by LazyLoad as part of the RS School curriculum.
+\*\*Welcome to the Memory Mart, an online store created by LazyLoad as part of the RS School curriculum.
 
 This isn’t just an e-commerce platform — it’s a journey through emotions, nostalgia, and dreams.
 Our store is filled with magical and surreal items that seem to find you, not the other way around. Whether it’s a jar of summer rain or a suitcase full of longing, each visit brings new curiosities.
@@ -71,17 +71,17 @@ The project uses **manual authorization** via OAuth 2.0, without using the nativ
 
 1. Clone the repository:
 
-    `git clone https://github.com/your-username/memory-mart.git`
+   `git clone https://github.com/your-username/memory-mart.git`
 
-    `cd memory-mart`
+   `cd memory-mart`
 
 2. Install dependencies:
 
-    `npm install`
+   `npm install`
 
 3. Run the development server:
 
-    `npm run dev`
+   `npm run dev`
 
 4. Open the application in your browser at [http://localhost:3000](http://localhost:3000).
 
@@ -91,7 +91,7 @@ Run the following command to create a production build:
 `npm run build`
 
 **To preview the production build:**
-    `npm run preview`
+`npm run preview`
 
 ---
 
