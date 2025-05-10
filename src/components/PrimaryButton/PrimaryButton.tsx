@@ -19,7 +19,6 @@ export const PrimaryButton = ({ title, link, onClick }: ButtonProps): ReactEleme
       type='submit'
       borderRadius={10}
       width='full'
-      height={53}
       colorPalette='teal'
       paddingX='20'
       paddingY='4'
