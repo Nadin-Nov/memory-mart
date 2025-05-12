@@ -26,7 +26,6 @@ const Header = (): JSX.Element => {
         </Box>
 
         <Flex justify='flex-end' align='center' gap='10px'>
-          {/* Мобильная версия: корзина перед бургером с небольшим отступом */}
           <Button variant='ghost' aria-label='Shopping Cart' display={{ base: 'flex', md: 'none' }} mr='5px'>
             <FaShoppingCart size={24} color='#3196a5' />
           </Button>
@@ -37,7 +36,6 @@ const Header = (): JSX.Element => {
             </Button>
           </Box>
 
-          {/* Десктопная версия корзины */}
           <Button variant='ghost' aria-label='Shopping Cart' display={{ base: 'none', md: 'flex' }}>
             <FaShoppingCart size={24} color='#3196a5' />
           </Button>
