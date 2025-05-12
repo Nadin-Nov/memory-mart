@@ -5,31 +5,25 @@ import type { JSX, ReactNode } from 'react';
 interface NavButtonLinkProps {
   to: string;
   children: ReactNode;
-  onClick?: (event: React.FormEvent) => void;
+  onClick?: () => void;
 }
 
 const NavButtonLink = ({ to, children, onClick }: NavButtonLinkProps): JSX.Element => {
-  const navButtonHandler = (event: React.FormEvent): void => {
-    if (onClick) {
-      event.preventDefault();
-      onClick(event);
-    }
-  };
-
   return (
     <Link to={to}>
       <Button
         variant='ghost'
         fontSize='14px'
         fontWeight='400'
-        color='link.default'
-        _hover={{
-          color: 'link.hover',
-          backgroundColor: 'link.hover',
-        }}
+        fontFamily="'Inter', sans-serif"
+        color='primary.solid'
+        height='auto'
+        p={0}
+        _hover={{ color: 'primary._hover', backgroundColor: 'transparent' }}
         _focus={{ boxShadow: 'none' }}
-        _active={{ backgroundColor: 'link.hover' }}
-        onClick={navButtonHandler}
+        _active={{ backgroundColor: 'transparent' }}
+        textAlign='center'
+        onClick={onClick}
       >
         {children}
       </Button>
