@@ -54,6 +54,12 @@ const customConfig = defineConfig({
           fontFamily: 'heading',
           fontWeight: '400',
         },
+        variants: {
+          size: {
+            bg: { fontSize: '36px' },
+            md: { fontSize: '32px' },
+          },
+        },
       },
     },
   },
