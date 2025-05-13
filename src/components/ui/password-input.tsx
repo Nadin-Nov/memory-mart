@@ -51,7 +51,7 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
       }
       {...rootProps}
     >
-      <Input {...rest} ref={mergeRefs(ref, inputRef)} type={visible ? 'text' : 'password'} />
+      <Input {...rest} ref={mergeRefs(ref, inputRef)} type={visible ? 'text' : 'password'} variant={'flushed'} />
     </InputGroup>
   );
 });
