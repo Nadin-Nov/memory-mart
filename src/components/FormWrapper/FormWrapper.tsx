@@ -6,35 +6,30 @@ interface FormWrapperProps {
   linkText: string;
   link: string;
   children: React.ReactElement[];
-  isOldUser?: boolean;
+  isLogin?: boolean;
 }
 
-export const FormWrapper: React.FC<FormWrapperProps> = ({
-  name,
-  linkText,
-  link,
-  children,
-  isOldUser,
-}): ReactElement => {
+export const FormWrapper: React.FC<FormWrapperProps> = ({ name, linkText, link, children, isLogin }): ReactElement => {
   return (
     <Flex align='center' justify='center' h='100vh'>
       <VStack
+        gap={50}
         borderRadius={20}
-        borderWidth='1px'
+        borderWidth={1}
         paddingX={120}
         paddingY={50}
         maxWidth={748}
         width='full'
-        bg='primary.contrast'
+        bgColor='lightBeige.500'
       >
-        <Heading size='md' color='darkText.subtle' marginBottom={isOldUser ? '6.25rem' : '2.5rem'}>
+        <Heading size='md' color='darkText.subtle'>
           {name}
         </Heading>
         <Flex width='full' gap={50} direction='column'>
           {children}
         </Flex>
         <Text>
-          {isOldUser ? (
+          {isLogin ? (
             <Link href={link}>{linkText}</Link>
           ) : (
             <>
