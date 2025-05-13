@@ -2,8 +2,9 @@ import { Flex, Box, Grid, Button } from '@chakra-ui/react';
 import { FaShoppingCart, FaBars } from 'react-icons/fa';
 import NavMenu from './NavMenu';
 import Logo from './Logo';
-import type { JSX } from 'react';
+import NavButtonLink from './NavButtonLink';
 import { useState } from 'react';
+import type { JSX } from 'react';
 
 const Header = (): JSX.Element => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,29 +20,52 @@ const Header = (): JSX.Element => {
         maxW='1440px'
         margin='0 auto'
       >
-        <Logo />
+        {/* Логотип */}
+        <NavButtonLink to='/' _hover={{ color: 'primary._hover' }}>
+          <Box transition='color 0.2s'>
+            <Logo />
+          </Box>
+        </NavButtonLink>
 
+        {/* Навигация для десктопа */}
         <Box display={{ base: 'none', md: 'block' }}>
           <NavMenu />
         </Box>
 
         <Flex justify='flex-end' align='center' gap='10px'>
-          <Button variant='ghost' aria-label='Shopping Cart' display={{ base: 'flex', md: 'none' }} mr='5px'>
-            <FaShoppingCart size={24} color='#3196a5' />
-          </Button>
+          {/* Корзина для мобильной версии */}
+          <NavButtonLink to='/cart' display={{ base: 'flex', md: 'none' }} _hover={{ color: 'primary._hover' }}>
+            <FaShoppingCart size={24} color='inherit' /> {/* color: inherit чтобы использовать родительский цвет */}
+          </NavButtonLink>
 
+          {/* Бургер-меню для мобильных устройств */}
           <Box display={{ base: 'flex', md: 'none' }} alignItems='center'>
-            <Button variant='ghost' onClick={onToggle} aria-label='Toggle menu'>
-              <FaBars size={24} color='#3196a5' />
+            <Button
+              variant='ghost'
+              onClick={onToggle}
+              aria-label='Toggle menu'
+              _hover={{
+                backgroundColor: 'transparent', // Убираем фон
+                color: 'primary._hover', // Меняем цвет иконки при ховере
+              }}
+              _active={{
+                backgroundColor: 'transparent', // Убираем фон при клике
+                color: 'primary._hover', // Меняем цвет при активном состоянии
+              }}
+              color='primary.solid' // начальный цвет иконки
+            >
+              <FaBars size={24} color='inherit' /> {/* Используем inherit для наследования цвета от кнопки */}
             </Button>
           </Box>
 
-          <Button variant='ghost' aria-label='Shopping Cart' display={{ base: 'none', md: 'flex' }}>
-            <FaShoppingCart size={24} color='#3196a5' />
-          </Button>
+          {/* Корзина для десктопной версии */}
+          <NavButtonLink to='/cart' display={{ base: 'none', md: 'flex' }} _hover={{ color: 'primary._hover' }}>
+            <FaShoppingCart size={24} color='inherit' />
+          </NavButtonLink>
         </Flex>
       </Grid>
 
+      {/* Мобильное меню */}
       {isMobileMenuOpen && (
         <Box
           position='absolute'
