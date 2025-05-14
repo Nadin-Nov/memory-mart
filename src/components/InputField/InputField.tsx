@@ -8,15 +8,23 @@ interface InputFieldProps {
   register: UseFormRegister<FieldValues>;
   errors?: FieldErrors<FieldValues>;
   validate?: (value: string) => boolean | string;
+  required?: boolean;
 }
 
-export const InputField = ({ name, placeholder, register, errors, validate }: InputFieldProps): ReactElement => {
+export const InputField = ({
+  name,
+  placeholder,
+  required = false,
+  register,
+  errors,
+  validate,
+}: InputFieldProps): ReactElement => {
   const errorMessage = errors?.[name]?.message;
 
   const errorText = typeof errorMessage === 'string' ? errorMessage : 'An error occurred';
 
   return (
-    <Field.Root invalid={!!errors?.[name]}>
+    <Field.Root invalid={!!errors?.[name]} required={required}>
       <Input {...register(name, { validate })} placeholder={placeholder} variant='flushed' />
       <Field.ErrorText>{errorText}</Field.ErrorText>
     </Field.Root>
