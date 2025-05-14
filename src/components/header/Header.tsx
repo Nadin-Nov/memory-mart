@@ -32,7 +32,6 @@ const Header = (): JSX.Element => {
         </Box>
 
         <Flex justify='flex-end' align='center' gap='10px'>
-          {/* Корзина для мобильной версии */}
           <NavButtonLink to='/cart' display={{ base: 'flex', md: 'none' }} _hover={{ color: 'primary._hover' }}>
             <CiShoppingCart size={40} color='inherit' />
           </NavButtonLink>
@@ -66,11 +65,12 @@ const Header = (): JSX.Element => {
 
       {isMobileMenuOpen && (
         <Box
-          position='absolute'
+          position='fixed'
           top='70px'
           left='0'
           width='100%'
-          bg='primary.contrast'
+          height='calc(100vh - 70px)'
+          bg='#eeede1'
           zIndex={3}
           display='flex'
           flexDirection='column'

@@ -22,7 +22,7 @@ const customConfig = defineConfig({
           500: { value: '#fefbf4' },
         },
         warmBlack: {
-          500: { value: '#3a3832' },
+          500: { value: '#3A3832' },
           300: { value: '#383631' },
         },
       },
@@ -53,6 +53,12 @@ const customConfig = defineConfig({
         base: {
           fontFamily: 'heading',
           fontWeight: '400',
+        },
+        variants: {
+          size: {
+            bg: { fontSize: '36px' },
+            md: { fontSize: '32px' },
+          },
         },
       },
     },

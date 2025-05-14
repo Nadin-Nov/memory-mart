@@ -1,4 +1,5 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
+import { PrimaryButton } from 'c:/clone/memory-mart/memory-mart/src/components/PrimaryButton/PrimaryButton';
 import type { ReactElement } from 'react';
 
 const NotFoundPage = (): ReactElement => {
@@ -14,18 +15,27 @@ const NotFoundPage = (): ReactElement => {
       backgroundPosition='center'
       display='flex'
       flexDirection='column'
-      justifyContent='center'
+      justifyContent='space-between'
       alignItems='center'
     >
       <Heading
-        color='primary.solid'
-        fontSize={{ base: '2xl', md: '4xl' }}
+        mt='100px'
         fontFamily='heading'
-        textAlign='center'
-        px='20px' //
+        fontSize='48px'
+        fontWeight='400'
+        lineHeight='20px'
+        color='lightText.default'
       >
-        404 - Page Not Found
+        Seems you’ve got lost
       </Heading>
+
+      <Box display='flex' flexDirection='column' alignItems='center' mb='10vh'>
+        <Text fontFamily='body' fontSize='24px' fontWeight='400' lineHeight='20px' color='lightText.default' mb={4}>
+          Let’s get back home?
+        </Text>
+
+        <PrimaryButton link='/' title='Go to Home' />
+      </Box>
     </Box>
   );
 };

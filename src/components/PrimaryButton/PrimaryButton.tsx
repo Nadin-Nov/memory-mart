@@ -1,40 +1,31 @@
+import type { ReactElement } from 'react';
 import { Button } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-import type { JSX, ReactNode } from 'react';
 
-interface NavButtonLinkProps {
-  to: string;
-  children: ReactNode;
+export interface ButtonProps {
+  title: string;
+  link: string;
   onClick?: (event: React.FormEvent) => void;
 }
 
-const NavButtonLink = ({ to, children, onClick }: NavButtonLinkProps): JSX.Element => {
-  const navButtonHandler = (event: React.FormEvent): void => {
+export const PrimaryButton = ({ title, link, onClick }: ButtonProps): ReactElement => {
+  const primaryButtonHandler = (event: React.FormEvent): void => {
     if (onClick) {
       event.preventDefault();
       onClick(event);
     }
   };
-
   return (
-    <Link to={to}>
-      <Button
-        variant='ghost'
-        fontSize='14px'
-        fontWeight='400'
-        color='link.default'
-        _hover={{
-          color: 'link.hover',
-          backgroundColor: 'link.hover',
-        }}
-        _focus={{ boxShadow: 'none' }}
-        _active={{ backgroundColor: 'link.hover' }}
-        onClick={navButtonHandler}
-      >
-        {children}
-      </Button>
-    </Link>
+    <Button
+      type='submit'
+      borderRadius={10}
+      width='full'
+      colorPalette='teal'
+      paddingX='20'
+      paddingY='4'
+      onClick={primaryButtonHandler}
+      asChild
+    >
+      <a href={link}>{title}</a>
+    </Button>
   );
 };
-
-export default NavButtonLink;
