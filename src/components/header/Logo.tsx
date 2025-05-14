@@ -20,7 +20,7 @@ const Logo = (): JSX.Element => {
       whiteSpace='nowrap'
       cursor='pointer'
       role='button'
-      className='group' // Добавили группу для ховера
+      className='group'
     >
       {sparkles.map((pos, index) => (
         <Box
@@ -35,7 +35,7 @@ const Logo = (): JSX.Element => {
           left={pos.left}
           top={pos.top}
           transition='opacity 0.2s ease'
-          _groupHover={{ opacity: 1 }} // Появляется при ховере на родителя
+          _groupHover={{ opacity: 1 }}
         />
       ))}
 
@@ -45,7 +45,7 @@ const Logo = (): JSX.Element => {
         boxSize={{ base: '40px', md: '40px', lg: '40px' }}
         mr={3}
         transition='opacity 0.2s ease'
-        _groupHover={{ opacity: 0.8 }} // Слушаем hover на группе
+        _groupHover={{ opacity: 0.8 }}
       />
 
       <Text
@@ -55,7 +55,7 @@ const Logo = (): JSX.Element => {
         lineHeight='1'
         color='primary.solid'
         transition='color 0.2s ease'
-        _groupHover={{ color: 'primary._hover' }} // Меняем цвет текста при ховере на группе
+        _groupHover={{ color: 'primary._hover' }}
       >
         Memory Shop
       </Text>

@@ -7,7 +7,7 @@ interface NavButtonLinkProps {
   children: ReactNode;
   onClick?: () => void;
   display?: string | object;
-  _hover?: { color: string }; // только color
+  _hover?: { color: string };
 }
 
 const NavButtonLink = ({ to, children, onClick, display, _hover }: NavButtonLinkProps): JSX.Element => {
@@ -18,15 +18,16 @@ const NavButtonLink = ({ to, children, onClick, display, _hover }: NavButtonLink
         fontSize='14px'
         fontWeight='400'
         fontFamily="'Inter', sans-serif"
-        color='primary.solid'
+        color='darkText.default'
         height='auto'
         p={0}
+        m={0}
         _hover={{
-          color: _hover?.color || 'primary._hover', // меняем только цвет текста
-          backgroundColor: 'transparent', // фон остаётся прозрачным
+          color: _hover?.color || 'primary._hover',
+          backgroundColor: 'transparent',
         }}
         _focus={{ boxShadow: 'none' }}
-        _active={{ backgroundColor: 'transparent' }} // фон остаётся прозрачным
+        _active={{ backgroundColor: 'transparent' }}
         textAlign='center'
         onClick={onClick}
         display={display}

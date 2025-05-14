@@ -1,4 +1,3 @@
-// NavMenu.tsx
 import { Flex } from '@chakra-ui/react';
 import NavButtonLink from './NavButtonLink';
 import AuthNavLinks from './AuthNavLinks';

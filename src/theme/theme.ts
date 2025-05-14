@@ -22,7 +22,7 @@ const customConfig = defineConfig({
           500: { value: '#fefbf4' },
         },
         warmBlack: {
-          500: { value: '#ff2d46' },
+          500: { value: '#3a3832' },
           300: { value: '#383631' },
         },
       },
