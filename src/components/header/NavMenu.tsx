@@ -2,6 +2,11 @@ import { Flex } from '@chakra-ui/react';
 import NavButtonLink from './NavButtonLink';
 import AuthNavLinks from './AuthNavLinks';
 import type { JSX } from 'react';
+import { navMenuStyles } from '../../theme/theme';
+
+interface NavMenuProps {
+  onLinkClick?: () => void;
+}
 
 const navLinks = [
   { path: '/', label: 'Home' },
@@ -9,24 +14,16 @@ const navLinks = [
   { path: '/about-us', label: 'About Us' },
 ];
 
-const NavMenu = (): JSX.Element => {
+const NavMenu = ({ onLinkClick }: NavMenuProps): JSX.Element => {
   return (
-    <Flex
-      as='nav'
-      justify='center'
-      align='center'
-      gap='20px'
-      maxW='100%'
-      flexWrap='wrap'
-      direction={{ base: 'column', md: 'row' }}
-    >
+    <Flex {...navMenuStyles.container}>
       {navLinks.map((link) => (
-        <NavButtonLink key={link.path} to={link.path}>
+        <NavButtonLink key={link.path} to={link.path} onClick={onLinkClick}>
           {link.label}
         </NavButtonLink>
       ))}
 
-      <AuthNavLinks />
+      <AuthNavLinks onLinkClick={onLinkClick} />
     </Flex>
   );
 };

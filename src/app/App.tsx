@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Header from '../components/header/Header';
 import NotFoundPage from '../pages/NotFoundPage';
+import MainPage from '../pages/MainPage';
 
 const LoginPage = (): ReactElement => <h2>Login Page</h2>;
 const RegistrationPage = (): ReactElement => <h2>Registration Page</h2>;
-const MainPage = (): ReactElement => <h2>Main Page</h2>;
 const CatalogPage = (): ReactElement => <h2>Catalog Product Page</h2>;
 const ProductDetailPage = (): ReactElement => <h2>Detailed Product Page</h2>;
 const UserProfilePage = (): ReactElement => <h2>User Profile Page</h2>;

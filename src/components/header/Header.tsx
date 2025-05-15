@@ -1,39 +1,50 @@
-import { Flex, Box, Grid, Button } from '@chakra-ui/react';
+import { Flex, Box, Grid, Button, useBreakpointValue } from '@chakra-ui/react';
 import { CiShoppingCart } from 'react-icons/ci';
 import { VscMenu } from 'react-icons/vsc';
 import NavMenu from './NavMenu';
 import Logo from './Logo';
 import NavButtonLink from './NavButtonLink';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { JSX } from 'react';
+import { iconSizes, hoverStyles, layoutStyles } from '@/theme/theme';
 
 const Header = (): JSX.Element => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isDesktop = useBreakpointValue({ base: false, md: true });
 
   const onToggle = (): void => setIsMobileMenuOpen((previous) => !previous);
 
+  useEffect(() => {
+    if (isDesktop) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [isDesktop]);
+
+  const handleLinkClick = (): void => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <Box as='header' bg='beige.500' p='10px' zIndex={10}>
-      <Grid
-        templateColumns={{ base: '1fr 1fr', md: '1fr 3fr 1fr' }}
-        alignItems='center'
-        w='100%'
-        maxW='1440px'
-        margin='0 auto'
-      >
-        <NavButtonLink to='/' _hover={{ color: 'primary._hover' }}>
+    <Box as='header' {...layoutStyles.header}>
+      <Grid {...layoutStyles.grid}>
+        <NavButtonLink to='/' {...hoverStyles.linkHover} onClick={handleLinkClick}>
           <Box transition='color 0.2s'>
             <Logo />
           </Box>
         </NavButtonLink>
 
         <Box display={{ base: 'none', md: 'block' }}>
-          <NavMenu />
+          <NavMenu onLinkClick={handleLinkClick} />
         </Box>
 
-        <Flex justify='flex-end' align='center' gap='10px'>
-          <NavButtonLink to='/cart' display={{ base: 'flex', md: 'none' }} _hover={{ color: 'primary._hover' }}>
-            <CiShoppingCart size={40} color='inherit' />
+        <Flex justify='flex-end' align='center' gap={2.5}>
+          <NavButtonLink
+            to='/cart'
+            display={{ base: 'flex', md: 'none' }}
+            {...hoverStyles.linkHover}
+            onClick={handleLinkClick}
+          >
+            <CiShoppingCart size={iconSizes.headerIcon} color='inherit' />
           </NavButtonLink>
 
           <Box display={{ base: 'flex', md: 'none' }} alignItems='center'>
@@ -41,44 +52,29 @@ const Header = (): JSX.Element => {
               variant='ghost'
               onClick={onToggle}
               aria-label='Toggle menu'
-              _hover={{
-                backgroundColor: 'transparent',
-                color: 'primary._hover',
-              }}
-              _active={{
-                backgroundColor: 'transparent',
-                color: 'primary._hover',
-              }}
+              {...hoverStyles.buttonHover}
               color='inherit'
               transition='transform 0.3s ease'
               transform={isMobileMenuOpen ? 'rotate(90deg)' : 'rotate(0deg)'}
             >
-              <VscMenu size={40} color='inherit' />
+              <VscMenu size={iconSizes.headerIcon} color='inherit' />
             </Button>
           </Box>
 
-          <NavButtonLink to='/cart' display={{ base: 'none', md: 'flex' }} _hover={{ color: 'primary._hover' }}>
-            <CiShoppingCart size={40} color='inherit' style={{ margin: 0, padding: 0 }} />
+          <NavButtonLink
+            to='/cart'
+            display={{ base: 'none', md: 'flex' }}
+            {...hoverStyles.linkHover}
+            onClick={handleLinkClick}
+          >
+            <CiShoppingCart size={iconSizes.headerIcon} color='inherit' />
           </NavButtonLink>
         </Flex>
       </Grid>
 
       {isMobileMenuOpen && (
-        <Box
-          position='fixed'
-          top='70px'
-          left='0'
-          width='100%'
-          height='calc(100vh - 70px)'
-          bg='#eeede1'
-          zIndex={3}
-          display='flex'
-          flexDirection='column'
-          alignItems='center'
-          gap='10px'
-          p='20px'
-        >
-          <NavMenu />
+        <Box {...layoutStyles.mobileMenu}>
+          <NavMenu onLinkClick={handleLinkClick} />
         </Box>
       )}
     </Box>
