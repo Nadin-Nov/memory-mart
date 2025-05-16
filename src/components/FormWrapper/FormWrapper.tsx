@@ -7,12 +7,22 @@ interface FormWrapperProps {
   link: string;
   children: React.ReactElement[];
   isLogin?: boolean;
+  onSubmit?: React.FormEventHandler;
 }
 
-export const FormWrapper: React.FC<FormWrapperProps> = ({ name, linkText, link, children, isLogin }): ReactElement => {
+export const FormWrapper: React.FC<FormWrapperProps> = ({
+  onSubmit,
+  name,
+  linkText,
+  link,
+  children,
+  isLogin,
+}): ReactElement => {
   return (
     <Flex align='center' justify='center' h='100vh'>
       <VStack
+        as='form'
+        onSubmit={onSubmit}
         gap={50}
         borderRadius={20}
         borderWidth={1}
