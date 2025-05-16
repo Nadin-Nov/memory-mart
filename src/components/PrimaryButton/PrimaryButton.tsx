@@ -18,20 +18,18 @@ export const PrimaryButton = ({ title, externalLink, type = 'button', onClick }:
 
   if (externalLink) {
     return (
-      <a href={externalLink}>
-        <Button
-          type={type}
-          borderRadius={10}
-          width='full'
-          colorPalette='teal'
-          paddingX='20'
-          paddingY='4'
-          onClick={primaryButtonHandler}
-          asChild
-        >
-          {title}
-        </Button>
-      </a>
+      <Button
+        asChild
+        type={type}
+        borderRadius={10}
+        width='full'
+        colorPalette='teal'
+        paddingX='20'
+        paddingY='4'
+        onClick={primaryButtonHandler}
+      >
+        <a href={externalLink}>{title}</a>
+      </Button>
     );
   }
 
@@ -44,7 +42,6 @@ export const PrimaryButton = ({ title, externalLink, type = 'button', onClick }:
       paddingX='20'
       paddingY='4'
       onClick={primaryButtonHandler}
-      asChild
     >
       {title}
     </Button>
