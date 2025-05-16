@@ -53,6 +53,7 @@ export default tseslint.config({
     'no-magic-numbers': 'off',
     '@typescript-eslint/no-magic-numbers': 'error',
     '@typescript-eslint/no-unsafe-argument': 'error',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'error',
     'unicorn/prefer-query-selector': 'off',
