@@ -18,8 +18,11 @@ const NotFoundPage = (): ReactElement => {
       justifyContent='center'
       alignItems='center'
       gap={6}
+      mt='10px'
+      borderRadius='20px'
+      overflow='hidden'
     >
-      <Box display='flex' flexDirection='column' alignItems='center' gap={2} mt='100px'>
+      <Box display='flex' flexDirection='column' alignItems='center' gap={2}>
         <Heading
           fontFamily='heading'
           fontSize={{ base: '36px', md: '48px' }}
