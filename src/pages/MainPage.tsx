@@ -1,6 +1,6 @@
-import { Grid, Box, Button, Heading } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
+import { Grid, Box, Heading } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
+import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
 
 const links = [
   { path: '/', label: 'Home' },
@@ -18,22 +18,9 @@ const MainPage = (): ReactElement => {
       <Heading as='h2' size='lg' mb='20px' textAlign='center' fontFamily='heading' color='darkText.default'>
         Dashboard Links
       </Heading>
-      <Grid templateColumns='repeat(auto-fit, minmax(120px, 1fr))' gap='15px'>
+      <Grid templateColumns='repeat(auto-fit, minmax(140px, 1fr))' gap='20px'>
         {links.map((link) => (
-          <NavLink key={link.path} to={link.path}>
-            <Button
-              width='100%'
-              height='35px'
-              fontSize='lg'
-              fontWeight='500'
-              bg='primary.solid'
-              color='primary.contrast'
-              _hover={{ bg: 'primary._hover', color: 'lightText.default' }}
-              variant='solid'
-            >
-              {link.label}
-            </Button>
-          </NavLink>
+          <PrimaryButton key={link.path} title={link.label} link={link.path} />
         ))}
       </Grid>
     </Box>
