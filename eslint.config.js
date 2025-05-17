@@ -51,7 +51,7 @@ export default tseslint.config({
     ],
     '@typescript-eslint/no-explicit-any': 'error',
     'no-magic-numbers': 'off',
-    '@typescript-eslint/no-magic-numbers': 'error',
+    '@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1] }],
     '@typescript-eslint/no-unsafe-argument': 'error',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'error',
