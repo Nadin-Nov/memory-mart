@@ -1,31 +1,49 @@
-import type { ReactElement } from 'react';
 import { Button } from '@chakra-ui/react';
+import type { ReactElement } from 'react';
 
 export interface ButtonProps {
   title: string;
-  link: string;
+  externalLink?: string;
+  type?: 'button' | 'reset' | 'submit';
   onClick?: (event: React.FormEvent) => void;
 }
 
-export const PrimaryButton = ({ title, link, onClick }: ButtonProps): ReactElement => {
+export const PrimaryButton = ({ title, externalLink, type = 'button', onClick }: ButtonProps): ReactElement => {
   const primaryButtonHandler = (event: React.FormEvent): void => {
     if (onClick) {
       event.preventDefault();
       onClick(event);
     }
   };
+
+  if (externalLink) {
+    return (
+      <Button
+        asChild
+        type={type}
+        borderRadius={10}
+        width='full'
+        colorPalette='teal'
+        paddingX='20'
+        paddingY='4'
+        onClick={primaryButtonHandler}
+      >
+        <a href={externalLink}>{title}</a>
+      </Button>
+    );
+  }
+
   return (
     <Button
-      type='submit'
+      type={type}
       borderRadius={10}
       width='full'
       colorPalette='teal'
       paddingX='20'
       paddingY='4'
       onClick={primaryButtonHandler}
-      asChild
     >
-      <a href={link}>{title}</a>
+      {title}
     </Button>
   );
 };
