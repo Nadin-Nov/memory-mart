@@ -44,7 +44,9 @@ const Header = (): JSX.Element => {
             {...hoverStyles.linkHover}
             onClick={handleLinkClick}
           >
-            <CiShoppingCart size={iconSizes.headerIcon} color='inherit' />
+            <Box width={`${iconSizes.headerIcon}px`} height={`${iconSizes.headerIcon}px`}>
+              <CiShoppingCart style={{ width: '100%', height: '100%' }} color='inherit' />
+            </Box>
           </NavButtonLink>
 
           <Box display={{ base: 'flex', md: 'none' }} alignItems='center'>
@@ -57,7 +59,9 @@ const Header = (): JSX.Element => {
               transition='transform 0.3s ease'
               transform={isMobileMenuOpen ? 'rotate(90deg)' : 'rotate(0deg)'}
             >
-              <VscMenu size={iconSizes.headerIcon} color='inherit' />
+              <Box width={`${iconSizes.headerIcon}px`} height={`${iconSizes.headerIcon}px`}>
+                <VscMenu style={{ width: '100%', height: '100%' }} color='inherit' />
+              </Box>
             </Button>
           </Box>
 
@@ -67,7 +71,9 @@ const Header = (): JSX.Element => {
             {...hoverStyles.linkHover}
             onClick={handleLinkClick}
           >
-            <CiShoppingCart size={iconSizes.headerIcon} color='inherit' />
+            <Box width={`${iconSizes.headerIcon}px`} height={`${iconSizes.headerIcon}px`}>
+              <CiShoppingCart style={{ width: '100%', height: '100%' }} color='inherit' />
+            </Box>
           </NavButtonLink>
         </Flex>
       </Grid>

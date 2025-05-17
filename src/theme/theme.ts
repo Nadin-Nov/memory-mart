@@ -66,7 +66,7 @@ const customConfig = defineConfig({
 });
 
 export const iconSizes = {
-  headerIcon: 40,
+  headerIcon: 24,
 };
 
 export const hoverStyles = {
