@@ -16,7 +16,7 @@ const navLinks = [
 
 const NavMenu = ({ onLinkClick }: NavMenuProps): JSX.Element => {
   return (
-    <Flex {...navMenuStyles.container}>
+    <Flex {...navMenuStyles.container} as='nav'>
       {navLinks.map((link) => (
         <NavButtonLink key={link.path} to={link.path} onClick={onLinkClick}>
           {link.label}
