@@ -49,6 +49,8 @@ const Logo = (): JSX.Element => {
       />
 
       <Text
+        display='flex'
+        alignItems='center'
         fontFamily='heading'
         fontWeight='400'
         fontSize={{ base: '24px', md: '28px', lg: '32px' }}

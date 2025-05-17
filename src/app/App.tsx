@@ -4,6 +4,7 @@ import './App.css';
 import Header from '../components/header/Header';
 import NotFoundPage from '../pages/NotFoundPage';
 import MainPage from '../pages/MainPage';
+import WrapperLayout from '@/components/Layout/WrapperLayout';
 
 const LoginPage = (): ReactElement => <h2>Login Page</h2>;
 const RegistrationPage = (): ReactElement => <h2>Registration Page</h2>;
@@ -16,18 +17,20 @@ const AboutUsPage = (): ReactElement => <h2>About Us Page</h2>;
 function App(): ReactElement {
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path='/' element={<MainPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/registration' element={<RegistrationPage />} />
-        <Route path='/catalog' element={<CatalogPage />} />
-        <Route path='/product-detail' element={<ProductDetailPage />} />
-        <Route path='/profile' element={<UserProfilePage />} />
-        <Route path='/cart' element={<BasketPage />} />
-        <Route path='/about-us' element={<AboutUsPage />} />
-        <Route path='*' element={<NotFoundPage />} />
-      </Routes>
+      <WrapperLayout>
+        <Header />
+        <Routes>
+          <Route path='/' element={<MainPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/registration' element={<RegistrationPage />} />
+          <Route path='/catalog' element={<CatalogPage />} />
+          <Route path='/product-detail' element={<ProductDetailPage />} />
+          <Route path='/profile' element={<UserProfilePage />} />
+          <Route path='/cart' element={<BasketPage />} />
+          <Route path='/about-us' element={<AboutUsPage />} />
+          <Route path='*' element={<NotFoundPage />} />
+        </Routes>
+      </WrapperLayout>
     </Router>
   );
 }
