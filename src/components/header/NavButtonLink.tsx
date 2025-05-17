@@ -10,7 +10,7 @@ interface NavButtonLinkProps {
   _hover?: { color: string };
 }
 
-const NavButtonLink = ({ to, children, onClick, display, _hover }: NavButtonLinkProps): JSX.Element => {
+const NavButtonLink = ({ to, children, onClick, display }: NavButtonLinkProps): JSX.Element => {
   return (
     <NavLink to={to}>
       {({ isActive }) => (
@@ -18,17 +18,17 @@ const NavButtonLink = ({ to, children, onClick, display, _hover }: NavButtonLink
           variant='ghost'
           fontSize='14px'
           fontWeight='400'
-          fontFamily="'Inter', sans-serif"
-          color={isActive ? 'primary._hover' : 'darkText.default'}
+          fontFamily='body'
+          color={isActive ? 'link.active' : 'link.default'}
           height='auto'
           p={0}
           m={0}
           _hover={{
-            color: _hover?.color || 'primary._hover',
+            color: 'link.hover',
             backgroundColor: 'transparent',
           }}
           _focus={{ boxShadow: 'none' }}
-          _active={{ backgroundColor: 'transparent' }}
+          _active={{ backgroundColor: 'transparent', color: 'link.active' }}
           textAlign='center'
           onClick={onClick}
           display={display}

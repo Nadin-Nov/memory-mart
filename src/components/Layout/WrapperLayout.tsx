@@ -7,13 +7,7 @@ interface WrapperLayoutProps {
 
 const WrapperLayout = ({ children }: WrapperLayoutProps): ReactElement => {
   return (
-    <Container
-      maxW="1440px"
-      px={{ base: '16px', md: '24px' }}
-      mx="auto"
-      mt="20px"
-      mb="20px"
-    >
+    <Container maxW='1440px' px={{ base: '16px', md: '24px' }} mx='auto' mt='20px' mb='20px'>
       {children}
     </Container>
   );
