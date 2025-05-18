@@ -1,8 +1,17 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
-import { PrimarySpaButton } from '../components/PrimaryButton/PrimarySpaButton';
+import { PrimaryButton } from '../components/PrimaryButton/PrimaryButton';
 import type { ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NotFoundPage = (): ReactElement => {
+  const navigate = useNavigate();
+
+  const handleNavigate = (path: string): ((event: React.FormEvent) => void) => {
+    return (event: React.FormEvent): void => {
+      event.preventDefault();
+      void navigate(path);
+    };
+  };
   return (
     <Box
       minHeight='100vh'
@@ -38,7 +47,7 @@ const NotFoundPage = (): ReactElement => {
           Let’s get back home?
         </Text>
 
-        <PrimarySpaButton link='/' title='Go to Home' />
+        <PrimaryButton title='Go to Home' onClick={handleNavigate('/')} />
       </Box>
     </Box>
   );
