@@ -1,5 +1,5 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
-import { PrimaryButton } from '../components/PrimaryButton/PrimaryButton';
+import { PrimarySpaButton } from '../components/PrimaryButton/PrimarySpaButton';
 import type { ReactElement } from 'react';
 
 const NotFoundPage = (): ReactElement => {
@@ -38,7 +38,7 @@ const NotFoundPage = (): ReactElement => {
           Let’s get back home?
         </Text>
 
-        <PrimaryButton link='/' title='Go to Home' />
+        <PrimarySpaButton link='/' title='Go to Home' />
       </Box>
     </Box>
   );
