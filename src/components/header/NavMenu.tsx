@@ -3,16 +3,11 @@ import NavButtonLink from './NavButtonLink';
 import AuthNavLinks from './AuthNavLinks';
 import type { JSX } from 'react';
 import { navMenuStyles } from '../../theme/theme';
+import { navLinks } from '@/utils/navLinks';
 
 interface NavMenuProps {
   onLinkClick?: () => void;
 }
-
-const navLinks = [
-  { path: '/', label: 'Home' },
-  { path: '/catalog', label: 'Catalog' },
-  { path: '/about-us', label: 'About Us' },
-];
 
 const NavMenu = ({ onLinkClick }: NavMenuProps): JSX.Element => {
   return (

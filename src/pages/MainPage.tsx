@@ -1,16 +1,7 @@
 import { Grid, Box, Heading } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
 import { PrimarySpaButton } from '@/components/PrimaryButton/PrimarySpaButton';
-
-const links = [
-  { path: '/', label: 'Home' },
-  { path: '/catalog', label: 'Catalog' },
-  { path: '/about-us', label: 'About Us' },
-  { path: '/login', label: 'Login' },
-  { path: '/registration', label: 'Registration' },
-  { path: '/profile', label: 'Profile' },
-  { path: '/cart', label: 'Cart' },
-];
+import { navLinks } from '@/utils/navLinks';
 
 const MainPage = (): ReactElement => {
   return (
@@ -19,7 +10,7 @@ const MainPage = (): ReactElement => {
         Dashboard Links
       </Heading>
       <Grid templateColumns='repeat(auto-fit, minmax(140px, 1fr))' gap='20px'>
-        {links.map((link) => (
+        {navLinks.map((link) => (
           <PrimarySpaButton key={link.path} title={link.label} link={link.path} />
         ))}
       </Grid>
