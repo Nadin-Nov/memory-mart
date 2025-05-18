@@ -19,13 +19,16 @@ const NavButtonLink = ({ to, children, onClick, display }: NavButtonLinkProps): 
           fontSize='14px'
           fontWeight='400'
           fontFamily='body'
-          color={isActive ? 'link.active' : 'link.default'}
+          color={isActive ? 'primary.solid' : 'link.default'}
           height='auto'
           p={0}
           m={0}
+          disabled={isActive}
+          cursor={isActive ? 'default' : 'pointer'}
           _hover={{
-            color: 'link.hover',
+            color: isActive ? 'link.active' : 'link.hover',
             backgroundColor: 'transparent',
+            cursor: isActive ? 'default' : 'pointer',
           }}
           _focus={{ boxShadow: 'none' }}
           _active={{ backgroundColor: 'transparent', color: 'link.active' }}
