@@ -1,5 +1,7 @@
+import { useState, useEffect, type JSX } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavButtonLink from './NavButtonLink';
-import { useState, type JSX } from 'react';
+import { getAnonymousToken } from '@/services/AuthService/AuthService';
 
 interface AuthNavLinksProps {
   onLinkClick?: () => void;
@@ -7,9 +9,34 @@ interface AuthNavLinksProps {
 
 const AuthNavLinks = ({ onLinkClick }: AuthNavLinksProps): JSX.Element => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const handleLogout = (): void => {
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsAuthenticated(loggedIn);
+  }, []);
+
+  const handleLogout = async (): Promise<void> => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('customer_token');
+    localStorage.setItem('isLoggedIn', 'false');
+
+    const anonToken = await getAnonymousToken();
+    if (anonToken?.access_token) {
+      localStorage.setItem('access_token', anonToken.access_token);
+    }
+
     setIsAuthenticated(false);
+    void navigate('/');
+  };
+
+  const performLogout = async (): Promise<void> => {
+    await handleLogout();
+    onLinkClick?.();
+  };
+
+  const onLogoutClick = (): void => {
+    void performLogout();
   };
 
   return (
@@ -19,13 +46,7 @@ const AuthNavLinks = ({ onLinkClick }: AuthNavLinksProps): JSX.Element => {
           <NavButtonLink to='/profile' onClick={onLinkClick}>
             Profile
           </NavButtonLink>
-          <NavButtonLink
-            to='/logout'
-            onClick={() => {
-              handleLogout();
-              onLinkClick?.();
-            }}
-          >
+          <NavButtonLink to='/login' onClick={onLogoutClick}>
             Logout
           </NavButtonLink>
         </>
