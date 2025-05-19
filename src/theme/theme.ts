@@ -46,6 +46,11 @@ const customConfig = defineConfig({
           default: { value: '{colors.warmBlack.500}' },
           hover: { value: '{colors.teal.600}' },
         },
+        progressSteps: {
+          fg: { value: '{colors.lightBeige.500}' },
+          muted: { value: '{colors.teal.600}' },
+          solid: { value: '{colors.teal.600}' },
+        },
       },
     },
     recipes: {
