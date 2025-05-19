@@ -2,32 +2,47 @@ import { useState, useEffect, type JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavButtonLink from './NavButtonLink';
 import { getAnonymousToken } from '@/services/AuthService/AuthService';
+import { isUserData } from '@/utils/validateUserData';
 
 interface AuthNavLinksProps {
   onLinkClick?: () => void;
 }
+
+const USER_DATA_KEY = 'userData';
 
 const AuthNavLinks = ({ onLinkClick }: AuthNavLinksProps): JSX.Element => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsAuthenticated(loggedIn);
+    const stored = localStorage.getItem(USER_DATA_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (isUserData(parsed)) {
+          setIsAuthenticated(parsed.isLoggedIn);
+        }
+      } catch {
+        console.warn('Invalid userData in localStorage');
+      }
+    }
   }, []);
 
   const handleLogout = async (): Promise<void> => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('customer_token');
-    localStorage.setItem('isLoggedIn', 'false');
-
-    const anonToken = await getAnonymousToken();
-    if (anonToken?.access_token) {
-      localStorage.setItem('access_token', anonToken.access_token);
+    try {
+      const anonToken = await getAnonymousToken();
+      if (anonToken?.access_token) {
+        const anonUserData = {
+          token: anonToken.access_token,
+          isLoggedIn: false,
+        };
+        localStorage.setItem(USER_DATA_KEY, JSON.stringify(anonUserData));
+        setIsAuthenticated(false);
+        void navigate('/');
+      }
+    } catch (error) {
+      console.error('Failed to fetch anonymous token:', error);
     }
-
-    setIsAuthenticated(false);
-    void navigate('/');
   };
 
   const performLogout = async (): Promise<void> => {
