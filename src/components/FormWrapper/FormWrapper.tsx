@@ -26,13 +26,13 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         gap={50}
         borderRadius={20}
         borderWidth={1}
-        paddingX={120}
+        paddingX='clamp(30px, 10vw, 150px)'
         paddingY={50}
         maxWidth={748}
-        width='full'
+        width='calc(100% - 3rem)'
         bgColor='lightBeige.500'
       >
-        <Heading size='md' color='darkText.subtle'>
+        <Heading size={{ base: 'xs', sm: 'sm', md: 'md' }} color='darkText.subtle'>
           {name}
         </Heading>
         <Flex width='full' gap={50} direction='column'>

@@ -58,6 +58,8 @@ const customConfig = defineConfig({
           size: {
             bg: { fontSize: '36px' },
             md: { fontSize: '32px' },
+            sm: { fontSize: '28px' },
+            xs: { fontSize: '24px' },
           },
         },
       },
