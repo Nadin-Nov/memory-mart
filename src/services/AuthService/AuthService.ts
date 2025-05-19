@@ -1,4 +1,4 @@
-import type { TokenResponse, FormProps } from './types';
+import type { TokenResponse, FormProps, RegistrationFormProps } from './types';
 
 const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_CT_CLIENT_SECRET;
@@ -85,5 +85,51 @@ export async function handleLogin(
   } catch (error) {
     console.log('Login failed', error);
     return { success: false, error: 'Something went wrong' };
+  }
+}
+
+export async function handleSignup(
+  token: string,
+  signupData: RegistrationFormProps
+): Promise<{ success: boolean; data?: unknown; error?: string }> {
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    dateOfBirth,
+    addresses,
+    defaultShippingAddress,
+    defaultBillingAddress,
+  } = signupData;
+
+  try {
+    const response = await fetch(`${API_URL}${PROJECT_KEY}/me/signup`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        firstName,
+        lastName,
+        dateOfBirth,
+        addresses,
+        defaultShippingAddress,
+        defaultBillingAddress,
+      }),
+    });
+
+    if (!response.ok) {
+      return { success: false, error: 'Signup failed' };
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (error) {
+    console.error('Signup failed:', error);
+    return { success: false, error: 'Something went wrong during signup' };
   }
 }
