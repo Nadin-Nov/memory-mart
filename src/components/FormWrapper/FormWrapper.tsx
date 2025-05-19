@@ -19,20 +19,20 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   isLogin,
 }): ReactElement => {
   return (
-    <Flex align='center' justify='center' h='100vh'>
+    <Flex align='center' justify='center' minHeight={650}>
       <VStack
         as='form'
         onSubmit={onSubmit}
         gap={50}
         borderRadius={20}
         borderWidth={1}
-        paddingX='clamp(30px, 10vw, 150px)'
+        paddingX={120}
         paddingY={50}
         maxWidth={748}
-        width='calc(100% - 3rem)'
+        width='full'
         bgColor='lightBeige.500'
       >
-        <Heading size={{ base: 'xs', sm: 'sm', md: 'md' }} color='darkText.subtle'>
+        <Heading size='md' color='darkText.subtle'>
           {name}
         </Heading>
         <Flex width='full' gap={50} direction='column'>
