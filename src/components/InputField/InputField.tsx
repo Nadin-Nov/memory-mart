@@ -1,18 +1,18 @@
-import type { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
+import type { FieldErrors, FieldValues, UseFormRegister, Path } from 'react-hook-form';
 import { Field, Input } from '@chakra-ui/react';
 import type { HTMLInputTypeAttribute, ReactElement } from 'react';
 
-interface InputFieldProps {
-  name: string;
+interface InputFieldProps<T extends FieldValues> {
+  name: Path<T>;
   placeholder: string;
-  register: UseFormRegister<FieldValues>;
-  errors?: FieldErrors<FieldValues>;
+  register: UseFormRegister<T>;
+  errors?: FieldErrors<T>;
   validate?: (value: string) => boolean | string;
   required?: boolean;
   type?: HTMLInputTypeAttribute;
 }
 
-export const InputField = ({
+export const InputField = <T extends FieldValues>({
   name,
   placeholder,
   required = false,
@@ -20,7 +20,7 @@ export const InputField = ({
   errors,
   validate,
   type = 'text',
-}: InputFieldProps): ReactElement => {
+}: InputFieldProps<T>): ReactElement => {
   const errorMessage = errors?.[name]?.message;
 
   const errorText = typeof errorMessage === 'string' ? errorMessage : 'An error occurred';
