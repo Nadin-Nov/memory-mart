@@ -1,5 +1,6 @@
 import { VStack, Heading, Flex, Link, Text } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface FormWrapperProps {
   name: string;
@@ -18,6 +19,13 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   children,
   isLogin,
 }): ReactElement => {
+  const navigate = useNavigate();
+
+  const handleNavigate = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
+    event.preventDefault();
+    void navigate(link);
+  };
+
   return (
     <Flex align='center' justify='center' minHeight={650}>
       <VStack
@@ -26,13 +34,13 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         gap={50}
         borderRadius={20}
         borderWidth={1}
-        paddingX={120}
+        paddingX='clamp(30px, 10vw, 150px)'
         paddingY={50}
         maxWidth={748}
-        width='full'
+        width='calc(100% - 3rem)'
         bgColor='lightBeige.500'
       >
-        <Heading size='md' color='darkText.subtle'>
+        <Heading size={{ base: 'xs', sm: 'sm', md: 'md' }} color='darkText.subtle'>
           {name}
         </Heading>
         <Flex width='full' gap={50} direction='column'>
@@ -40,7 +48,9 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         </Flex>
         <Text>
           {isLogin ? (
-            <Link href={link}>{linkText}</Link>
+            <Link onClick={handleNavigate} href={link}>
+              {linkText}
+            </Link>
           ) : (
             <>
               Already have an account? <Link href={link}>{linkText}</Link>
