@@ -6,12 +6,15 @@ import StepBillingAddress from '@/components/RegistrationSteps/StepBillingAddres
 import StepCredentials from '@/components/RegistrationSteps/StepCredentials';
 import StepPersonalInfo from '@/components/RegistrationSteps/StepPersonalInfo';
 import StepShippingAddress from '@/components/RegistrationSteps/StepShippingAddress';
-import { getAnonymousToken, handleSignup } from '@/services/AuthService/AuthService';
+import { getAnonymousToken, handleLogin, handleSignup } from '@/services/AuthService/AuthService';
 import type { RegistrationFormProps, TokenResponse } from '@/services/AuthService/types';
+import { LocalStorageService } from '@/services/LocalStorageService';
 import type { RawFormData } from '@/types/types';
 import { normalizeFormData } from '@/utils/normalizeFormData';
+import type { userData } from '@/utils/validateUserDate';
+import { isUserData } from '@/utils/validateUserDate';
 import type { ReactElement } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -45,11 +48,19 @@ export default function RegistrationPage(): ReactElement {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const isLoggedIn: boolean | undefined = LocalStorageService.getItem<userData>('userData', isUserData)?.isLoggedIn;
+
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, [navigate]);
+
   const nextStep = (): void => setStep((previous) => previous + 1);
 
   const onSubmit = async (data: RawFormData): Promise<void> => {
     if (step < steps.length - 1) {
-      nextStep(); // No need for void here since we're not returning anything
+      nextStep();
       return;
     }
 
@@ -58,15 +69,25 @@ export default function RegistrationPage(): ReactElement {
       console.log('Raw form data:', data);
       console.log('Normalized data:', normalizedData);
 
-      const anonymousToken: TokenResponse | undefined = await getAnonymousToken();
+      const localStorageToken = LocalStorageService.getItem<userData>('userData', isUserData);
+      let token: string | undefined = localStorageToken?.token;
+      if (!localStorageToken) {
+        const anonymousToken: TokenResponse | undefined = await getAnonymousToken();
+        if (anonymousToken) {
+          token = anonymousToken.access_token;
+        }
+      }
 
-      if (!anonymousToken) {
+      console.log('Sending signup with token:', token, localStorageToken);
+      console.log('Signup payload:', normalizedData);
+
+      if (!token) {
         console.error('Failed to get anonymous token');
         return;
       }
 
       try {
-        const result = await handleSignup(anonymousToken.access_token, normalizedData);
+        const result = await handleSignup(token, normalizedData);
 
         if (!result.success) {
           console.error('Signup failed:', result.error);
@@ -75,6 +96,24 @@ export default function RegistrationPage(): ReactElement {
 
         console.log('Signup successful:', result.data);
         navigate('/');
+        try {
+          // TODO: correct logic here
+          const loginToken = await getAnonymousToken();
+          if (!loginToken?.access_token) {
+            return;
+          }
+          handleLogin(loginToken.access_token, { email: normalizedData.email, password: normalizedData.password }).then(
+            (answer) => {
+              if (answer.success && answer.data) {
+                LocalStorageService.setItem('userData', { isLoggedIn: true, token: answer.data.access_token });
+              } else {
+                console.log('Auto-login failed');
+              }
+            }
+          );
+        } catch (error) {
+          console.error('Auto-login failed:', error);
+        }
       } catch (error) {
         console.error('Signup failed:', error);
       }

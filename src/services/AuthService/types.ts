@@ -26,3 +26,20 @@ export interface Address {
   postalCode: string;
   country: string;
 }
+
+export interface Customer {
+  id: string;
+  version: number;
+  email: string;
+  addresses: Address[];
+  isEmailVerified: boolean;
+  createdAt: string;
+  key?: string;
+}
+
+//TODO: implement cart interface
+
+export interface CustomerSignInResult {
+  customer: Customer;
+  cart?: unknown;
+}

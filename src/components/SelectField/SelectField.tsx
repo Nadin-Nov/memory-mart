@@ -1,8 +1,9 @@
 'use client';
 
 import { Field, Portal, Select, createListCollection } from '@chakra-ui/react';
+import type { SelectValueChangeDetails } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
-import type { Control, FieldErrors, FieldValues } from 'react-hook-form';
+import type { Control, FieldErrors, FieldValues, Path } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 interface Option {
@@ -10,17 +11,17 @@ interface Option {
   value: string;
 }
 
-interface SelectFieldProps {
-  name: string;
+interface SelectFieldProps<T extends FieldValues> {
+  name: Path<T>;
   options: Option[];
-  control: Control<FieldValues>;
+  control: Control<T>;
   placeholder?: string;
   label?: string;
   isRequired?: boolean;
-  errors?: FieldErrors;
+  errors?: FieldErrors<T>;
 }
 
-export const SelectField = ({
+export const SelectField = <T extends FieldValues>({
   name,
   options,
   placeholder,
@@ -28,7 +29,7 @@ export const SelectField = ({
   isRequired = false,
   control,
   errors,
-}: SelectFieldProps): ReactElement => {
+}: SelectFieldProps<T>): ReactElement => {
   const optionsCollection = createListCollection({ items: options });
   const errorMessage = errors?.[name]?.message as string | undefined;
 
@@ -43,7 +44,7 @@ export const SelectField = ({
           <Select.Root
             name={field.name}
             value={field.value}
-            onValueChange={({ value }) => field.onChange(value)}
+            onValueChange={({ value }: SelectValueChangeDetails<Option>) => field.onChange(value?.[0] ?? '')}
             collection={optionsCollection}
           >
             <Select.HiddenSelect />

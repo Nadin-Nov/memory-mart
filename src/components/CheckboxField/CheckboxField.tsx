@@ -1,25 +1,23 @@
-'use client';
-
-import { CheckboxControl, CheckboxHiddenInput, CheckboxLabel, CheckboxRoot, Field } from '@chakra-ui/react';
-import type { Control, FieldError, FieldValues } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
+import { Field, CheckboxRoot, CheckboxHiddenInput, CheckboxControl, CheckboxLabel } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
+import type { FieldValues, Control, FieldError, Path } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
-interface CheckboxFieldProps {
-  name: string;
+interface CheckboxFieldProps<T extends FieldValues> {
+  name: Path<T>;
   label: string;
-  control: Control<FieldValues>;
+  control: Control<T>;
   error?: FieldError;
   isDisabled?: boolean;
 }
 
-export const CheckboxField = ({
+export const CheckboxField = <T extends FieldValues>({
   name,
   label,
   control,
   error,
   isDisabled = false,
-}: CheckboxFieldProps): ReactElement => {
+}: CheckboxFieldProps<T>): ReactElement => {
   return (
     <Controller
       control={control}
@@ -28,7 +26,7 @@ export const CheckboxField = ({
         <Field.Root invalid={!!error} disabled={isDisabled}>
           <CheckboxRoot
             checked={field.value}
-            onCheckedChange={({ checked }) => field.onChange(checked)}
+            onCheckedChange={(checked) => field.onChange(checked)}
             colorPalette={'teal'}
           >
             <CheckboxHiddenInput />

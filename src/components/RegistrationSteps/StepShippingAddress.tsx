@@ -23,10 +23,10 @@ export default function StepShippingAddress(): ReactElement {
   } = useFormContext();
 
   const country = watch('countryShipping') as CountryCode;
-  const city = watch('cityShipping');
-  const street = watch('streetShipping');
-  const postalCode = watch('postalCodeShipping');
-  const copyBilling = watch('copyToBilling');
+  const city = watch('cityShipping') as string;
+  const street = watch('streetShipping') as string;
+  const postalCode = watch('postalCodeShipping') as string;
+  const copyBilling = watch('copyToBilling') as boolean;
 
   useEffect(() => {
     if (copyBilling) {

@@ -1,12 +1,13 @@
-import type { TokenResponse, FormProps, RegistrationFormProps } from './types';
+import type { TokenResponse, FormProps, RegistrationFormProps, CustomerSignInResult } from './types';
 
-const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID;
-const CLIENT_SECRET = import.meta.env.VITE_CT_CLIENT_SECRET;
-const PROJECT_KEY = import.meta.env.VITE_CT_PROJECT_KEY;
-const API_URL = import.meta.env.VITE_CT_API_URL;
-const AUTH_URL = import.meta.env.VITE_CT_AUTH_URL;
+const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID as string;
+const CLIENT_SECRET = import.meta.env.VITE_CT_CLIENT_SECRET as string;
+const PROJECT_KEY = import.meta.env.VITE_CT_PROJECT_KEY as string;
+const API_URL = import.meta.env.VITE_CT_API_URL as string;
+const AUTH_URL = import.meta.env.VITE_CT_AUTH_URL as string;
 
 const BAD_REQUEST_CODE = 400;
+const UNAUTHORIZED = 401;
 
 const authHeader = 'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
 
@@ -25,7 +26,7 @@ export async function getAnonymousToken(): Promise<TokenResponse | undefined> {
       throw new Error('Failed to fetch anonymous token');
     }
 
-    const data: TokenResponse = await response.json();
+    const data = (await response.json()) as TokenResponse;
     return data;
   } catch (error) {
     console.error('Error fetching anonymous token:', error);
@@ -49,7 +50,7 @@ export async function getCustomerToken(loginData: FormProps): Promise<TokenRespo
       throw new Error('Failed to fetch customer token');
     }
 
-    const data: TokenResponse = await response.json();
+    const data = (await response.json()) as TokenResponse;
     return data;
   } catch (error) {
     console.error('Error fetching customer token:', error);
@@ -60,7 +61,7 @@ export async function getCustomerToken(loginData: FormProps): Promise<TokenRespo
 export async function handleLogin(
   token: string,
   loginData: FormProps
-): Promise<{ success: boolean; data?: unknown; error?: string }> {
+): Promise<{ success: boolean; data?: TokenResponse; error?: string }> {
   const { password, email } = loginData;
   try {
     const response = await fetch(`${API_URL}${PROJECT_KEY}/me/login`, {
@@ -75,12 +76,12 @@ export async function handleLogin(
       }),
     });
 
-    if (response.status === BAD_REQUEST_CODE) {
+    if (response.status === BAD_REQUEST_CODE || response.status === UNAUTHORIZED) {
       return { success: false, error: 'Invalid email or password' };
     }
 
-    await getCustomerToken(loginData);
-    const data = await response.json();
+    const data: TokenResponse = (await getCustomerToken(loginData)) as TokenResponse;
+
     return { success: true, data };
   } catch (error) {
     console.log('Login failed', error);
@@ -115,7 +116,7 @@ export async function handleSignup(
       return { success: false, error: 'Signup failed' };
     }
 
-    const data = await response.json();
+    const data: CustomerSignInResult = (await response.json()) as CustomerSignInResult;
     return { success: true, data };
   } catch (error) {
     console.error('Signup failed:', error);
