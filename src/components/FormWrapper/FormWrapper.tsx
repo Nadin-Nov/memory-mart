@@ -19,7 +19,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   isLogin,
 }): ReactElement => {
   return (
-    <Flex align='center' justify='center' h='100vh'>
+    <Flex align='center' justify='center' minH={'650px'}>
       <VStack
         as='form'
         onSubmit={onSubmit}

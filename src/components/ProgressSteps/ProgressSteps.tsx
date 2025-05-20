@@ -1,42 +1,35 @@
-import { Box, Steps } from '@chakra-ui/react';
+import { Heading, Steps, useBreakpointValue } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
 
-const steps = [
-  {
-    title: 'Step 1',
-    description: 'Credentials',
-  },
-  {
-    title: 'Step 2',
-    description: 'Personal info',
-  },
-  {
-    title: 'Step 3',
-    description: 'Shipping address',
-  },
-  {
-    title: 'Step 4',
-    description: 'Billing address',
-  },
-];
-
-interface Props {
-  step: number;
+interface Step {
+  title: string;
+  description: string;
 }
 
-export default function ProgressSteps({ step = 0 }: Props): ReactElement {
+interface Props {
+  steps: Step[];
+  step?: number;
+}
+
+export default function ProgressSteps({ steps, step = 0 }: Props): ReactElement {
+  const showSeparator = useBreakpointValue({ base: false, sm: true });
+
   return (
-    <Steps.Root count={steps.length} colorPalette='progressSteps' step={step} variant='subtle'>
+    <Steps.Root count={steps.length} colorPalette='progressSteps' step={step} size={{ base: 'sm', sm: 'md', lg: 'lg' }}>
       <Steps.List>
         {steps.map((step, index) => (
           <Steps.Item key={index} index={index} title={step.title}>
             <Steps.Indicator />
-            <Box>
-              <Steps.Title>{step.description}</Steps.Title>
-            </Box>
+            {showSeparator ? <Steps.Separator /> : <></>}
           </Steps.Item>
         ))}
       </Steps.List>
+
+      {steps.map((step, index) => (
+        <Steps.Content key={index} index={index} mt='1rem'>
+          <Heading size={{ base: 'xs', sm: 'sm', md: 'md' }}>{step.description}</Heading>
+        </Steps.Content>
+      ))}
     </Steps.Root>
   );
 }

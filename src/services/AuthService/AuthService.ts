@@ -92,16 +92,7 @@ export async function handleSignup(
   token: string,
   signupData: RegistrationFormProps
 ): Promise<{ success: boolean; data?: unknown; error?: string }> {
-  const {
-    email,
-    password,
-    firstName,
-    lastName,
-    dateOfBirth,
-    addresses,
-    defaultShippingAddress,
-    defaultBillingAddress,
-  } = signupData;
+  const { email, password, firstName, lastName, dateOfBirth, addresses } = signupData;
 
   try {
     const response = await fetch(`${API_URL}${PROJECT_KEY}/me/signup`, {
@@ -117,8 +108,6 @@ export async function handleSignup(
         lastName,
         dateOfBirth,
         addresses,
-        defaultShippingAddress,
-        defaultBillingAddress,
       }),
     });
 

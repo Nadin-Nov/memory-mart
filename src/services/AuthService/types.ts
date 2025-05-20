@@ -18,8 +18,6 @@ export interface RegistrationFormProps {
   lastName: string;
   dateOfBirth: string;
   addresses: Address[];
-  defaultShippingAddress: 0;
-  defaultBillingAddress: 1;
 }
 
 export interface Address {

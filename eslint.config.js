@@ -54,8 +54,10 @@ export default tseslint.config({
     '@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1] }],
     '@typescript-eslint/no-unsafe-argument': 'error',
     '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'error',
+    '@typescript-eslint/no-floating-promises': 'off',
     'unicorn/prefer-query-selector': 'off',
     'unicorn/filename-case': [
       'error',
