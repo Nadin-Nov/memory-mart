@@ -8,8 +8,8 @@ import MainPage from '../pages/MainPage';
 import WrapperLayout from '@/components/Layout/WrapperLayout';
 import LoginPage from '@/pages/LoginPage';
 import { LocalStorageService } from '@/services/LocalStorageService';
-import type { userData } from '@/utils/validateUserDate';
-import { isUserData } from '@/utils/validateUserDate';
+import type { userData } from '@/utils/validateUserData';
+import { isUserData } from '@/utils/validateUserData';
 import { getAnonymousToken } from '@/services/AuthService/AuthService';
 
 const RegistrationPage = (): ReactElement => <h2>Registration Page</h2>;

@@ -10,8 +10,8 @@ import { InputField } from '@/components/InputField/InputField';
 import type { TokenResponse, FormProps } from '@/services/AuthService/types';
 import { useNavigate } from 'react-router-dom';
 import { LocalStorageService } from '@/services/LocalStorageService';
-import type { userData } from '@/utils/validateUserDate';
-import { isUserData } from '@/utils/validateUserDate';
+import type { userData } from '@/utils/validateUserData';
+import { isUserData } from '@/utils/validateUserData';
 import { handleLogin } from '@/services/AuthService/AuthService';
 
 const LoginPage = (): ReactElement => {
