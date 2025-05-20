@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'; // оставь только Routes и Route
 import './App.css';
 import Header from '../components/header/Header';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -41,22 +41,20 @@ function App(): ReactElement {
   }, []);
 
   return (
-    <Router>
-      <WrapperLayout>
-        <Header />
-        <Routes>
-          <Route path='/' element={<MainPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/registration' element={<RegistrationPage />} />
-          <Route path='/catalog' element={<CatalogPage />} />
-          <Route path='/product-detail' element={<ProductDetailPage />} />
-          <Route path='/profile' element={<UserProfilePage />} />
-          <Route path='/cart' element={<BasketPage />} />
-          <Route path='/about-us' element={<AboutUsPage />} />
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
-      </WrapperLayout>
-    </Router>
+    <WrapperLayout>
+      <Header />
+      <Routes>
+        <Route path='/' element={<MainPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/registration' element={<RegistrationPage />} />
+        <Route path='/catalog' element={<CatalogPage />} />
+        <Route path='/product-detail' element={<ProductDetailPage />} />
+        <Route path='/profile' element={<UserProfilePage />} />
+        <Route path='/cart' element={<BasketPage />} />
+        <Route path='/about-us' element={<AboutUsPage />} />
+        <Route path='*' element={<NotFoundPage />} />
+      </Routes>
+    </WrapperLayout>
   );
 }
 
