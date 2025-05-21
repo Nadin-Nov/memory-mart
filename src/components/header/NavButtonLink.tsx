@@ -8,37 +8,48 @@ interface NavButtonLinkProps {
   onClick?: () => void;
   display?: string | object;
   _hover?: { color: string };
+  disableActiveState?: boolean;
 }
 
-const NavButtonLink = ({ to, children, onClick, display }: NavButtonLinkProps): JSX.Element => {
+const NavButtonLink = ({
+  to,
+  children,
+  onClick,
+  display,
+  disableActiveState = false,
+}: NavButtonLinkProps): JSX.Element => {
   return (
     <NavLink to={to}>
-      {({ isActive }) => (
-        <Button
-          variant='ghost'
-          fontSize='14px'
-          fontWeight='400'
-          fontFamily='body'
-          color={isActive ? 'primary.solid' : 'link.default'}
-          height='auto'
-          p={0}
-          m={0}
-          disabled={isActive}
-          cursor={isActive ? 'default' : 'pointer'}
-          _hover={{
-            color: isActive ? 'link.active' : 'link.hover',
-            backgroundColor: 'transparent',
-            cursor: isActive ? 'default' : 'pointer',
-          }}
-          _focus={{ boxShadow: 'none' }}
-          _active={{ backgroundColor: 'transparent', color: 'link.active' }}
-          textAlign='center'
-          onClick={onClick}
-          display={display}
-        >
-          {children}
-        </Button>
-      )}
+      {({ isActive }) => {
+        const active = disableActiveState ? false : isActive;
+
+        return (
+          <Button
+            variant='ghost'
+            fontSize='14px'
+            fontWeight='400'
+            fontFamily='body'
+            color={active ? 'primary.solid' : 'link.default'}
+            height='auto'
+            p={0}
+            m={0}
+            disabled={active}
+            cursor={active ? 'default' : 'pointer'}
+            _hover={{
+              color: active ? 'link.active' : 'link.hover',
+              backgroundColor: 'transparent',
+              cursor: active ? 'default' : 'pointer',
+            }}
+            _focus={{ boxShadow: 'none' }}
+            _active={{ backgroundColor: 'transparent', color: 'link.active' }}
+            textAlign='center'
+            onClick={onClick}
+            display={display}
+          >
+            {children}
+          </Button>
+        );
+      }}
     </NavLink>
   );
 };
