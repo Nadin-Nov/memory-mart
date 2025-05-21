@@ -4,15 +4,16 @@ import { FormWrapper } from '@/components/FormWrapper/FormWrapper';
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
 import { validateEmail, validatePassword } from '@/utils/validate';
 import type { ReactElement } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { InputField } from '@/components/InputField/InputField';
 import type { TokenResponse, FormProps } from '@/services/AuthService/types';
 import { useNavigate } from 'react-router-dom';
 import { LocalStorageService } from '@/services/LocalStorageService';
+import { handleLogin, getCustomerToken } from '@/services/AuthService/AuthService';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
-import { handleLogin } from '@/services/AuthService/AuthService';
 
 const LoginPage = (): ReactElement => {
   const {
@@ -23,25 +24,34 @@ const LoginPage = (): ReactElement => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const isLoggedIn: boolean | undefined = LocalStorageService.getItem<userData>('userData', isUserData)?.isLoggedIn;
+
+    if (isLoggedIn) {
+      void navigate('/');
+    }
+  }, [navigate]);
+
   const onSubmit: SubmitHandler<FormProps> = async (loginData: FormProps): Promise<void> => {
     try {
-      const userData = LocalStorageService.getItem<userData>('userData', isUserData);
-      const storedToken = userData?.token ?? '';
+      const response = (await getCustomerToken(loginData)) as TokenResponse;
+      const customerToken = response.access_token;
 
-      const loginResult = await handleLogin(storedToken, loginData);
-      const loginResponse = loginResult.data as TokenResponse;
+      const loginResult = await handleLogin(customerToken, loginData);
 
       if (loginResult.success) {
         LocalStorageService.setItem('userData', {
-          token: loginResponse.access_token,
+          token: customerToken,
           isLoggedIn: true,
         });
         await navigate('/');
       } else {
         console.log('Login attempt failed', loginResult.error);
+        return;
       }
     } catch (error) {
       console.error('Authentication error:', error);
+      return;
     }
   };
 

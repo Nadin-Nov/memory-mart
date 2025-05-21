@@ -8,6 +8,7 @@ const AUTH_URL = import.meta.env.VITE_CT_AUTH_URL as string;
 
 const BAD_REQUEST_CODE = 400;
 const UNAUTHORIZED = 401;
+const INSUFFICIENT_SCOPE = 403;
 
 const authHeader = 'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
 
@@ -43,7 +44,7 @@ export async function getCustomerToken(loginData: FormProps): Promise<TokenRespo
         Authorization: authHeader,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `grant_type=password&username=${email}&password=${password}&scope=manage_my_orders:memory-mart`,
+      body: `grant_type=password&username=${email}&password=${password}&scope=manage_my_profile:${PROJECT_KEY}`,
     });
 
     if (!response.ok) {
@@ -61,7 +62,7 @@ export async function getCustomerToken(loginData: FormProps): Promise<TokenRespo
 export async function handleLogin(
   token: string,
   loginData: FormProps
-): Promise<{ success: boolean; data?: TokenResponse; error?: string }> {
+): Promise<{ success: boolean; data?: unknown; error?: string }> {
   const { password, email } = loginData;
   try {
     const response = await fetch(`${API_URL}${PROJECT_KEY}/me/login`, {
@@ -76,13 +77,16 @@ export async function handleLogin(
       }),
     });
 
-    if (response.status === BAD_REQUEST_CODE || response.status === UNAUTHORIZED) {
+    if (
+      response.status === BAD_REQUEST_CODE ||
+      response.status === UNAUTHORIZED ||
+      response.status === INSUFFICIENT_SCOPE
+    ) {
       return { success: false, error: 'Invalid email or password' };
     }
 
-    const data: TokenResponse = (await getCustomerToken(loginData)) as TokenResponse;
-
-    return { success: true, data };
+    const customerData: unknown = await response.json();
+    return { success: true, data: customerData };
   } catch (error) {
     console.log('Login failed', error);
     return { success: false, error: 'Something went wrong' };
