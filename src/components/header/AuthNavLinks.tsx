@@ -1,5 +1,4 @@
 import type { JSX } from 'react';
-import { useNavigate } from 'react-router-dom';
 import NavButtonLink from './NavButtonLink';
 import { useAuth } from '@/context/useAuth';
 
@@ -9,12 +8,10 @@ interface AuthNavLinksProps {
 
 const AuthNavLinks = ({ onLinkClick }: AuthNavLinksProps): JSX.Element => {
   const { isAuthenticated, logout } = useAuth();
-  const navigate = useNavigate();
 
   const onLogoutClick = (): void => {
     void logout().then(() => {
       onLinkClick?.();
-      void navigate('/');
     });
   };
 
@@ -25,7 +22,7 @@ const AuthNavLinks = ({ onLinkClick }: AuthNavLinksProps): JSX.Element => {
           <NavButtonLink to='/profile' onClick={onLinkClick}>
             Profile
           </NavButtonLink>
-          <NavButtonLink to='/login' onClick={onLogoutClick}>
+          <NavButtonLink to='/' onClick={onLogoutClick}>
             Logout
           </NavButtonLink>
         </>
