@@ -1,4 +1,4 @@
-import type { TokenResponse, FormProps } from './types';
+import type { TokenResponse, FormProps, RegistrationFormProps, CustomerSignInResult } from './types';
 
 const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID as string;
 const CLIENT_SECRET = import.meta.env.VITE_CT_CLIENT_SECRET as string;
@@ -61,7 +61,7 @@ export async function getCustomerToken(loginData: FormProps): Promise<TokenRespo
 export async function handleLogin(
   token: string,
   loginData: FormProps
-): Promise<{ success: boolean; data?: unknown; error?: string }> {
+): Promise<{ success: boolean; data?: TokenResponse; error?: string }> {
   const { password, email } = loginData;
   try {
     const response = await fetch(`${API_URL}${PROJECT_KEY}/me/login`, {
@@ -80,11 +80,46 @@ export async function handleLogin(
       return { success: false, error: 'Invalid email or password' };
     }
 
-    const data = (await getCustomerToken(loginData)) as TokenResponse;
+    const data: TokenResponse = (await getCustomerToken(loginData)) as TokenResponse;
 
     return { success: true, data };
   } catch (error) {
     console.log('Login failed', error);
     return { success: false, error: 'Something went wrong' };
+  }
+}
+
+export async function handleSignup(
+  token: string,
+  signupData: RegistrationFormProps
+): Promise<{ success: boolean; data?: unknown; error?: string }> {
+  const { email, password, firstName, lastName, dateOfBirth, addresses } = signupData;
+
+  try {
+    const response = await fetch(`${API_URL}${PROJECT_KEY}/me/signup`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        firstName,
+        lastName,
+        dateOfBirth,
+        addresses,
+      }),
+    });
+
+    if (!response.ok) {
+      return { success: false, error: 'Signup failed' };
+    }
+
+    const data: CustomerSignInResult = (await response.json()) as CustomerSignInResult;
+    return { success: true, data };
+  } catch (error) {
+    console.error('Signup failed:', error);
+    return { success: false, error: 'Something went wrong during signup' };
   }
 }
