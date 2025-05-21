@@ -44,7 +44,7 @@ export const SelectField = <T extends FieldValues>({
           <Select.Root
             name={field.name}
             value={field.value}
-            onValueChange={({ value }: SelectValueChangeDetails<Option>) => field.onChange(value?.[0] ?? '')}
+            onValueChange={({ value }: SelectValueChangeDetails) => field.onChange(value ?? '')}
             collection={optionsCollection}
           >
             <Select.HiddenSelect />
