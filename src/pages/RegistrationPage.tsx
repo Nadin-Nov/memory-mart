@@ -11,8 +11,8 @@ import type { RegistrationFormProps, TokenResponse } from '@/services/AuthServic
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { RawFormData } from '@/types/types';
 import { normalizeFormData } from '@/utils/normalizeFormData';
-import type { userData } from '@/utils/validateUserDate';
-import { isUserData } from '@/utils/validateUserDate';
+import type { userData } from '@/utils/validateUserData';
+import { isUserData } from '@/utils/validateUserData';
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -65,7 +65,7 @@ export default function RegistrationPage(): ReactElement {
     }
 
     try {
-      const normalizedData: RegistrationFormProps = normalizeFormData(data);
+      const normalizedData: CustomerDraft = normalizeFormData(data);
       console.log('Raw form data:', data);
       console.log('Normalized data:', normalizedData);
 
