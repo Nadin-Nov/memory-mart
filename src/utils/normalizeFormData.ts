@@ -13,6 +13,7 @@ export function normalizeFormData(raw: RawFormData): CustomerDraft {
   const countryBilling = extractCountry(raw.countryBilling);
 
   const shippingAddress: Address = {
+    key: 'addr1',
     streetName: raw.streetShipping,
     city: raw.cityShipping,
     postalCode: raw.postalCodeShipping,
@@ -22,9 +23,19 @@ export function normalizeFormData(raw: RawFormData): CustomerDraft {
   let addresses: Address[];
 
   if (raw.copyToBilling) {
-    addresses = [shippingAddress, shippingAddress];
+    addresses = [
+      shippingAddress,
+      {
+        key: 'addr2',
+        streetName: raw.streetShipping,
+        city: raw.cityShipping,
+        postalCode: raw.postalCodeShipping,
+        country: countryShipping,
+      },
+    ];
   } else {
     const billingAddress: Address = {
+      key: 'addr2',
       streetName: raw.streetBilling ?? '',
       city: raw.cityBilling ?? '',
       postalCode: raw.postalCodeBilling ?? '',
@@ -40,8 +51,6 @@ export function normalizeFormData(raw: RawFormData): CustomerDraft {
     lastName: raw.lastName,
     dateOfBirth: raw.dateOfBirth,
     addresses,
-    shippingAddresses: [0],
-    billingAddresses: [1],
     ...(raw.defaultBillingAddress !== undefined && { defaultBillingAddress: 1 }),
     ...(raw.defaultShippingAddress !== undefined && { defaultShippingAddress: 0 }),
   };

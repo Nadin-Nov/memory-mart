@@ -19,12 +19,11 @@ export interface CustomerDraft {
   dateOfBirth?: string;
   addresses?: Address[];
   defaultShippingAddress?: number;
-  shippingAddresses?: number[];
   defaultBillingAddress?: number;
-  billingAddresses?: number[];
 }
 
 export interface Address {
+  key: string;
   streetName: string;
   city: string;
   postalCode: string;
