@@ -1,21 +1,5 @@
-import type { Address, RegistrationFormProps } from '@/services/AuthService/types';
-
-type RawFormData = {
-  countryShipping: string | string[] | undefined;
-  countryBilling: string | string[] | undefined;
-  streetShipping: string;
-  cityShipping: string;
-  postalCodeShipping: string;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  streetBilling?: string;
-  cityBilling?: string;
-  postalCodeBilling?: string;
-  copyToBilling?: boolean;
-};
+import type { Address, CustomerDraft } from '@/services/AuthService/types';
+import type { RawFormData } from '@/types/types';
 
 function extractCountry(value: string | string[] | undefined): string {
   if (!value) return '';
@@ -24,7 +8,7 @@ function extractCountry(value: string | string[] | undefined): string {
   return '';
 }
 
-export function normalizeFormData(raw: RawFormData): RegistrationFormProps {
+export function normalizeFormData(raw: RawFormData): CustomerDraft {
   const countryShipping = extractCountry(raw.countryShipping);
   const countryBilling = extractCountry(raw.countryBilling);
 
@@ -38,7 +22,7 @@ export function normalizeFormData(raw: RawFormData): RegistrationFormProps {
   let addresses: Address[];
 
   if (raw.copyToBilling) {
-    addresses = [shippingAddress];
+    addresses = [shippingAddress, shippingAddress];
   } else {
     const billingAddress: Address = {
       streetName: raw.streetBilling ?? '',
@@ -56,5 +40,9 @@ export function normalizeFormData(raw: RawFormData): RegistrationFormProps {
     lastName: raw.lastName,
     dateOfBirth: raw.dateOfBirth,
     addresses,
+    shippingAddresses: [0],
+    billingAddresses: [1],
+    ...(raw.defaultBillingAddress !== undefined && { defaultBillingAddress: 1 }),
+    ...(raw.defaultShippingAddress !== undefined && { defaultShippingAddress: 0 }),
   };
 }

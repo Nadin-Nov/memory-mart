@@ -15,7 +15,7 @@ export default function ProgressSteps({ steps, step = 0 }: Props): ReactElement 
   const showSeparator = useBreakpointValue({ base: false, sm: true });
 
   return (
-    <Steps.Root count={steps.length} colorPalette='progressSteps' step={step} size={{ base: 'sm', sm: 'md', lg: 'lg' }}>
+    <Steps.Root count={steps.length} colorPalette='progressSteps' step={step} size={{ base: 'xs', md: 'md', lg: 'lg' }}>
       <Steps.List>
         {steps.map((step, index) => (
           <Steps.Item key={index} index={index} title={step.title}>
