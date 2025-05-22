@@ -9,10 +9,12 @@ export type RawFormData = {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  streetBilling?: string;
-  cityBilling?: string;
-  postalCodeBilling?: string;
+  streetBilling: string;
+  cityBilling: string;
+  postalCodeBilling: string;
   copyToBilling?: boolean;
+  defaultShippingAddress?: boolean;
+  defaultBillingAddress?: boolean;
 };
 
 export type CountryCode = 'US' | 'BY' | 'RU';

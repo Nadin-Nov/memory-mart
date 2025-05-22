@@ -11,16 +11,19 @@ export interface FormProps {
   password: string;
 }
 
-export interface RegistrationFormProps {
+export interface CustomerDraft {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  addresses: Address[];
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  addresses?: Address[];
+  defaultShippingAddress?: number;
+  defaultBillingAddress?: number;
 }
 
 export interface Address {
+  key: string;
   streetName: string;
   city: string;
   postalCode: string;

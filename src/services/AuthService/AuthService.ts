@@ -1,4 +1,4 @@
-import type { TokenResponse, FormProps, RegistrationFormProps, CustomerSignInResult } from './types';
+import type { TokenResponse, FormProps, CustomerSignInResult, CustomerDraft } from './types';
 
 const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID as string;
 const CLIENT_SECRET = import.meta.env.VITE_CT_CLIENT_SECRET as string;
@@ -95,7 +95,7 @@ export async function handleLogin(
 
 export async function handleSignup(
   token: string,
-  signupData: RegistrationFormProps
+  signupData: CustomerDraft
 ): Promise<{ success: boolean; data?: unknown; error?: string }> {
   const { email, password, firstName, lastName, dateOfBirth, addresses } = signupData;
 
