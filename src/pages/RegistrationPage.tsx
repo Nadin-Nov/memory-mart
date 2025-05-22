@@ -6,7 +6,7 @@ import StepBillingAddress from '@/components/RegistrationSteps/StepBillingAddres
 import StepCredentials from '@/components/RegistrationSteps/StepCredentials';
 import StepPersonalInfo from '@/components/RegistrationSteps/StepPersonalInfo';
 import StepShippingAddress from '@/components/RegistrationSteps/StepShippingAddress';
-import { getAnonymousToken, handleLogin, handleSignup } from '@/services/AuthService/AuthService';
+import { getAnonymousToken, getCustomerToken, handleLogin, handleSignup } from '@/services/AuthService/AuthService';
 import type { RegistrationFormProps, TokenResponse } from '@/services/AuthService/types';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { RawFormData } from '@/types/types';
@@ -97,15 +97,14 @@ export default function RegistrationPage(): ReactElement {
         console.log('Signup successful:', result.data);
         navigate('/');
         try {
-          // TODO: correct logic here
-          const loginToken = await getAnonymousToken();
+          const loginToken = await getCustomerToken({ email: normalizedData.email, password: normalizedData.password });
           if (!loginToken?.access_token) {
             return;
           }
           handleLogin(loginToken.access_token, { email: normalizedData.email, password: normalizedData.password }).then(
             (answer) => {
               if (answer.success && answer.data) {
-                LocalStorageService.setItem('userData', { isLoggedIn: true, token: answer.data.access_token });
+                LocalStorageService.setItem('userData', { isLoggedIn: true, token: loginToken.access_token });
               } else {
                 console.log('Auto-login failed');
               }
