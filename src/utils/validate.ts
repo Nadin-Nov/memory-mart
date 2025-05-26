@@ -5,8 +5,11 @@ const MIN_CITY_LENGTH = 1;
 const MIN_AGE = 14;
 
 export const validateEmail = (email: string): string | true => {
-  if (!/[a-zA-Z0-9.]*@[a-z]*[.a-z]*/.test(email)) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return 'Email must be valid';
+  }
+  if (/^\s|\s$/.test(email)) {
+    return 'Email must not contain leading or trailing whitespace.';
   }
 
   return true;
@@ -18,6 +21,9 @@ export const validateCity = (city: string): string | true => {
   }
   if (/[^А-Яа-яA-Za-z]/.test(city)) {
     return `City can't contain special characters or numbers`;
+  }
+  if (/^\s|\s$/.test(city)) {
+    return 'City must not contain leading or trailing whitespace.';
   }
   return true;
 };
@@ -53,8 +59,11 @@ export const validateName = (name: string): string | true => {
   if (name.length < MIN_NAME_LENGTH) {
     return `Name must be at least 1 character long`;
   }
-  if (/[^А-Яа-яA-Za-z]/.test(name)) {
+  if (/[^А-ЯЁа-яёA-Za-z]/.test(name)) {
     return `Name can't contain special characters or numbers`;
+  }
+  if (/^\s|\s$/.test(name)) {
+    return 'Name must not contain leading or trailing whitespace.';
   }
   return true;
 };
@@ -62,6 +71,9 @@ export const validateName = (name: string): string | true => {
 export const validateStreet = (street: string): string | true => {
   if (street.length < MIN_STREET_LENGTH) {
     return `Street must be at least 1 character long`;
+  }
+  if (/^\s|\s$/.test(street)) {
+    return 'Street must not contain leading or trailing whitespace.';
   }
   return true;
 };
@@ -90,33 +102,38 @@ export const validatePassword = (password: string): string | true => {
   return true;
 };
 
-export const validatePostalCode = (code: string, country: 'US' | 'RU' | 'BY'): string | true => {
-  switch (country) {
-    case 'US': {
-      if (!/^\d{5}(-\d{4})?$/.test(code)) {
-        return 'Postal code must be in the format 12345 or 12345-6789';
+export const validatePostalCode = (country: 'US' | 'RU' | 'BY'): ((code: string) => string | true) => {
+  return (code: string) => {
+    if (/^\s|\s$/.test(code)) {
+      return 'Postal code must not contain leading or trailing whitespace.';
+    }
+    switch (country) {
+      case 'US': {
+        if (!/^\d{5}(-\d{4})?$/.test(code)) {
+          return 'Postal code must be in the format 12345 or 12345-6789';
+        }
+        break;
       }
-      break;
-    }
 
-    case 'RU': {
-      if (!/^[1-6]\d{5}$/.test(code)) {
-        return 'Russian postal code must be 6 digits and start with 1–6';
+      case 'RU': {
+        if (!/^[1-6]\d{5}$/.test(code)) {
+          return 'Russian postal code must be 6 digits and start with 1–6';
+        }
+        break;
       }
-      break;
-    }
 
-    case 'BY': {
-      if (!/^2\d{5}$/.test(code)) {
-        return 'Belarusian postal code must be 6 digits and start with 2';
+      case 'BY': {
+        if (!/^2\d{5}$/.test(code)) {
+          return 'Belarusian postal code must be 6 digits and start with 2';
+        }
+        break;
       }
-      break;
+
+      default: {
+        return 'Unsupported country for postal code validation';
+      }
     }
 
-    default: {
-      return 'Unsupported country for postal code validation';
-    }
-  }
-
-  return true;
+    return true;
+  };
 };
