@@ -7,12 +7,9 @@ import type { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { InputField } from '@/components/InputField/InputField';
-import type { TokenResponse, FormProps } from '@/services/AuthService/types';
+import type { FormProps } from '@/services/AuthService/types';
 import { useNavigate } from 'react-router-dom';
-import { LocalStorageService } from '@/services/LocalStorageService';
-import type { userData } from '@/utils/validateUserData';
-import { isUserData } from '@/utils/validateUserData';
-import { handleLogin } from '@/services/AuthService/AuthService';
+import { useAuth } from '@/context/useAuth';
 
 const LoginPage = (): ReactElement => {
   const {
@@ -22,23 +19,16 @@ const LoginPage = (): ReactElement => {
   } = useForm<FormProps>({ defaultValues: { password: '' } });
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onSubmit: SubmitHandler<FormProps> = async (loginData: FormProps): Promise<void> => {
     try {
-      const userData = LocalStorageService.getItem<userData>('userData', isUserData);
-      const storedToken = userData?.token ?? '';
+      const result = await login(loginData.email, loginData.password);
 
-      const loginResult = await handleLogin(storedToken, loginData);
-      const loginResponse = loginResult.data as TokenResponse;
-
-      if (loginResult.success) {
-        LocalStorageService.setItem('userData', {
-          token: loginResponse.access_token,
-          isLoggedIn: true,
-        });
-        await navigate('/');
+      if (result.success) {
+        void navigate('/');
       } else {
-        console.log('Login attempt failed', loginResult.error);
+        console.log('Login attempt failed', result.error);
       }
     } catch (error) {
       console.error('Authentication error:', error);
