@@ -4,16 +4,12 @@ import { FormWrapper } from '@/components/FormWrapper/FormWrapper';
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
 import { validateEmail, validatePassword } from '@/utils/validate';
 import type { ReactElement } from 'react';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { InputField } from '@/components/InputField/InputField';
-import type { TokenResponse, FormProps } from '@/services/AuthService/types';
+import type { FormProps } from '@/services/AuthService/types';
 import { useNavigate } from 'react-router-dom';
-import { LocalStorageService } from '@/services/LocalStorageService';
-import { handleLogin, getCustomerToken } from '@/services/AuthService/AuthService';
-import type { userData } from '@/utils/validateUserData';
-import { isUserData } from '@/utils/validateUserData';
+import { useAuth } from '@/context/useAuth';
 
 const LoginPage = (): ReactElement => {
   const {
@@ -23,35 +19,19 @@ const LoginPage = (): ReactElement => {
   } = useForm<FormProps>({ defaultValues: { password: '' } });
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const isLoggedIn: boolean | undefined = LocalStorageService.getItem<userData>('userData', isUserData)?.isLoggedIn;
-
-    if (isLoggedIn) {
-      void navigate('/');
-    }
-  }, [navigate]);
+  const { login } = useAuth();
 
   const onSubmit: SubmitHandler<FormProps> = async (loginData: FormProps): Promise<void> => {
     try {
-      const response = (await getCustomerToken(loginData)) as TokenResponse;
-      const customerToken = response.access_token;
+      const result = await login(loginData.email, loginData.password);
 
-      const loginResult = await handleLogin(customerToken, loginData);
-
-      if (loginResult.success) {
-        LocalStorageService.setItem('userData', {
-          token: customerToken,
-          isLoggedIn: true,
-        });
-        await navigate('/');
+      if (result.success) {
+        void navigate('/');
       } else {
-        console.log('Login attempt failed', loginResult.error);
-        return;
+        console.log('Login attempt failed', result.error);
       }
     } catch (error) {
       console.error('Authentication error:', error);
-      return;
     }
   };
 
