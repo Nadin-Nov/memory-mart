@@ -10,6 +10,8 @@ import { InputField } from '@/components/InputField/InputField';
 import type { FormProps } from '@/services/AuthService/types';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/useAuth';
+import { useEffect } from 'react';
+
 
 const LoginPage = (): ReactElement => {
   const {
@@ -19,7 +21,13 @@ const LoginPage = (): ReactElement => {
   } = useForm<FormProps>({ defaultValues: { password: '' } });
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
+
+   useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const onSubmit: SubmitHandler<FormProps> = async (loginData: FormProps): Promise<void> => {
     try {
