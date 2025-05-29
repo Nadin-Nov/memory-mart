@@ -7,7 +7,7 @@ import StepCredentials from '@/components/RegistrationSteps/StepCredentials';
 import StepPersonalInfo from '@/components/RegistrationSteps/StepPersonalInfo';
 import StepShippingAddress from '@/components/RegistrationSteps/StepShippingAddress';
 import { getAnonymousToken, getCustomerToken, handleLogin, handleSignup } from '@/services/AuthService/AuthService';
-import type { RegistrationFormProps, TokenResponse } from '@/services/AuthService/types';
+import type { CustomerDraft, TokenResponse } from '@/services/AuthService/types';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { RawFormData } from '@/types/types';
 import { normalizeFormData } from '@/utils/normalizeFormData';

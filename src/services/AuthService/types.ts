@@ -46,3 +46,14 @@ export interface CustomerSignInResult {
   customer: Customer;
   cart?: unknown;
 }
+
+export interface ErrorResponse {
+  statusCode: number;
+  message: string;
+  errors?: ErrorObject[];
+}
+
+export interface ErrorObject {
+  code: string;
+  message: string;
+}
