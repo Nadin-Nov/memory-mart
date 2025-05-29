@@ -1,8 +1,8 @@
-// src/context/AuthProvider.tsx
+'use client';
 import type { JSX, ReactNode } from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAnonymousToken, handleLogin as apiHandleLogin } from '@/services/AuthService/AuthService';
+import {getAnonymousToken, handleLogin as apiHandleLogin, getCustomerToken} from '@/services/AuthService/AuthService';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
@@ -46,25 +46,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     if (!userDataState?.token) {
       return { success: false, error: 'No token available' };
     }
+
     const result = await apiHandleLogin(userDataState.token, { email, password });
 
-    if (
-      result.success &&
-      result.data &&
-      typeof result.data === 'object' &&
-      result.data !== null &&
-      'access_token' in result.data
-    ) {
-      const newUserData: userData = {
-        token: (result.data as { access_token: string }).access_token,
-        isLoggedIn: true,
-      };
-      LocalStorageService.setItem(USER_DATA_KEY, newUserData);
-      setUserDataState(newUserData);
-      return { success: true };
+    if (!result.success) {
+      return { success: false, error: result.error ?? 'Login failed' };
     }
 
-    return { success: false, error: result.error };
+    const tokenResponse = await getCustomerToken({ email, password });
+
+    if (!tokenResponse?.access_token) {
+      return { success: false, error: 'No access token received' };
+    }
+
+    const newUserData: userData = {
+      token: tokenResponse.access_token,
+      isLoggedIn: true,
+    };
+
+    LocalStorageService.setItem(USER_DATA_KEY, newUserData);
+    setUserDataState(newUserData);
+
+    return { success: true };
   };
 
   const logout = async (): Promise<void> => {
