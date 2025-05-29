@@ -27,12 +27,9 @@ ESLint + Prettier
 Husky
 
 **Project Status**
-We are currently in Sprint 1: Project Setup and CommerceTools Integration
-This sprint focuses on laying the groundwork for the project:
+We are currently in Sprint 2: Login, registration, and main pages
 
 **Future Sprints:**
-
-Sprint 2: Login, registration, and main pages
 
 Sprint 3: Product catalog, detailed views, and user profile
 
