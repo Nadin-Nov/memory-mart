@@ -2,7 +2,7 @@
 import type { JSX, ReactNode } from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {getAnonymousToken, handleLogin as apiHandleLogin, getCustomerToken} from '@/services/AuthService/AuthService';
+import { getAnonymousToken, handleLogin as apiHandleLogin, getCustomerToken } from '@/services/AuthService';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';

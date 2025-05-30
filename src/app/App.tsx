@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom'; // оставь только Routes и Route
 import './App.css';
-import Header from '../components/header/Header';
+import Header from '../components/Header/Header';
 import NotFoundPage from '../pages/NotFoundPage';
 import MainPage from '../pages/MainPage';
 import WrapperLayout from '@/components/Layout/WrapperLayout';
@@ -12,7 +12,7 @@ import { LocalStorageService } from '@/services/LocalStorageService';
 import RegistrationPage from '@/pages/RegistrationPage';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
-import { getAnonymousToken } from '@/services/AuthService/AuthService';
+import { getAnonymousToken } from '@/services/AuthService';
 
 const CatalogPage = (): ReactElement => <h2>Catalog Product Page</h2>;
 const ProductDetailPage = (): ReactElement => <h2>Detailed Product Page</h2>;

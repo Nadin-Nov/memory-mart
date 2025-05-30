@@ -1,4 +1,4 @@
-import type { TokenResponse, FormProps, CustomerSignInResult, CustomerDraft, ErrorResponse } from './types';
+import type { CustomerDraft, CustomerSignInResult, ErrorResponse, FormProps, TokenResponse } from '@/types/types';
 import axios from 'axios';
 
 const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID as string;
