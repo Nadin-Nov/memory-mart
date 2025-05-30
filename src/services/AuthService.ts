@@ -53,7 +53,6 @@ export async function getCustomerToken(loginData: FormProps): Promise<TokenRespo
         grant_type: 'password',
         username: email,
         password: password,
-        scope: `manage_my_profile:${PROJECT_KEY}`,
       }).toString()
     );
 
