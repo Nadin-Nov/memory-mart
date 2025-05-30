@@ -6,10 +6,9 @@ import StepBillingAddress from '@/components/RegistrationSteps/StepBillingAddres
 import StepCredentials from '@/components/RegistrationSteps/StepCredentials';
 import StepPersonalInfo from '@/components/RegistrationSteps/StepPersonalInfo';
 import StepShippingAddress from '@/components/RegistrationSteps/StepShippingAddress';
-import { getAnonymousToken, getCustomerToken, handleLogin, handleSignup } from '@/services/AuthService/AuthService';
-import type { RegistrationFormProps, TokenResponse } from '@/services/AuthService/types';
+import { getAnonymousToken, getCustomerToken, handleLogin, handleSignup } from '@/services/AuthService';
 import { LocalStorageService } from '@/services/LocalStorageService';
-import type { RawFormData } from '@/types/types';
+import type { CustomerDraft, RawFormData, TokenResponse } from '@/types/types';
 import { normalizeFormData } from '@/utils/normalizeFormData';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
