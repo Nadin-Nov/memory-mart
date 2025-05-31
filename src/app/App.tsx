@@ -2,11 +2,13 @@ import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import Header from '../components/header/Header';
+import Header from '../components/Header/Header';
 import NotFoundPage from '../pages/NotFoundPage';
 import MainPage from '../pages/MainPage';
 import WrapperLayout from '@/components/Layout/WrapperLayout';
 import LoginPage from '@/pages/LoginPage';
+import ProductDetailPage from '@/pages/ProductDetailsPage';
+
 import { LocalStorageService } from '@/services/LocalStorageService';
 
 import RegistrationPage from '@/pages/RegistrationPage';
@@ -15,7 +17,6 @@ import { isUserData } from '@/utils/validateUserData';
 import { getAnonymousToken } from '@/services/AuthService';
 
 const CatalogPage = (): ReactElement => <h2>Catalog Product Page</h2>;
-import ProductDetailPage from '@/pages/ProductDetailsPage';
 const UserProfilePage = (): ReactElement => <h2>User Profile Page</h2>;
 const BasketPage = (): ReactElement => <h2>Basket Page</h2>;
 const AboutUsPage = (): ReactElement => <h2>About Us Page</h2>;

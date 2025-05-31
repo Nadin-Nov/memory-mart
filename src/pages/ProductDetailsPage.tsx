@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductByKey } from '@/services/CommerceService';
 import { useAuth } from '@/context/useAuth';
-import type { Product } from '@/types/Product';
+import type { Product } from '@/types/product';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 
 const cents = 100;
 const symb = 2;
@@ -48,8 +49,11 @@ const ProductDetailPage = (): JSX.Element => {
   const priceDollars = (priceCents / cents).toFixed(symb);
   console.log('Product:', product);
 
+  const breadcrumbItems = [{ label: 'Home', path: '/' }, { label: 'Catalog', path: '/catalog' }, { label: name }];
+
   return (
     <div>
+      <Breadcrumbs items={breadcrumbItems} />
       <h1>{name}</h1>
       <p>{description}</p>
       <p>

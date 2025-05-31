@@ -83,6 +83,21 @@ export interface UserReference {
   id: string;
 }
 
+export interface Category {
+  id: string;
+  name: LocalizedString;
+  slug: LocalizedString;
+  version?: number;
+  parent?: {
+    typeId: string;
+    id: string;
+  };
+  ancestors?: {
+    typeId: string;
+    id: string;
+  }[];
+}
+
 export interface Product {
   id: string;
   version: number;
