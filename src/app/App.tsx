@@ -15,8 +15,8 @@ import RegistrationPage from '@/pages/RegistrationPage';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
 import { getAnonymousToken } from '@/services/AuthService';
+import CatalogPage from '@/pages/CatalogPage';
 
-const CatalogPage = (): ReactElement => <h2>Catalog Product Page</h2>;
 const UserProfilePage = (): ReactElement => <h2>User Profile Page</h2>;
 const BasketPage = (): ReactElement => <h2>Basket Page</h2>;
 const AboutUsPage = (): ReactElement => <h2>About Us Page</h2>;

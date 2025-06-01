@@ -139,3 +139,20 @@ export interface Product {
   metaTitle?: LocalizedString;
   metaDescription?: LocalizedString;
 }
+
+export type ProductFilters = {
+  page?: number;
+  category?: string;
+  subcategory?: string;
+  mood?: string[];
+  size?: string[];
+  material?: string[];
+  popularity?: string[];
+  newArrival?: string[];
+  priceRange?: [number, number];
+  search?: string;
+  sortBy?: string;
+  sortDirection?: 'asc' | 'desc';
+  markMatchingVariants?: boolean;
+  fuzzyLevel?: number;
+};
