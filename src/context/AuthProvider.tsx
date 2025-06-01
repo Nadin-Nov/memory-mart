@@ -47,16 +47,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       return { success: false, error: 'No token available' };
     }
 
-    const result = await apiHandleLogin(userDataState.token, { email, password });
-
-    if (!result.success) {
-      return { success: false, error: result.error ?? 'Login failed' };
-    }
-
     const tokenResponse = await getCustomerToken({ email, password });
 
     if (!tokenResponse?.access_token) {
-      return { success: false, error: 'No access token received' };
+      return { success: false, error: `Couldn't get access token` };
+    }
+
+    const result = await apiHandleLogin(tokenResponse.access_token, { email, password });
+
+    if (!result.success) {
+      return { success: false, error: result.error ?? 'Login failed' };
     }
 
     const newUserData: userData = {
