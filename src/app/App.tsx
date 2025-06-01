@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom'; // оставь только Routes и Route
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Header from '@/components/header/Header';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -8,6 +8,8 @@ import MainPage from '../pages/MainPage';
 import WrapperLayout from '@/components/Layout/WrapperLayout';
 import LoginPage from '@/pages/LoginPage';
 import UserProfilePage from '@/pages/UserProfilePage';
+import ProductDetailPage from '@/pages/ProductDetailsPage';
+
 import { LocalStorageService } from '@/services/LocalStorageService';
 
 import RegistrationPage from '@/pages/RegistrationPage';
@@ -16,7 +18,6 @@ import { isUserData } from '@/utils/validateUserData';
 import { getAnonymousToken } from '@/services/AuthService';
 
 const CatalogPage = (): ReactElement => <h2>Catalog Product Page</h2>;
-const ProductDetailPage = (): ReactElement => <h2>Detailed Product Page</h2>;
 const BasketPage = (): ReactElement => <h2>Basket Page</h2>;
 const AboutUsPage = (): ReactElement => <h2>About Us Page</h2>;
 
@@ -49,7 +50,7 @@ function App(): ReactElement {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/registration' element={<RegistrationPage />} />
         <Route path='/catalog' element={<CatalogPage />} />
-        <Route path='/product-detail' element={<ProductDetailPage />} />
+        <Route path='/product-detail/:productKey' element={<ProductDetailPage />} />
         <Route path='/profile' element={<UserProfilePage />} />
         <Route path='/cart' element={<BasketPage />} />
         <Route path='/about-us' element={<AboutUsPage />} />

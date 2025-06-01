@@ -121,8 +121,6 @@ export interface PersonalDetailsUpdateRequest {
   actions: Record<string, string>[];
 }
 
-// export type PersonalDetailsForm = Pick<authenticatedCustomer, 'firstName' | 'lastName' | 'dateOfBirth' | 'email'>;
-
 export interface PersonalDetailsForm {
   firstName: string;
   lastName: string;
