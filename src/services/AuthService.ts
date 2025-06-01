@@ -1,4 +1,12 @@
-import type { CustomerDraft, CustomerSignInResult, ErrorResponse, FormProps, TokenResponse } from '@/types/types';
+import type {
+  CustomerDraft,
+  CustomerSignInResult,
+  ErrorResponse,
+  FormProps,
+  TokenResponse,
+  CustomerDetailsType,
+  PersonalDetailsUpdateRequest,
+} from '@/types/types';
 import axios from 'axios';
 
 const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID as string;
@@ -111,4 +119,37 @@ export async function handleSignup(
 
     return { success: false, error: message };
   }
+}
+
+export async function getCustomerDetails(token: string): Promise<CustomerDetailsType | undefined> {
+  try {
+    const response = await clientAxios.get('/me', { headers: authBearer(token) });
+    const data = response.data as CustomerDetailsType;
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.status, error.response?.data);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+  }
+  return undefined;
+}
+
+export async function updateCustomerPersonalDetails(
+  token: string,
+  updatedData: PersonalDetailsUpdateRequest
+): Promise<CustomerDetailsType | undefined> {
+  try {
+    const response = await clientAxios.post('/me', updatedData, { headers: authBearer(token) });
+    const data = response.data as CustomerDetailsType;
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.status, error.response?.data);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+  }
+  return undefined;
 }

@@ -10,6 +10,7 @@ interface InputFieldProps<T extends FieldValues> {
   validate?: (value: string) => boolean | string;
   required?: boolean;
   type?: HTMLInputTypeAttribute;
+  variant?: 'flushed' | 'subtle' | 'outline';
 }
 
 export const InputField = <T extends FieldValues>({
@@ -20,6 +21,7 @@ export const InputField = <T extends FieldValues>({
   errors,
   validate,
   type = 'text',
+  variant = 'flushed',
 }: InputFieldProps<T>): ReactElement => {
   const errorMessage = errors?.[name]?.message;
 
@@ -27,7 +29,7 @@ export const InputField = <T extends FieldValues>({
 
   return (
     <Field.Root invalid={!!errors?.[name]} required={required}>
-      <Input {...register(name, { validate })} placeholder={placeholder} variant='flushed' type={type} />
+      <Input {...register(name, { validate })} placeholder={placeholder} variant={variant} type={type} />
       <Field.ErrorText>{errorText}</Field.ErrorText>
     </Field.Root>
   );
