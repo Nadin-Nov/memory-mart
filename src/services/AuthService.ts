@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_CT_API_URL as string;
 const AUTH_URL = import.meta.env.VITE_CT_AUTH_URL as string;
 
 const authHeader = 'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
-function authBearer(token: string): { Authorization: string } {
+export function authBearer(token: string): { Authorization: string } {
   return { Authorization: `Bearer ${token}` };
 }
 
@@ -20,7 +20,7 @@ const tokenAxios = axios.create({
   },
 });
 
-const clientAxios = axios.create({
+export const clientAxios = axios.create({
   baseURL: `${API_URL}${PROJECT_KEY}`,
   headers: {
     'Content-Type': 'application/json',
