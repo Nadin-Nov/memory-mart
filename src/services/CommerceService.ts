@@ -122,8 +122,6 @@ export async function getFilteredProducts({
   bodyParameters.append('limit', PRODUCTS_PER_PAGE.toString());
   bodyParameters.append('offset', ((page - 1) * PRODUCTS_PER_PAGE).toString());
 
-  console.log('POST body:', bodyParameters.toString());
-
   try {
     const response = await axios.post(
       `${API_URL}${PROJECT_KEY}/product-projections/search`,

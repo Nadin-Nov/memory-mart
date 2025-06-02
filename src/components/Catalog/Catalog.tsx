@@ -35,13 +35,11 @@ export default function Catalog(): ReactElement {
     if (!stored?.token) return;
 
     const fetchProducts = async (): Promise<void> => {
-      console.log(debouncedFilters);
       try {
         const response: FilteredProductsResponse = await getFilteredProducts({
           token: stored.token,
           filters: debouncedFilters,
         });
-        console.log(debouncedFilters, response);
         setProducts(response.results);
       } catch (error) {
         console.error('Failed to fetch products:', error);
