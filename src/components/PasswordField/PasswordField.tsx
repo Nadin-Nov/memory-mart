@@ -8,9 +8,11 @@ interface PasswordFieldProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   errors?: FieldErrors<T>;
   validate?: (value: string) => boolean | string;
+  placeholder?: string;
 }
 
 export const PasswordField = <T extends FieldValues>({
+  placeholder = 'Password',
   name,
   register,
   errors,
@@ -22,7 +24,7 @@ export const PasswordField = <T extends FieldValues>({
 
   return (
     <Field.Root invalid={!!errors?.[name]}>
-      <PasswordInput {...register(name, { validate })} placeholder='Password' />
+      <PasswordInput {...register(name, { validate })} placeholder={placeholder} />
       <Field.ErrorText>{errorText}</Field.ErrorText>
     </Field.Root>
   );

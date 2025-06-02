@@ -127,3 +127,9 @@ export interface PersonalDetailsForm {
   dateOfBirth: string;
   email: string;
 }
+
+export interface PasswordUpdateRequest {
+  version: number;
+  currentPassword: string;
+  newPassword: string;
+}
