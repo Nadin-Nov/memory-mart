@@ -8,7 +8,7 @@ interface ProductImageProps {
 }
 
 const ProductImage = ({ images, onClick }: ProductImageProps): JSX.Element => {
-  return <ImageSlider images={images} onClick={onClick} maxWidth='400px' />;
+  return <ImageSlider images={images} onClick={onClick} maxWidth='600px' />;
 };
 
 export default ProductImage;

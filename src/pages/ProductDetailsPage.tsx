@@ -49,15 +49,18 @@ const ProductDetailPage = (): JSX.Element => {
 
   return (
     <Box px='4' py='6'>
-      <Flex gap='4' mt='4' direction={{ base: 'column', md: 'row' }} alignItems='flex-start'>
-        <ProductInfo
-          name={name}
-          description={description}
-          masterVariant={product.masterVariant} // Здесь product уже не undefined
-        />
-        <ProductImage images={product.masterVariant.images} onClick={handleImageClick} />
-        <ProductAttributes attributes={product.masterVariant.attributes} />
-      </Flex>
+      <Box maxW='1100px' mx='auto' px={{ base: 4, md: 6 }}>
+        <Flex mt='4' direction={{ base: 'column', md: 'row' }} alignItems='flex-start' gap={{ base: 4, md: 6, lg: 8 }}>
+          <Box flex='1'>
+            <ProductInfo name={name} description={description} masterVariant={product.masterVariant} />
+            <ProductAttributes attributes={product.masterVariant.attributes} />
+          </Box>
+
+          <Box flex='1' maxW={{ base: '100%', md: '500px' }} w='100%' ml={{ base: 0, md: 4, lg: 6 }}>
+            <ProductImage images={product.masterVariant.images} onClick={handleImageClick} />
+          </Box>
+        </Flex>
+      </Box>
 
       <ProductImageModal
         open={open}

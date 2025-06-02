@@ -7,6 +7,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+import './ImageSlider.css';
+
 export interface ImageSliderProps {
   images: { url: string; label?: string }[];
   onClick?: (index: number) => void;
@@ -14,22 +16,23 @@ export interface ImageSliderProps {
   initialSlide?: number;
 }
 
-const ImageSlider: FC<ImageSliderProps> = ({ images, onClick, maxWidth = '600px', initialSlide = 0 }) => {
+const ImageSlider: FC<ImageSliderProps> = ({ images, onClick, maxWidth = '800px', initialSlide = 0 }) => {
   if (!images || images.length === 0) return <Box>No images available</Box>;
 
   const showNavigation = images.length > 1;
 
   return (
     <Box
-      bg='white'
-      borderRadius='md'
-      boxShadow='lg'
-      overflow='hidden'
-      mx='auto'
       maxW={maxWidth}
-      pt='16px'
-      px='16px'
-      pb='80px'
+      mx='auto'
+      border='10px solid white'
+      borderRadius='md'
+      boxShadow='0 4px 12px rgba(0,0,0,0.15)'
+      bg='white'
+      pt='4px'
+      px='4px'
+      pb='10px'
+      position='relative'
     >
       <Swiper
         spaceBetween={10}
@@ -41,13 +44,20 @@ const ImageSlider: FC<ImageSliderProps> = ({ images, onClick, maxWidth = '600px'
       >
         {images.map((img, index) => (
           <SwiperSlide key={img.url}>
-            <Box aspectRatio={1} width='100%' cursor={onClick ? 'pointer' : 'default'} onClick={() => onClick?.(index)}>
+            <Box
+              aspectRatio={1}
+              width='100%'
+              cursor={onClick ? 'pointer' : 'default'}
+              onClick={() => onClick?.(index)}
+              display='flex'
+              justifyContent='center'
+            >
               <Image
                 src={img.url}
                 alt={img.label || `Product image`}
                 objectFit='cover'
-                w='100%'
-                h='100%'
+                w='85%'
+                h='85%'
                 borderRadius='md'
               />
             </Box>
