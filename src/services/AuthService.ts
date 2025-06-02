@@ -1,12 +1,4 @@
-import type {
-  CustomerDraft,
-  CustomerSignInResult,
-  ErrorResponse,
-  FormProps,
-  TokenResponse,
-  CustomerDetailsType,
-  PersonalDetailsUpdateRequest,
-} from '@/types/types';
+import type { CustomerDraft, CustomerSignInResult, ErrorResponse, FormProps, TokenResponse } from '@/types/types';
 import axios from 'axios';
 
 const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID as string;
@@ -16,7 +8,7 @@ const API_URL = import.meta.env.VITE_CT_API_URL as string;
 const AUTH_URL = import.meta.env.VITE_CT_AUTH_URL as string;
 
 const authHeader = 'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
-function authBearer(token: string): { Authorization: string } {
+export function authBearer(token: string): { Authorization: string } {
   return { Authorization: `Bearer ${token}` };
 }
 
@@ -28,7 +20,7 @@ const tokenAxios = axios.create({
   },
 });
 
-const clientAxios = axios.create({
+export const clientAxios = axios.create({
   baseURL: `${API_URL}${PROJECT_KEY}`,
   headers: {
     'Content-Type': 'application/json',
@@ -119,37 +111,4 @@ export async function handleSignup(
 
     return { success: false, error: message };
   }
-}
-
-export async function getCustomerDetails(token: string): Promise<CustomerDetailsType | undefined> {
-  try {
-    const response = await clientAxios.get('/me', { headers: authBearer(token) });
-    const data = response.data as CustomerDetailsType;
-    return data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error:', error.response?.status, error.response?.data);
-    } else {
-      console.error('Unexpected error:', error);
-    }
-  }
-  return undefined;
-}
-
-export async function updateCustomerPersonalDetails(
-  token: string,
-  updatedData: PersonalDetailsUpdateRequest
-): Promise<CustomerDetailsType | undefined> {
-  try {
-    const response = await clientAxios.post('/me', updatedData, { headers: authBearer(token) });
-    const data = response.data as CustomerDetailsType;
-    return data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error:', error.response?.status, error.response?.data);
-    } else {
-      console.error('Unexpected error:', error);
-    }
-  }
-  return undefined;
 }

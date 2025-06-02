@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import Header from '@/components/header/Header';
+import Header from '@/components/Header/Header';
 import NotFoundPage from '../pages/NotFoundPage';
 import MainPage from '../pages/MainPage';
 import WrapperLayout from '@/components/Layout/WrapperLayout';

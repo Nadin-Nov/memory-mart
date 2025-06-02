@@ -8,10 +8,10 @@ import type { CustomerDetailsTypeWithToken, PersonalDetailsForm, PersonalDetails
 import { validateDate, validateName, validateEmail } from '@/utils/validate';
 import { IconButton } from '@chakra-ui/react';
 import { LuPencilLine } from 'react-icons/lu';
-import { updateCustomerPersonalDetails } from '@/services/AuthService';
+import { updateCustomerPersonalDetails } from '@/services/CustomerService';
 import { handleUpdateAction } from '@/utils/handleUpdateAction';
 
-interface PersonalInfoProps {
+export interface PersonalInfoProps {
   customerDetails: CustomerDetailsTypeWithToken;
   onUpdate: (updatedDetails: Partial<CustomerDetailsTypeWithToken>) => void;
 }
@@ -82,6 +82,7 @@ const PersonalInfo = ({ customerDetails, onUpdate }: PersonalInfoProps): ReactEl
           errors={errors}
           validate={validateName}
           variant={editMode ? 'subtle' : 'flushed'}
+          readOnly={editMode ? false : true}
         />
         <InputField
           placeholder='Last name'
@@ -90,6 +91,7 @@ const PersonalInfo = ({ customerDetails, onUpdate }: PersonalInfoProps): ReactEl
           errors={errors}
           validate={validateName}
           variant={editMode ? 'subtle' : 'flushed'}
+          readOnly={editMode ? false : true}
         />
         <InputField
           placeholder='Date of birth'
@@ -98,6 +100,7 @@ const PersonalInfo = ({ customerDetails, onUpdate }: PersonalInfoProps): ReactEl
           errors={errors}
           validate={validateDate}
           variant={editMode ? 'subtle' : 'flushed'}
+          readOnly={editMode ? false : true}
         />
         <InputField
           placeholder='Email'
@@ -106,6 +109,7 @@ const PersonalInfo = ({ customerDetails, onUpdate }: PersonalInfoProps): ReactEl
           errors={errors}
           validate={validateEmail}
           variant={editMode ? 'subtle' : 'flushed'}
+          readOnly={editMode ? false : true}
         />
       </Flex>
       <PrimaryButton

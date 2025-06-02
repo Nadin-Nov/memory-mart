@@ -1,12 +1,10 @@
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
-import { Flex, VStack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import type { CustomerDetailsTypeWithToken } from '@/types/types';
-import { LocalStorageService } from '@/services/LocalStorageService';
-import { isUserData } from '@/utils/validateUserData';
-import type { userData } from '@/utils/validateUserData';
 import PersonalInfo from '@/components/UserDetails/PersonalInfo';
-import { getCustomerDetails } from '@/services/AuthService';
+import { getCustomerDetails } from '@/services/CustomerService';
+import { useAuth } from '@/context/useAuth';
 
 const UserProfilePage = (): ReactElement => {
   const initialCustomerDetails = {
@@ -20,19 +18,20 @@ const UserProfilePage = (): ReactElement => {
     password: '',
     addresses: [],
   };
+
+  const { userData } = useAuth();
+
   const [customerDetails, setCustomerDetails] = useState<CustomerDetailsTypeWithToken>(initialCustomerDetails);
 
   useEffect(() => {
     const fetchCustomerDetails = async (): Promise<void> => {
       try {
-        const storedData = LocalStorageService.getItem<userData>('userData', isUserData);
-        if (storedData) {
-          const customerToken = storedData.token;
-          const data = await getCustomerDetails(customerToken);
+        if (userData?.token) {
+          const data = await getCustomerDetails(userData?.token);
           if (data) {
             const { version, id, email, firstName, lastName, dateOfBirth, password, addresses } = data;
             setCustomerDetails({
-              token: customerToken,
+              token: userData?.token,
               version,
               id,
               email,
@@ -50,24 +49,18 @@ const UserProfilePage = (): ReactElement => {
     };
 
     fetchCustomerDetails();
-  }, []);
+  }, [userData?.token]);
 
   const handleUpdateCustomerDetails = (updatedDetails: Partial<CustomerDetailsTypeWithToken>): void => {
     setCustomerDetails((previous: CustomerDetailsTypeWithToken) => ({ ...previous, ...updatedDetails }));
   };
 
   return (
-    <Flex minHeight={650}>
-      <PersonalInfo customerDetails={customerDetails} onUpdate={handleUpdateCustomerDetails} />
-      <VStack
-        as='form'
-        gap='40px'
-        paddingX='clamp(30px, 10vw, 150px)'
-        paddingY={50}
-        maxWidth='50%'
-        width='calc(100% - 3rem)'
-      ></VStack>
-    </Flex>
+    <>
+      <Flex minHeight={650}>
+        <PersonalInfo customerDetails={customerDetails} onUpdate={handleUpdateCustomerDetails} />
+      </Flex>
+    </>
   );
 };
 
