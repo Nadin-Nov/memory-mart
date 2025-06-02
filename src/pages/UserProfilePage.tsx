@@ -5,6 +5,8 @@ import type { CustomerDetailsTypeWithToken } from '@/types/types';
 import PersonalInfo from '@/components/UserDetails/PersonalInfo';
 import { getCustomerDetails } from '@/services/CustomerService';
 import { useAuth } from '@/context/useAuth';
+import PasswordInfo from '@/components/UserDetails/PasswordInfo';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfilePage = (): ReactElement => {
   const initialCustomerDetails = {
@@ -19,7 +21,17 @@ const UserProfilePage = (): ReactElement => {
     addresses: [],
   };
 
-  const { userData } = useAuth();
+  const navigate = useNavigate();
+
+  const { userData, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      return;
+    } else {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
 
   const [customerDetails, setCustomerDetails] = useState<CustomerDetailsTypeWithToken>(initialCustomerDetails);
 
@@ -57,6 +69,7 @@ const UserProfilePage = (): ReactElement => {
 
   return (
     <>
+      <PasswordInfo customerDetails={customerDetails} />
       <Flex minHeight={650}>
         <PersonalInfo customerDetails={customerDetails} onUpdate={handleUpdateCustomerDetails} />
       </Flex>
