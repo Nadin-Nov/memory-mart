@@ -5,7 +5,8 @@ const API_URL = import.meta.env.VITE_CT_API_URL as string;
 const PROJECT_KEY = import.meta.env.VITE_CT_PROJECT_KEY as string;
 
 const PRODUCTS_PER_PAGE = 10;
-const FUZZY_LEVEL = 2;
+const FUZZY_LEVEL = 1;
+const CENT_AMOUNT = 100;
 
 export async function getProductByKey(productKey: string, token: string): Promise<Product | undefined> {
   try {
@@ -44,6 +45,10 @@ export interface FilteredProductsResponse {
   results: Product[];
 }
 
+function isValidFilterArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.some((v) => v !== '');
+}
+
 export async function getFilteredProducts({
   token,
   filters,
@@ -54,44 +59,35 @@ export async function getFilteredProducts({
     mood = [],
     size = [],
     material = [],
-    popularity = [],
-    newArrival = [],
     priceRange,
     page = 1,
     search,
     sortBy,
-    sortDirection,
     markMatchingVariants = false,
     fuzzyLevel = FUZZY_LEVEL,
   } = filters;
 
   const filter: string[] = [];
 
-  if (subcategory) {
-    filter.push(`categories.id:subtree("${subcategory}")`);
-  }
   if (category) {
     filter.push(`categories.id:subtree("${category}")`);
   }
+  if (subcategory) {
+    filter.push(`categories.id:subtree("${subcategory}")`);
+  }
 
-  if (mood.length > 0) {
+  if (isValidFilterArray(mood)) {
     filter.push(`variants.attributes.Mood.key:"${mood.join('","')}"`);
   }
-  if (size.length > 0) {
+  if (isValidFilterArray(size)) {
     filter.push(`variants.attributes.Size.key:"${size.join('","')}"`);
   }
-  if (material.length > 0) {
+  if (isValidFilterArray(material)) {
     filter.push(`variants.attributes.material:"${material.join('","')}"`);
-  }
-  if (popularity.length > 0) {
-    filter.push(`variants.attributes.popularity:"${popularity.join('","')}"`);
-  }
-  if (newArrival.length > 0) {
-    filter.push(`variants.attributes.new-arrival.key:"${newArrival.join('","')}"`);
   }
 
   if (priceRange) {
-    filter.push(`variants.price.centAmount:range(${priceRange[0]} to ${priceRange[1]})`);
+    filter.push(`variants.price.centAmount:range(${priceRange[0] * CENT_AMOUNT} to ${priceRange[1] * CENT_AMOUNT})`);
   }
 
   const bodyParameters = new URLSearchParams();
@@ -109,7 +105,6 @@ export async function getFilteredProducts({
   }
 
   const facets = [
-    'variants.price.centAmount:range(0 to 9999999) as prices',
     'variants.attributes.Size.key as sizes',
     'variants.attributes.Mood.key as moods',
     'variants.attributes.material as materials',
@@ -120,22 +115,24 @@ export async function getFilteredProducts({
 
   for (const f of filter) bodyParameters.append('filter', f);
 
-  if (sortBy) {
-    bodyParameters.append('sort', `${sortBy} ${sortDirection ?? 'asc'}`);
+  if (isValidFilterArray(sortBy)) {
+    bodyParameters.append('sort', Array.isArray(sortBy) ? sortBy[0] : sortBy);
   }
 
   bodyParameters.append('limit', PRODUCTS_PER_PAGE.toString());
   bodyParameters.append('offset', ((page - 1) * PRODUCTS_PER_PAGE).toString());
 
-  console.log('POST body:', bodyParameters.toString());
-
   try {
-    const response = await axios.post(`${API_URL}${PROJECT_KEY}/product-projections/search`, bodyParameters.toString(), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
+    const response = await axios.post(
+      `${API_URL}${PROJECT_KEY}/product-projections/search`,
+      bodyParameters.toString(),
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
     return response.data as FilteredProductsResponse;
   } catch (error) {
     console.error('Error querying products:', error);
