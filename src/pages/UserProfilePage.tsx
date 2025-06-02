@@ -6,7 +6,6 @@ import PersonalInfo from '@/components/UserDetails/PersonalInfo';
 import { getCustomerDetails } from '@/services/CustomerService';
 import { useAuth } from '@/context/useAuth';
 import PasswordInfo from '@/components/UserDetails/PasswordInfo';
-import { useNavigate } from 'react-router-dom';
 
 const UserProfilePage = (): ReactElement => {
   const initialCustomerDetails = {
@@ -21,19 +20,9 @@ const UserProfilePage = (): ReactElement => {
     addresses: [],
   };
 
-  const { userData, isAuthenticated } = useAuth();
-
-  const navigate = useNavigate();
+  const { userData } = useAuth();
 
   const [customerDetails, setCustomerDetails] = useState<CustomerDetailsTypeWithToken>(initialCustomerDetails);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/profile');
-    } else {
-      navigate('/login');
-    }
-  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const fetchCustomerDetails = async (): Promise<void> => {
