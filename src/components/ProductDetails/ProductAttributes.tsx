@@ -8,7 +8,7 @@ interface ProductAttributesProps {
 
 const ProductAttributes = ({ attributes }: ProductAttributesProps): JSX.Element => {
   return (
-    <Box as='aside' width='200px' p='4' borderRight='1px solid' borderColor='primary.muted' bg='lightBeige.500'>
+    <Box as='aside' width='200px' p='4'>
       <Heading as='h3' size='sm' mb='2' color='darkText.default'>
         Attributes
       </Heading>

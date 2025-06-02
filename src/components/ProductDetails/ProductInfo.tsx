@@ -20,7 +20,7 @@ const ProductInfo = ({ name, description, masterVariant }: ProductInfoProps): JS
   const discountedPrice = price?.discounted;
 
   return (
-    <Box flex='1 1 0' p='4' bg='lightBeige.500'>
+    <Box flex='1 1 0' p='4'>
       <Heading as='h1' size='lg' fontWeight='bold' color='darkText.default' mb='2'>
         {name}
       </Heading>

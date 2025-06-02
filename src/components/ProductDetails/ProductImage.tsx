@@ -1,32 +1,14 @@
-import type { Image } from '@/types/product';
 import type { JSX } from 'react';
-import { Box, Image as ChakraImage, Text } from '@chakra-ui/react';
+import type { Image as ProductImageType } from '@/types/product';
+import ImageSlider from '@/components/ImageSlider/ImageSlider';
 
 interface ProductImageProps {
-  image?: Image;
+  images: ProductImageType[];
+  onClick?: (index: number) => void;
 }
 
-const ProductImage = ({ image }: ProductImageProps): JSX.Element => {
-  if (!image) {
-    return (
-      <Box flex='1 1 0' p='4' bg='lightBeige.500'>
-        <Text color='darkText.subtle'>No image available</Text>
-      </Box>
-    );
-  }
-
-  return (
-    <Box flex='1 1 0' p='4' bg='lightBeige.500'>
-      <ChakraImage
-        src={image.url}
-        alt={image.label || 'Product Image'}
-        maxW='100%'
-        height='auto'
-        borderRadius='md'
-        boxShadow='md'
-      />
-    </Box>
-  );
+const ProductImage = ({ images, onClick }: ProductImageProps): JSX.Element => {
+  return <ImageSlider images={images} onClick={onClick} maxWidth='400px' />;
 };
 
 export default ProductImage;
