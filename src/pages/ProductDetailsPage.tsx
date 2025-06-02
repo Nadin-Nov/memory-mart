@@ -5,6 +5,9 @@ import { Box, Flex, useDisclosure } from '@chakra-ui/react';
 import { getProductByKey } from '@/services/CommerceService';
 import { useAuth } from '@/context/useAuth';
 import type { Product } from '@/types/product';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
+
+
 
 import ProductAttributes from '@/components/ProductDetails/ProductAttributes';
 import ProductImage from '@/components/ProductDetails/ProductImage';
@@ -36,7 +39,7 @@ const ProductDetailPage = (): JSX.Element => {
     fetchProduct();
   }, [userData, productKey]);
 
-  if (loading) return <Box>Loading...</Box>;
+  if (loading) return <LoadingSpinner />;
   if (!product) return <Box>Product not found</Box>;
 
   const name: string = product.name['en-US'] ?? 'No name';

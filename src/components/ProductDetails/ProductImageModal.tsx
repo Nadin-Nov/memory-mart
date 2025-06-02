@@ -23,7 +23,7 @@ const ProductImageModal: FC<ProductImageModalProps> = ({ open, onClose, images, 
   <Dialog.Root
     open={open}
     onOpenChange={(openState) => {
-      if (!openState) onClose();
+      if (openState) onClose();
     }}
     modal
   >
