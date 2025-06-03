@@ -9,6 +9,7 @@ import { updateCustomerPassword } from '@/services/CustomerService';
 import type { CustomerDetailsTypeWithToken } from '@/types/types';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import { useAuth } from '@/context/useAuth';
+import { addToast } from '@/utils/addToast';
 
 const PasswordInfo = ({ customerDetails }: { customerDetails: CustomerDetailsTypeWithToken }): ReactElement => {
   const { token, version, email } = customerDetails;
@@ -23,7 +24,12 @@ const PasswordInfo = ({ customerDetails }: { customerDetails: CustomerDetailsTyp
   const onSave = async (data: Record<string, string>): Promise<void> => {
     const { currentPassword, newPassword } = data;
     const updatedData = { version, currentPassword, newPassword };
-    await updateCustomerPassword(token as string, updatedData);
+    const updatedCustomer = await updateCustomerPassword(token as string, updatedData);
+    if (updatedCustomer) {
+      addToast('success', 'Successful', 'Looks great');
+    } else {
+      addToast('error', 'Failed', 'Something went wrong');
+    }
     LocalStorageService.removeItem('userData');
     try {
       const result = await login(email, newPassword);
