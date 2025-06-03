@@ -36,11 +36,10 @@ const ProductImageModal: FC<ProductImageModalProps> = ({ open, onClose, images, 
           </IconButton>
         </DialogCloseTrigger>
         <DialogBody p={0}>
-          <ImageSlider images={images} initialSlide={initialIndex} maxWidth='100%' />
+          <ImageSlider images={images} initialSlide={initialIndex} maxWidth='90vw' imageSize='large' />
         </DialogBody>
       </DialogContent>
     </DialogPositioner>
   </Dialog.Root>
 );
-
 export default ProductImageModal;
