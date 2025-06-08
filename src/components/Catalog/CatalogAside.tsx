@@ -36,14 +36,6 @@ export default function CatalogAside(): ReactElement {
     { label: 'Large', value: 'large' },
   ];
 
-  const materialOptions = [
-    { label: 'Textile', value: 'textile' },
-    { label: 'Paper-based', value: 'paper-based' },
-    { label: 'Visual', value: 'visual' },
-    { label: 'Audible', value: 'audible' },
-    { label: 'Warm to the touch', value: 'warm-touch' },
-  ];
-
   const MIN_PRICE = 0;
   const MAX_PRICE = 150;
 
@@ -76,13 +68,6 @@ export default function CatalogAside(): ReactElement {
       <SelectField name='sortBy' label='Sort by' placeholder='Select sorting' options={sortOptions} control={control} />
       <SelectField name='mood' label='Mood' placeholder='Mood' options={moodOptions} control={control} />
       <SelectField name='size' label='Size' placeholder='Size' options={sizeOptions} control={control} />
-      <SelectField
-        name='material'
-        label='Material'
-        placeholder='Material'
-        options={materialOptions}
-        control={control}
-      />
 
       <PrimaryButton onClick={handleReset} title='Reset' />
     </Flex>
