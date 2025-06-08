@@ -10,6 +10,7 @@ import { IconButton } from '@chakra-ui/react';
 import { LuPencilLine } from 'react-icons/lu';
 import { updateCustomerPersonalDetails } from '@/services/CustomerService';
 import { handleUpdateAction } from '@/utils/handleUpdateAction';
+import { addToast } from '@/utils/addToast';
 
 export interface PersonalInfoProps {
   customerDetails: CustomerDetailsTypeWithToken;
@@ -49,6 +50,11 @@ const PersonalInfo = ({ customerDetails, onUpdate }: PersonalInfoProps): ReactEl
   const onSave = async (data: CustomerDetailsTypeWithToken): Promise<void> => {
     const updatedData = updatePersonalData(version, data);
     const updatedCustomer = await updateCustomerPersonalDetails(token as string, updatedData);
+    if (updatedCustomer) {
+      addToast('success', 'Successful', 'Looks great');
+    } else {
+      addToast('error', 'Failed', 'Something went wrong');
+    }
     onUpdate({ version: updatedCustomer?.version, firstName, lastName, email, dateOfBirth });
     setEditMode(false);
   };
