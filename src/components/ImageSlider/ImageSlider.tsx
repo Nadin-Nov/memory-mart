@@ -14,12 +14,20 @@ export interface ImageSliderProps {
   onClick?: (index: number) => void;
   maxWidth?: string | number;
   initialSlide?: number;
+  imageSize?: 'small' | 'large';
 }
 
-const ImageSlider: FC<ImageSliderProps> = ({ images, onClick, maxWidth = '800px', initialSlide = 0 }) => {
+const ImageSlider: FC<ImageSliderProps> = ({
+  images,
+  onClick,
+  maxWidth = '800px',
+  initialSlide = 0,
+  imageSize = 'small',
+}) => {
   if (!images || images.length === 0) return <Box>No images available</Box>;
 
   const showNavigation = images.length > 1;
+  const imageDim = imageSize === 'large' ? '110%' : '90%';
 
   return (
     <Box
@@ -56,8 +64,8 @@ const ImageSlider: FC<ImageSliderProps> = ({ images, onClick, maxWidth = '800px'
                 src={img.url}
                 alt={img.label || `Product image`}
                 objectFit='cover'
-                w='85%'
-                h='85%'
+                w={imageDim}
+                h={imageDim}
                 borderRadius='md'
               />
             </Box>
