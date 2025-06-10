@@ -7,11 +7,10 @@ import type { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { InputField } from '@/components/InputField/InputField';
-import type { FormProps } from '@/services/AuthService/types';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/useAuth';
 import { useEffect } from 'react';
-
+import type { FormProps } from '@/types/types';
 
 const LoginPage = (): ReactElement => {
   const {
@@ -23,7 +22,7 @@ const LoginPage = (): ReactElement => {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
 
-   useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
     }

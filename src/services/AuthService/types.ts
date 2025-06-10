@@ -46,3 +46,32 @@ export interface CustomerSignInResult {
   customer: Customer;
   cart?: unknown;
 }
+
+export interface ModifiedBy {
+  clientId: string;
+  isPlatformClient: boolean;
+  anonymousId: string;
+}
+
+export interface authenticatedCustomer {
+  id: string;
+  version: number;
+  versionModifiedAt: string;
+  lastMessageSequenceNumber: number;
+  createdAt: string;
+  lastModifiedAt: string;
+  lastModifiedBy: ModifiedBy;
+  createdBy: ModifiedBy;
+  email: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  password: string;
+  addresses: Address[];
+  shippingAddressIds: string[];
+  billingAddressIds: string[];
+  isEmailVerified: boolean;
+  customerGroupAssignments: unknown[];
+  stores: unknown[];
+  authenticationMode: string;
+}

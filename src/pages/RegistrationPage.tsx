@@ -6,10 +6,10 @@ import StepBillingAddress from '@/components/RegistrationSteps/StepBillingAddres
 import StepCredentials from '@/components/RegistrationSteps/StepCredentials';
 import StepPersonalInfo from '@/components/RegistrationSteps/StepPersonalInfo';
 import StepShippingAddress from '@/components/RegistrationSteps/StepShippingAddress';
-import { getAnonymousToken, getCustomerToken, handleLogin, handleSignup } from '@/services/AuthService/AuthService';
-import type { RegistrationFormProps, TokenResponse } from '@/services/AuthService/types';
+import { useAuth } from '@/context/useAuth';
+import { getAnonymousToken, handleSignup } from '@/services/AuthService';
 import { LocalStorageService } from '@/services/LocalStorageService';
-import type { RawFormData } from '@/types/types';
+import type { CustomerDraft, RawFormData, TokenResponse } from '@/types/types';
 import { normalizeFormData } from '@/utils/normalizeFormData';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
@@ -48,13 +48,13 @@ export default function RegistrationPage(): ReactElement {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const isLoggedIn: boolean | undefined = LocalStorageService.getItem<userData>('userData', isUserData)?.isLoggedIn;
+  const { login, isAuthenticated } = useAuth();
 
-    if (isLoggedIn) {
+  useEffect(() => {
+    if (isAuthenticated) {
       navigate('/');
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   const nextStep = (): void => setStep((previous) => previous + 1);
 
@@ -95,21 +95,9 @@ export default function RegistrationPage(): ReactElement {
         }
 
         console.log('Signup successful:', result.data);
-        navigate('/');
         try {
-          const loginToken = await getCustomerToken({ email: normalizedData.email, password: normalizedData.password });
-          if (!loginToken?.access_token) {
-            return;
-          }
-          handleLogin(loginToken.access_token, { email: normalizedData.email, password: normalizedData.password }).then(
-            (answer) => {
-              if (answer.success && answer.data) {
-                LocalStorageService.setItem('userData', { isLoggedIn: true, token: loginToken.access_token });
-              } else {
-                console.log('Auto-login failed');
-              }
-            }
-          );
+          await login(normalizedData.email, normalizedData.password);
+          navigate('/');
         } catch (error) {
           console.error('Auto-login failed:', error);
         }
