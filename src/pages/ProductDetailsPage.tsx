@@ -7,8 +7,6 @@ import { useAuth } from '@/context/useAuth';
 import type { Product } from '@/types/product';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 
-
-
 import ProductAttributes from '@/components/ProductDetails/ProductAttributes';
 import ProductImage from '@/components/ProductDetails/ProductImage';
 import ProductInfo from '@/components/ProductDetails/ProductInfo';

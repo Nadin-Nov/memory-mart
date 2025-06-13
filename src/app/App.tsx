@@ -9,6 +9,7 @@ import WrapperLayout from '@/components/Layout/WrapperLayout';
 import LoginPage from '@/pages/LoginPage';
 import UserProfilePage from '@/pages/UserProfilePage';
 import ProductDetailPage from '@/pages/ProductDetailsPage';
+import AboutPage from '@/pages/AboutPage';
 
 import { LocalStorageService } from '@/services/LocalStorageService';
 
@@ -20,7 +21,6 @@ import CatalogPage from '@/pages/CatalogPage';
 import { Toaster } from '@/components/ui/toaster';
 
 const BasketPage = (): ReactElement => <h2>Basket Page</h2>;
-const AboutUsPage = (): ReactElement => <h2>About Us Page</h2>;
 
 const MS_IN_S = 1000;
 
@@ -62,7 +62,7 @@ function App(): ReactElement {
         <Route path='/product-detail/:productKey' element={<ProductDetailPage />} />
         <Route path='/profile' element={<UserProfilePage />} />
         <Route path='/cart' element={<BasketPage />} />
-        <Route path='/about-us' element={<AboutUsPage />} />
+        <Route path='/about-us' element={<AboutPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </WrapperLayout>
