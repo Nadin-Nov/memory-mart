@@ -4,6 +4,13 @@ import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
 const customConfig = defineConfig({
   theme: {
+    breakpoints: {
+      mobile: '380px',
+      smallTablet: '476px',
+      tablet: '768px',
+      desktop: '992px',
+      wide: '1440px',
+    },
     tokens: {
       fonts: {
         heading: { value: `'Vesper Libre', serif` },
@@ -24,6 +31,10 @@ const customConfig = defineConfig({
         warmBlack: {
           500: { value: '#3A3832' },
           300: { value: '#383631' },
+        },
+        gray: {
+          200: { value: '#D8D8D8' },
+          500: { value: '#707070' },
         },
       },
     },
@@ -129,6 +140,23 @@ export const navMenuStyles = {
     maxW: '100%',
     flexWrap: 'wrap',
     direction: { base: 'column', md: 'row' },
+  },
+};
+
+export const footerResponsiveStyles = {
+  container: {
+    direction: { base: 'column', tablet: 'row' },
+    alignItems: { base: 'center' },
+    gapY: { base: '15px', desktop: '0' },
+  },
+  link: {
+    fontSize: { base: '11px', mobile: '13px', smallTablet: '14px', desktop: '16px' },
+  },
+  linkGap: {
+    gapX: { base: '15px', desktop: '41px' },
+  },
+  inputContainer: {
+    maxWidth: { base: 379, tablet: 280, desktop: 396 },
   },
 };
 
