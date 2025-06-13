@@ -24,7 +24,7 @@ const team: TeamMember[] = [
     fullName: 'Nadezhda Novoselova',
     bio: 'A guiding spark behind the project’s concept, structure, and team rhythm. Balanced hands-on coding with thoughtful coordination and integration work.',
     github: 'https://github.com/Nadin-Nov',
-    photo: '/assets/Nadin.JPG',
+    photo: '/assets/Nadin2.JPG',
     contribution:
       'Role: Team Lead & Integration Specialist. Worked across all parts of the app — from features and layout to Commercetools integration and team organization.',
   },
@@ -38,7 +38,7 @@ const team: TeamMember[] = [
       'Role: UI Architect. Contributed to all areas of the project, especially focusing on frontend structure, Figma designs, component logic, and catalog implementation.',
   },
   {
-    nickname: 'Gnarkill33',
+    nickname: 'Gnarkill',
     fullName: 'Ekaterina Podorova',
     bio: 'Brought clarity to the user journey and stability to the app’s flow. A quiet force behind the logic that makes everything feel seamless.',
     github: 'https://github.com/Gnarkill33',
@@ -65,7 +65,7 @@ const AboutPage: FC = () => {
         About the Memory Shop Team
       </Heading>
 
-      <Text mb={10} fontSize='lg' textAlign='center' color='lightText.default' textShadow='0 0 10px rgba(0,0,0,0.7)'>
+      <Text mb={14} fontSize='lg' textAlign='center' color='lightText.default' textShadow='0 0 10px rgba(0,0,0,0.7)'>
         We’re a close-knit team where everyone pitched in — no strict roles, just a shared passion to create something
         meaningful.
       </Text>
@@ -97,8 +97,8 @@ const AboutPage: FC = () => {
               transform={`rotate(${(index - 1) * ROTATION_ANGLE_RIGHT}deg)`}
               _hover={{
                 transform: 'rotate(0deg) scale(1.05)',
-                transition: '0.3s ease',
               }}
+              transition={'0.3s ease'}
               cursor='pointer'
             >
               <Box overflow='hidden' width='100%' height='250px' borderRadius='md' boxShadow='md'>
@@ -120,7 +120,7 @@ const AboutPage: FC = () => {
               <Text fontSize='xs' color='darkText.default' textAlign='center' w='full'>
                 {member.bio}
               </Text>
-              <Text fontSize='xs' color='darkText.subtle' mt={1} textAlign='center' w='full'>
+              <Text fontSize='xs' color='darkText.subtle' mt={1} textAlign='center' w='full' mb={2}>
                 <strong>Contribution:</strong> {member.contribution}
               </Text>
 
