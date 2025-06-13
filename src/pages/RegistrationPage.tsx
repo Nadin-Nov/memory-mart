@@ -43,6 +43,7 @@ const steps = [
 ];
 
 export default function RegistrationPage(): ReactElement {
+  const { anonId } = useAuth();
   const methods = useForm<RawFormData>({ mode: 'onTouched' });
   const [step, setStep] = useState<number>(0);
 
@@ -72,7 +73,7 @@ export default function RegistrationPage(): ReactElement {
       const localStorageToken = LocalStorageService.getItem<userData>('userData', isUserData);
       let token: string | undefined = localStorageToken?.token;
       if (!localStorageToken) {
-        const anonymousToken: TokenResponse | undefined = await getAnonymousToken();
+        const anonymousToken: TokenResponse | undefined = await getAnonymousToken(anonId as string);
         if (anonymousToken) {
           token = anonymousToken.access_token;
         }

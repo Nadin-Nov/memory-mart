@@ -1,5 +1,6 @@
 import type { CustomerDraft, CustomerSignInResult, ErrorResponse, FormProps, TokenResponse } from '@/types/types';
 import axios from 'axios';
+import { LocalStorageService } from './LocalStorageService';
 
 const CLIENT_ID = import.meta.env.VITE_CT_CLIENT_ID as string;
 const CLIENT_SECRET = import.meta.env.VITE_CT_CLIENT_SECRET as string;
@@ -10,6 +11,10 @@ const AUTH_URL = import.meta.env.VITE_CT_AUTH_URL as string;
 const authHeader = 'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
 export function authBearer(token: string): { Authorization: string } {
   return { Authorization: `Bearer ${token}` };
+}
+
+function isString(value: unknown): value is string {
+  return typeof value === 'string';
 }
 
 const tokenAxios = axios.create({
@@ -27,11 +32,11 @@ export const clientAxios = axios.create({
   },
 });
 
-export async function getAnonymousToken(): Promise<TokenResponse | undefined> {
+export async function getAnonymousToken(anonymousId: string): Promise<TokenResponse | undefined> {
   try {
     const response = await tokenAxios.post(
       '/anonymous/token',
-      new URLSearchParams({ grant_type: 'client_credentials' }).toString()
+      new URLSearchParams({ grant_type: 'client_credentials', anonymous_id: anonymousId }).toString()
     );
 
     return response.data as TokenResponse;
@@ -68,10 +73,23 @@ export async function getCustomerToken(loginData: FormProps): Promise<TokenRespo
 
 export async function handleLogin(
   token: string,
-  loginData: FormProps
+  loginData: FormProps,
+  mergeMode = 'MergeWithExistingCustomerCart'
 ): Promise<{ success: boolean; data?: unknown; error?: string }> {
   try {
-    const response = await clientAxios.post('/me/login', loginData, {
+    const storedCart = LocalStorageService.getItem<string>('cartId', isString);
+    const requestBody = {
+      ...loginData,
+      ...(storedCart && {
+        anonymousCart: {
+          id: storedCart,
+          typeId: 'cart' as const,
+        },
+        anonymousCartSignInMode: mergeMode,
+      }),
+    };
+
+    const response = await clientAxios.post('/me/login', requestBody, {
       headers: authBearer(token),
     });
 
