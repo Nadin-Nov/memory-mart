@@ -22,18 +22,25 @@ import { Toaster } from '@/components/ui/toaster';
 const BasketPage = (): ReactElement => <h2>Basket Page</h2>;
 const AboutUsPage = (): ReactElement => <h2>About Us Page</h2>;
 
+const MS_IN_S = 1000;
+
 function App(): ReactElement {
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
       const userData = LocalStorageService.getItem<userData>('userData', isUserData);
       const token = userData?.token;
+      const expirationDate = userData?.expirationDate;
 
-      if (!token) {
+      console.log(expirationDate, Date.now());
+
+      if (!token || (expirationDate !== undefined && expirationDate < Date.now())) {
         try {
           const response = await getAnonymousToken();
+          console.log(response);
           LocalStorageService.setItem('userData', {
             token: response?.access_token,
             isLoggedIn: false,
+            expirationDate: (response?.expires_in || 0) * MS_IN_S + Date.now(),
           });
         } catch (error) {
           console.error('Failed to get token', error);

@@ -15,6 +15,7 @@ export interface AuthContextType {
   userData?: userData;
 }
 
+const MS_IN_S = 1000;
 const USER_DATA_KEY = 'userData';
 
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
           const anonUserData: userData = {
             token: anonToken.access_token,
             isLoggedIn: false,
+            expirationDate: anonToken.expires_in * MS_IN_S + Date.now(),
           };
           LocalStorageService.setItem(USER_DATA_KEY, anonUserData);
           setUserDataState(anonUserData);
@@ -62,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     const newUserData: userData = {
       token: tokenResponse.access_token,
       isLoggedIn: true,
+      expirationDate: tokenResponse.expires_in * MS_IN_S + Date.now(),
     };
 
     LocalStorageService.setItem(USER_DATA_KEY, newUserData);
@@ -76,6 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       const anonUserData: userData = {
         token: anonToken.access_token,
         isLoggedIn: false,
+        expirationDate: anonToken.expires_in * MS_IN_S + Date.now(),
       };
       LocalStorageService.setItem(USER_DATA_KEY, anonUserData);
       setUserDataState(anonUserData);
