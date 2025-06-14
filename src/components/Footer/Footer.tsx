@@ -1,14 +1,15 @@
 import { footerResponsiveStyles } from '@/theme/theme';
 import { Box, Flex, Input, InputGroup, Text, Link } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
-import { FaLongArrowAltRight, FaLinkedinIn, FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { FaLongArrowAltRight, FaLinkedinIn, FaFacebookF, FaInstagram } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 
 const Footer = (): ReactElement => {
   return (
     <Box as='footer' borderTopColor='gray.200' borderTopWidth='1px'>
       <Flex {...footerResponsiveStyles.container} paddingTop='3.25rem' justify='space-between'>
         <Flex {...footerResponsiveStyles.linkGap}>
-          <Link {...footerResponsiveStyles.link} color='gray.500'>
+          <Link {...footerResponsiveStyles.link} href='/about-us' color='gray.500'>
             CONTACT
           </Link>
           <Link {...footerResponsiveStyles.link} color='gray.500'>
@@ -36,17 +37,17 @@ const Footer = (): ReactElement => {
           </Link>
         </Text>
         <Flex justify='flex-end' gap='25px'>
-          <Link href='#'>
+          <Link href='https://www.linkedin.com/'>
             <FaLinkedinIn fill='#707070' size='1.1rem' />
           </Link>
-          <Link href='#'>
+          <Link href='https://www.facebook.com/'>
             <FaFacebookF fill='#707070' size='1.1rem' />
           </Link>
-          <Link href='#'>
+          <Link href='https://www.instagram.com/'>
             <FaInstagram fill='#707070' size='1.1rem' />
           </Link>
-          <Link href='#'>
-            <FaTwitter fill='#707070' size='1.1rem' />
+          <Link href='https://x.com/'>
+            <FaXTwitter fill='#707070' size='1.1rem' />
           </Link>
         </Flex>
       </Flex>
