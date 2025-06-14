@@ -12,6 +12,7 @@ import type { Cart } from '@/types/cart';
 import { clientAxios, authBearer } from '@/services/AuthService';
 import { createMyCart } from '@/services/CartService';
 import { getCartItemCount } from '@/services/CartQuantityService';
+import { isString } from '@/utils/validate';
 
 const MS_IN_S = 1000;
 const USER_DATA_KEY = 'userData';
@@ -32,7 +33,7 @@ export interface AuthContextType {
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const [userDataState, setUserDataState] = useState<userData | undefined>();
   const [cartId, setCartId] = useState<string | undefined>(() =>
-    LocalStorageService.getItem<string>('cartId', (v): v is string => typeof v === 'string')
+    LocalStorageService.getItem<string>('cartId', isString)
   );
   const [cartItemCount, setCartItemCount] = useState<number>(0);
 
@@ -79,7 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   }, [cartId]);
 
   const ensureCartExists = useCallback(async (token: string): Promise<Cart | undefined> => {
-    let storedCartId = LocalStorageService.getItem<string>('cartId', (v): v is string => typeof v === 'string');
+    let storedCartId = LocalStorageService.getItem<string>('cartId', isString);
 
     if (storedCartId) {
       try {

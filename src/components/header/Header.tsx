@@ -47,7 +47,7 @@ const Header = (): JSX.Element => {
           <NavButtonLink to='/cart' {...hoverStyles.linkHover} onClick={handleLinkClick} position='relative'>
             <Box width={`${iconSizes.headerIcon}px`} height={`${iconSizes.headerIcon}px`} position='relative'>
               <CiShoppingCart style={{ width: '100%', height: '100%' }} color='inherit' />
-              {cartCount >= 0 && (
+              {cartCount > 0 && (
                 <Box
                   position='absolute'
                   top='-5px'
