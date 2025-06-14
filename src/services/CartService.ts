@@ -2,7 +2,7 @@ import type { MyCartDraft, Cart, RemoveLineItemAction, AddLineItemAction } from 
 import axios from 'axios';
 import { clientAxios, authBearer } from './AuthService';
 
-export async function createCart(token: string, cart?: MyCartDraft): Promise<Cart | undefined> {
+export async function createMyCart(token: string, cart?: MyCartDraft): Promise<Cart | undefined> {
   const cartDraft: MyCartDraft = cart ?? { currency: 'USD' };
 
   try {
