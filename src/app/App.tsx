@@ -19,6 +19,7 @@ import { isUserData } from '@/utils/validateUserData';
 import { getAnonymousToken } from '@/services/AuthService';
 import CatalogPage from '@/pages/CatalogPage';
 import { Toaster } from '@/components/ui/toaster';
+import Footer from '@/components/Footer/Footer';
 
 const BasketPage = (): ReactElement => <h2>Basket Page</h2>;
 
@@ -65,6 +66,7 @@ function App(): ReactElement {
         <Route path='/about-us' element={<AboutPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
+      <Footer />
     </WrapperLayout>
   );
 }
