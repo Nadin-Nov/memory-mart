@@ -5,6 +5,7 @@ import { LocalStorageService } from './LocalStorageService';
 import { isUserData } from '@/utils/validateUserData';
 import type { userData } from '@/utils/validateUserData';
 import type { AxiosError } from 'axios';
+import { isString } from '@/utils/validate';
 
 const CART_NOT_FOUND_STATUS = 404;
 
@@ -38,7 +39,7 @@ export async function getCartItemCount(): Promise<number> {
       return 0;
     }
 
-    let cartId = LocalStorageService.getItem<string>('cartId', (v): v is string => typeof v === 'string');
+    let cartId = LocalStorageService.getItem<string>('cartId', isString);
 
     if (cartId) {
       try {
