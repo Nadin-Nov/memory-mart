@@ -9,6 +9,7 @@ interface NavButtonLinkProps {
   display?: string | object;
   _hover?: { color: string };
   disableActiveState?: boolean;
+  position?: string;
 }
 
 const NavButtonLink = ({
@@ -17,6 +18,7 @@ const NavButtonLink = ({
   onClick,
   display,
   disableActiveState = false,
+  position,
 }: NavButtonLinkProps): JSX.Element => {
   return (
     <NavLink to={to}>
@@ -45,6 +47,7 @@ const NavButtonLink = ({
             textAlign='center'
             onClick={onClick}
             display={display}
+            position={position}
           >
             {children}
           </Button>

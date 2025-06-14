@@ -1,5 +1,9 @@
 import type { Address } from './types';
 
+export interface CartLineItem {
+  quantity: number;
+}
+
 export interface MyCartDraft {
   currency: string;
   customerEmail?: string;
@@ -14,6 +18,7 @@ export interface Cart {
   key: string;
   createdAt: string;
   lastModifiedAt: string;
+  lineItems: CartLineItem[];
   customerId?: string;
   customerEmail?: string;
   anonymousId?: string;

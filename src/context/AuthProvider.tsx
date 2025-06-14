@@ -1,25 +1,41 @@
 'use client';
 import type { JSX, ReactNode } from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAnonymousToken, handleLogin as apiHandleLogin, getCustomerToken } from '@/services/AuthService';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
 import { AuthContext } from './AuthContext';
+import axios from 'axios';
+import type { Cart } from '@/types/cart';
+import { clientAxios, authBearer } from '@/services/AuthService';
+import { createMyCart } from '@/services/CartService';
+import { getCartItemCount } from '@/services/CartQuantityService';
+
+const MS_IN_S = 1000;
+const USER_DATA_KEY = 'userData';
+const CART_NOT_FOUND_STATUS = 404;
 
 export interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   userData?: userData;
-}
 
-const MS_IN_S = 1000;
-const USER_DATA_KEY = 'userData';
+  cartId?: string;
+  cartItemCount?: number;
+  setCartId?: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setCartItemCount?: React.Dispatch<React.SetStateAction<number>>;
+}
 
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const [userDataState, setUserDataState] = useState<userData | undefined>();
+  const [cartId, setCartId] = useState<string | undefined>(() =>
+    LocalStorageService.getItem<string>('cartId', (v): v is string => typeof v === 'string')
+  );
+  const [cartItemCount, setCartItemCount] = useState<number>(0);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +59,81 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
 
     void fetchUserData();
   }, []);
+
+  useEffect(() => {
+    if (userDataState) {
+      LocalStorageService.setItem(USER_DATA_KEY, userDataState);
+    } else {
+      LocalStorageService.removeItem(USER_DATA_KEY);
+      setCartId(undefined);
+      LocalStorageService.removeItem('cartId');
+    }
+  }, [userDataState]);
+
+  useEffect(() => {
+    if (cartId) {
+      LocalStorageService.setItem('cartId', cartId);
+    } else {
+      LocalStorageService.removeItem('cartId');
+    }
+  }, [cartId]);
+
+  const ensureCartExists = useCallback(async (token: string): Promise<Cart | undefined> => {
+    let storedCartId = LocalStorageService.getItem<string>('cartId', (v): v is string => typeof v === 'string');
+
+    if (storedCartId) {
+      try {
+        const response = await clientAxios.get<Cart>(`/me/carts/${storedCartId}`, {
+          headers: authBearer(token),
+        });
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === CART_NOT_FOUND_STATUS) {
+          LocalStorageService.removeItem('cartId');
+          storedCartId = undefined;
+        } else {
+          console.error('Error fetching cart by id:', error);
+          return undefined;
+        }
+      }
+    }
+
+    const newCart = await createMyCart(token);
+    if (!newCart?.id) {
+      console.error('Failed to create new cart');
+      return undefined;
+    }
+    LocalStorageService.setItem('cartId', newCart.id);
+    setCartId(newCart.id);
+    return newCart;
+  }, []);
+
+  const fetchCartItemCount = useCallback(async (): Promise<void> => {
+    try {
+      const count = await getCartItemCount();
+      setCartItemCount(count);
+    } catch (error) {
+      console.error('Failed to fetch cart item count:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!userDataState?.token) {
+      setCartItemCount(0);
+      setCartId(undefined);
+      return;
+    }
+
+    const setupCart = async (): Promise<void> => {
+      const cart = await ensureCartExists(userDataState.token);
+      if (cart?.id) {
+        setCartId(cart.id);
+      }
+      await fetchCartItemCount();
+    };
+
+    void setupCart();
+  }, [userDataState?.token, ensureCartExists, fetchCartItemCount]);
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     if (!userDataState?.token) {
@@ -83,6 +174,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       };
       LocalStorageService.setItem(USER_DATA_KEY, anonUserData);
       setUserDataState(anonUserData);
+      setCartId(undefined);
+      setCartItemCount(0);
+      LocalStorageService.removeItem('cartId');
       void navigate('/');
     }
   };
@@ -90,7 +184,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   const isAuthenticated = !!userDataState?.isLoggedIn;
 
   return (
-    <AuthContext.Provider value={{ userData: userDataState, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        userData: userDataState,
+        isAuthenticated,
+        login,
+        logout,
+        cartId,
+        cartItemCount,
+        setCartId,
+        setCartItemCount,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
