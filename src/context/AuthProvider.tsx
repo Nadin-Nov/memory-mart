@@ -10,8 +10,7 @@ import { AuthContext } from './AuthContext';
 import axios from 'axios';
 import type { Cart } from '@/types/cart';
 import { clientAxios, authBearer } from '@/services/AuthService';
-import { createMyCart } from '@/services/CartService';
-import { getCartItemCount } from '@/services/CartQuantityService';
+import { createMyCart, getCartItemCount } from '@/services/CartService';
 import { isString } from '@/utils/validate';
 
 const MS_IN_S = 1000;
