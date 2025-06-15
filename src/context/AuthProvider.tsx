@@ -54,9 +54,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       }
 
       if (stored?.refreshToken) {
+        console.log('Token expired. Trying to refresh with refreshToken...');
         const refreshed = await refreshAccessToken(stored.refreshToken);
 
         if (refreshed?.access_token) {
+          console.log('Token successfully refreshed!', refreshed);
           const newUserData: userData = {
             token: refreshed.access_token,
             isLoggedIn: true,
@@ -66,6 +68,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
           LocalStorageService.setItem(USER_DATA_KEY, newUserData);
           setUserDataState(newUserData);
           return;
+        } else {
+          console.warn('Failed to refresh token. Falling back to anonymous token.');
         }
       }
 

@@ -116,7 +116,7 @@ export async function handleSignup(
 export async function refreshAccessToken(refreshToken: string): Promise<TokenResponse | undefined> {
   try {
     const response = await tokenAxios.post(
-      '/token',
+      '/customers/token',
       new URLSearchParams({
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
