@@ -51,7 +51,7 @@ const CartPage = (): ReactElement => {
       {...cartResponsiveStyles.wrapper}
     >
       <Heading as='h1' size='xs' marginBottom={8} color='darkText.default'>
-        YOUR CART OF MEMORIES
+        Your cart of memories
       </Heading>
       {cartItems.length === 0 ? (
         <Text fontSize='lg' color='darkText.subtle'>
@@ -66,15 +66,15 @@ const CartPage = (): ReactElement => {
               <Box key={item.id} padding={4} bg='lightBeige.500' borderRadius='lg' boxShadow='sm'>
                 <Grid {...cartResponsiveStyles.itemContainer} gap={6} alignItems='center'>
                   <Image
-                    // src={item.image}
-                    // alt={item.name}
+                    // src={item.variant.images[0].url}
+                    // alt={item.variant.images[0].label}
                     objectFit='cover'
                     h='100%'
                     w='100%'
                   />
                   <VStack align='flex-start' gap={2}>
-                    <Text color='darkText.default'>{/* {item.name} */}</Text>
-                    <Text color='darkText.subtle'>{/* {item.price} */}</Text>
+                    <Text color='darkText.default'>{/* {item.name.['en-US']} */}</Text>
+                    <Text color='darkText.subtle'>${/* {item.variant.price.value.centAmount} */}</Text>
                   </VStack>
 
                   <Flex align='center' gap={4}>
@@ -97,7 +97,7 @@ const CartPage = (): ReactElement => {
                     </HStack>
 
                     <Text fontWeight='bold' color='darkText.default' minWidth='80px' textAlign='right'>
-                      {/* {subtotal} */}
+                      ${/* {subtotal} */}
                     </Text>
 
                     <IconButton variant='ghost' marginLeft={4}>
@@ -113,17 +113,17 @@ const CartPage = (): ReactElement => {
           <Box padding={6} bg='lightBeige.500' borderRadius='lg' boxShadow='sm' height='fit-content'>
             <VStack gap={4} align='stretch'>
               <Heading as='h2' size='xs' color='darkText.default'>
-                TOTAL
+                Total
               </Heading>
               <VStack gap={4} align='stretch'>
                 <Flex justify='space-between'>
                   <Text color='darkText.subtle'>Subtotal</Text>
-                  <Text color='darkText.default'>{/* {subtotal} */}</Text>
+                  <Text color='darkText.default'>${/* {subtotal} */}</Text>
                 </Flex>
 
                 <Flex justify='space-between' fontWeight='bold'>
-                  <Text color='darkText.default'>TOTAL</Text>
-                  <Text color='darkText.default'>{/* {subtotal} */}</Text>
+                  <Text color='darkText.default'>Total</Text>
+                  <Text color='darkText.default'>${/* {subtotal} */}</Text>
                 </Flex>
               </VStack>
               <VStack gap={4} align='stretch' marginTop={4}>
@@ -148,7 +148,7 @@ const CartPage = (): ReactElement => {
               {promoApplied ? (
                 <Flex justify='space-between'>
                   <Text color='darkText.subtle'>Discount</Text>
-                  <Text color='darkText.default'>{/* {discount} */}</Text>
+                  <Text color='darkText.default'>${/* {discount} */}</Text>
                 </Flex>
               ) : (
                 ''
