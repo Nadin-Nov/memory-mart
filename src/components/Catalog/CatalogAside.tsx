@@ -42,6 +42,7 @@ export default function CatalogAside(): ReactElement {
   const handleReset = (): void => {
     reset({
       search: '',
+      category: '608ac8c4-bd6b-410b-9dcb-ce07e9e186b7',
       priceRange: [MIN_PRICE, MAX_PRICE],
       sortBy: [''],
       mood: [''],
