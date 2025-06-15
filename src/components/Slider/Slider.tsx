@@ -1,5 +1,4 @@
 'use client';
-
 import { Text, Box } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
 import type { Control, FieldValues, Path } from 'react-hook-form';
@@ -62,20 +61,24 @@ export const RangeSlider = ({
             {children}
           </Box>
         )}
-        renderThumb={({ props }) => (
-          <Box
-            {...props}
-            height='15px'
-            width='15px'
-            bg='#4dbaca'
-            borderRadius='full'
-            boxShadow='md'
-            _focus={{
-              outline: 'none',
-              boxShadow: '0 0 0 2px #eeede1',
-            }}
-          />
-        )}
+        renderThumb={({ props }) => {
+          const { key, ...rest } = props;
+          return (
+            <Box
+              key={key}
+              {...rest}
+              height='15px'
+              width='15px'
+              bg='#4dbaca'
+              borderRadius='full'
+              boxShadow='md'
+              _focus={{
+                outline: 'none',
+                boxShadow: '0 0 0 2px #eeede1',
+              }}
+            />
+          );
+        }}
       />
       <Text mt={3} color='darkText.subtle' fontSize={'sm'}>
         {Array.isArray(value) && value.length === ARRAY_LENGTH ? `$${value[0]} – $${value[1]}` : '$0 – $0'}
