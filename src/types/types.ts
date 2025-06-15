@@ -61,8 +61,6 @@ export interface Customer {
   key?: string;
 }
 
-//TODO: implement cart interface
-
 export interface CustomerSignInResult {
   customer: Customer;
   cart?: unknown;
