@@ -10,18 +10,15 @@ import LoginPage from '@/pages/LoginPage';
 import UserProfilePage from '@/pages/UserProfilePage';
 import ProductDetailPage from '@/pages/ProductDetailsPage';
 import AboutPage from '@/pages/AboutPage';
-
 import { LocalStorageService } from '@/services/LocalStorageService';
-
 import RegistrationPage from '@/pages/RegistrationPage';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
 import { getAnonymousToken } from '@/services/AuthService';
 import CatalogPage from '@/pages/CatalogPage';
+import BasketPage from '@/pages/CartPage';
 import { Toaster } from '@/components/ui/toaster';
 import Footer from '@/components/Footer/Footer';
-
-const BasketPage = (): ReactElement => <h2>Basket Page</h2>;
 
 const MS_IN_S = 1000;
 

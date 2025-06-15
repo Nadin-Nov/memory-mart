@@ -160,5 +160,19 @@ export const footerResponsiveStyles = {
   },
 };
 
+export const cartResponsiveStyles = {
+  wrapper: {
+    paddingY: { base: 4, md: 8 },
+    paddingX: { mobile: 2, smallTablet: 4, md: 8 },
+  },
+  cartContainer: {
+    templateColumns: { base: '1fr', desktop: '2fr 1fr' },
+  },
+  itemContainer: {
+    templateColumns: { base: '1fr', tablet: '100px 1fr auto' },
+    justifyItems: { base: 'center' },
+  },
+};
+
 export const system = createSystem(defaultConfig, customConfig);
 export default system;

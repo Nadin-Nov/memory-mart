@@ -4,11 +4,18 @@ import type { ReactElement } from 'react';
 export interface ButtonProps {
   title: string;
   link?: string;
+  maxWidth?: string;
   type?: 'button' | 'reset' | 'submit';
   onClick?: (event: React.FormEvent) => void;
 }
 
-export const PrimaryButton = ({ title, link, type = 'button', onClick }: ButtonProps): ReactElement => {
+export const PrimaryButton = ({
+  title,
+  link,
+  maxWidth = '100%',
+  type = 'button',
+  onClick,
+}: ButtonProps): ReactElement => {
   const primaryButtonHandler = (event: React.FormEvent): void => {
     if (onClick) {
       event.preventDefault();
@@ -22,6 +29,7 @@ export const PrimaryButton = ({ title, link, type = 'button', onClick }: ButtonP
         asChild
         type={type}
         borderRadius={10}
+        maxWidth={maxWidth}
         width='full'
         colorPalette='teal'
         paddingX='20'
@@ -37,6 +45,7 @@ export const PrimaryButton = ({ title, link, type = 'button', onClick }: ButtonP
     <Button
       type={type}
       borderRadius={10}
+      maxWidth={maxWidth}
       width='full'
       colorPalette='teal'
       paddingX='20'
