@@ -112,3 +112,23 @@ export async function handleSignup(
     return { success: false, error: message };
   }
 }
+
+export async function refreshAccessToken(refreshToken: string): Promise<TokenResponse | undefined> {
+  try {
+    const response = await tokenAxios.post(
+      '/token',
+      new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }).toString()
+    );
+
+    return response.data as TokenResponse;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Refresh token error:', error.response?.status, error.response?.data);
+    } else {
+      console.error('Unexpected error during token refresh:', error);
+    }
+  }
+}

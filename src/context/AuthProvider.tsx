@@ -2,7 +2,12 @@
 import type { JSX, ReactNode } from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAnonymousToken, handleLogin as apiHandleLogin, getCustomerToken } from '@/services/AuthService';
+import {
+  getAnonymousToken,
+  handleLogin as apiHandleLogin,
+  getCustomerToken,
+  refreshAccessToken,
+} from '@/services/AuthService';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
@@ -22,7 +27,6 @@ export interface AuthContextType {
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   userData?: userData;
-
   cartId?: string;
   cartItemCount?: number;
   setCartId?: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -41,19 +45,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   useEffect(() => {
     const fetchUserData = async (): Promise<void> => {
       const stored = LocalStorageService.getItem<userData>(USER_DATA_KEY, isUserData);
-      if (stored) {
+      const now = Date.now();
+      const isExpired = stored && stored.expirationDate <= now;
+
+      if (stored && !isExpired) {
         setUserDataState(stored);
-      } else {
-        const anonToken = await getAnonymousToken();
-        if (anonToken?.access_token) {
-          const anonUserData: userData = {
-            token: anonToken.access_token,
-            isLoggedIn: false,
-            expirationDate: anonToken.expires_in * MS_IN_S + Date.now(),
+        return;
+      }
+
+      if (stored?.refreshToken) {
+        const refreshed = await refreshAccessToken(stored.refreshToken);
+
+        if (refreshed?.access_token) {
+          const newUserData: userData = {
+            token: refreshed.access_token,
+            isLoggedIn: true,
+            expirationDate: refreshed.expires_in * MS_IN_S + now,
+            refreshToken: refreshed.refresh_token ?? stored.refreshToken,
           };
-          LocalStorageService.setItem(USER_DATA_KEY, anonUserData);
-          setUserDataState(anonUserData);
+          LocalStorageService.setItem(USER_DATA_KEY, newUserData);
+          setUserDataState(newUserData);
+          return;
         }
+      }
+
+      const anonToken = await getAnonymousToken();
+      if (anonToken?.access_token) {
+        const anonUserData: userData = {
+          token: anonToken.access_token,
+          isLoggedIn: false,
+          expirationDate: anonToken.expires_in * MS_IN_S + now,
+          refreshToken: anonToken.refresh_token,
+        };
+        LocalStorageService.setItem(USER_DATA_KEY, anonUserData);
+        setUserDataState(anonUserData);
       }
     };
 
@@ -146,7 +171,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       return { success: false, error: `Couldn't get access token` };
     }
 
-    const result = await apiHandleLogin(tokenResponse.access_token, { email, password });
+    const anonymousCartId = LocalStorageService.getItem<string>('cartId', isString);
+
+    const result = await apiHandleLogin(tokenResponse.access_token, {
+      email,
+      password,
+      anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+      anonymousCartId,
+    });
 
     if (!result.success) {
       return { success: false, error: result.error ?? 'Login failed' };
@@ -156,6 +188,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       token: tokenResponse.access_token,
       isLoggedIn: true,
       expirationDate: tokenResponse.expires_in * MS_IN_S + Date.now(),
+      refreshToken: tokenResponse.refresh_token,
     };
 
     LocalStorageService.setItem(USER_DATA_KEY, newUserData);

@@ -30,6 +30,8 @@ export interface TokenResponse {
 export interface FormProps {
   email: string;
   password: string;
+  anonymousCartSignInMode?: 'MergeWithExistingCustomerCart';
+  anonymousCartId?: string;
 }
 
 export interface CustomerDraft {
