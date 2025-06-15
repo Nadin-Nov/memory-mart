@@ -1,29 +1,55 @@
-import { Grid, Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
-import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
-import { navLinksMain } from '@/utils/navLinks';
-import { useNavigate } from 'react-router-dom';
 
 const MainPage = (): ReactElement => {
-  const navigate = useNavigate();
-
-  const handleNavigate = (path: string): ((event: React.FormEvent) => void) => {
-    return (event: React.FormEvent) => {
-      event.preventDefault();
-      void navigate(path);
-    };
-  };
-
   return (
-    <Box maxW='960px' mx='auto' p='20px'>
-      <Heading as='h2' size='lg' mb='20px' textAlign='center' fontFamily='heading' color='darkText.default'>
-        Dashboard Links
-      </Heading>
-      <Grid templateColumns='repeat(auto-fit, minmax(140px, 1fr))' gap='20px'>
-        {navLinksMain.map((link) => (
-          <PrimaryButton key={link.path} title={link.label} onClick={handleNavigate(link.path)} />
-        ))}
-      </Grid>
+    <Box
+      width='100%'
+      maxW='1440px'
+      mx='auto'
+      position='relative'
+      height='629px'
+      backgroundImage="url('/assets/main-bg3.png')"
+      backgroundPosition='top center'
+      backgroundRepeat='no-repeat'
+      backgroundSize='cover'
+    >
+      <Box
+        position='absolute'
+        top='0'
+        left='0'
+        right='0'
+        bottom='0'
+        px='40px'
+        pt={['200px', undefined, '200px']}
+        textAlign='left'
+        zIndex='1'
+      >
+        <Text
+          fontFamily='heading'
+          fontWeight='400'
+          fontSize={['14px', '15px', '15px', '16px']}
+          lineHeight='40px'
+          letterSpacing='4%'
+          color='lightText.default'
+          mb='4'
+        >
+          welcome to the memory shop
+        </Text>
+
+        <Heading
+          as='h1'
+          fontFamily='heading'
+          fontWeight='500'
+          fontSize={['24px', '28px', '32px', '36px']}
+          lineHeight='40px'
+          letterSpacing='4%'
+          color='lightText.default'
+          maxW='90%'
+        >
+          dreamy relics from the heart’s attic
+        </Heading>
+      </Box>
     </Box>
   );
 };
