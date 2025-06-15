@@ -14,7 +14,6 @@ import { useDebounce } from 'use-debounce';
 
 const DEBOUNCE_TIME = 400;
 
-// TODO: replace with query T_T
 const subcategories = [
   { name: 'All', id: '608ac8c4-bd6b-410b-9dcb-ce07e9e186b7' },
   { name: 'Memory & Nostalgia', id: 'ab178765-bfcb-41c2-902e-7a8437802c64' },
@@ -23,7 +22,12 @@ const subcategories = [
 ];
 
 export default function Catalog(): ReactElement {
-  const methods = useForm<ProductFilters>({ mode: 'onChange' });
+  const methods = useForm<ProductFilters>({
+    mode: 'onChange',
+    defaultValues: {
+      category: '608ac8c4-bd6b-410b-9dcb-ce07e9e186b7',
+    },
+  });
   const filters = useWatch({ control: methods.control });
 
   const [debouncedFilters] = useDebounce(filters, DEBOUNCE_TIME);
