@@ -68,7 +68,7 @@ export async function getCustomerToken(loginData: FormProps): Promise<TokenRespo
 
 export async function handleLogin(
   token: string,
-  loginData: FormProps
+  loginData: FormProps & { anonymousCartId?: string }
 ): Promise<{ success: boolean; data?: unknown; error?: string }> {
   try {
     const response = await clientAxios.post('/me/login', loginData, {

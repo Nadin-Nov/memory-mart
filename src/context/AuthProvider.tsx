@@ -2,19 +2,20 @@
 import type { JSX, ReactNode } from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   getAnonymousToken,
   handleLogin as apiHandleLogin,
   getCustomerToken,
   refreshAccessToken,
+  clientAxios,
+  authBearer,
 } from '@/services/AuthService';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
 import { AuthContext } from './AuthContext';
-import axios from 'axios';
 import type { Cart } from '@/types/cart';
-import { clientAxios, authBearer } from '@/services/AuthService';
 import { createMyCart, getCartItemCount } from '@/services/CartService';
 import { isString } from '@/utils/validate';
 
@@ -39,26 +40,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     LocalStorageService.getItem<string>('cartId', isString)
   );
   const [cartItemCount, setCartItemCount] = useState<number>(0);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async (): Promise<void> => {
       const stored = LocalStorageService.getItem<userData>(USER_DATA_KEY, isUserData);
       const now = Date.now();
-      const isExpired = stored && stored.expirationDate <= now;
 
-      if (stored && !isExpired) {
+      if (stored && stored.expirationDate > now) {
+        console.log('Using existing token from localStorage');
         setUserDataState(stored);
         return;
       }
 
       if (stored?.refreshToken) {
-        console.log('Token expired. Trying to refresh with refreshToken...');
+        console.log('Trying to refresh expired token');
         const refreshed = await refreshAccessToken(stored.refreshToken);
-
         if (refreshed?.access_token) {
-          console.log('Token successfully refreshed!', refreshed);
           const newUserData: userData = {
             token: refreshed.access_token,
             isLoggedIn: true,
@@ -69,7 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
           setUserDataState(newUserData);
           return;
         } else {
-          console.warn('Failed to refresh token. Falling back to anonymous token.');
+          console.warn('Failed to refresh. Fallback to anonymous token');
         }
       }
 
@@ -94,8 +92,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       LocalStorageService.setItem(USER_DATA_KEY, userDataState);
     } else {
       LocalStorageService.removeItem(USER_DATA_KEY);
-      setCartId(undefined);
-      LocalStorageService.removeItem('cartId');
     }
   }, [userDataState]);
 
@@ -118,10 +114,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === CART_NOT_FOUND_STATUS) {
+          console.warn('Cart not found, removing cartId');
           LocalStorageService.removeItem('cartId');
           storedCartId = undefined;
         } else {
-          console.error('Error fetching cart by id:', error);
+          console.error('Error fetching cart:', error);
           return undefined;
         }
       }
@@ -132,28 +129,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       console.error('Failed to create new cart');
       return undefined;
     }
+
     LocalStorageService.setItem('cartId', newCart.id);
     setCartId(newCart.id);
     return newCart;
   }, []);
 
   const fetchCartItemCount = useCallback(async (): Promise<void> => {
-    try {
-      const count = await getCartItemCount();
-      setCartItemCount(count);
-    } catch (error) {
-      console.error('Failed to fetch cart item count:', error);
-    }
-  }, []);
+  if (!userDataState?.token) return;
+
+  try {
+    const count = await getCartItemCount(userDataState.token, cartId);
+    setCartItemCount(count);
+  } catch (error) {
+    console.error('Failed to fetch cart item count:', error);
+  }
+  }, [userDataState?.token, cartId]);
 
   useEffect(() => {
-    if (!userDataState?.token) {
-      setCartItemCount(0);
-      setCartId(undefined);
-      return;
-    }
-
     const setupCart = async (): Promise<void> => {
+      if (!userDataState?.token) return;
+
       const cart = await ensureCartExists(userDataState.token);
       if (cart?.id) {
         setCartId(cart.id);
@@ -161,18 +157,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       await fetchCartItemCount();
     };
 
-    void setupCart();
-  }, [userDataState?.token, ensureCartExists, fetchCartItemCount]);
+    if (userDataState !== undefined) {
+      void setupCart();
+    }
+  }, [userDataState, ensureCartExists, fetchCartItemCount]);
 
-  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; error?: string }> => {
     if (!userDataState?.token) {
       return { success: false, error: 'No token available' };
     }
 
     const tokenResponse = await getCustomerToken({ email, password });
-
     if (!tokenResponse?.access_token) {
-      return { success: false, error: `Couldn't get access token` };
+      return { success: false, error: "Couldn't get access token" };
     }
 
     const anonymousCartId = LocalStorageService.getItem<string>('cartId', isString);
@@ -208,12 +208,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
         token: anonToken.access_token,
         isLoggedIn: false,
         expirationDate: anonToken.expires_in * MS_IN_S + Date.now(),
+        refreshToken: anonToken.refresh_token,
       };
       LocalStorageService.setItem(USER_DATA_KEY, anonUserData);
       setUserDataState(anonUserData);
-      setCartId(undefined);
       setCartItemCount(0);
-      LocalStorageService.removeItem('cartId');
       void navigate('/');
     }
   };
