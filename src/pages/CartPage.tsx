@@ -1,3 +1,4 @@
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
 import { cartResponsiveStyles } from '@/theme/theme';
 import {
@@ -37,7 +38,11 @@ const CartPage = (): ReactElement => {
     },
   ];
 
-  // const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // const subtotal = cartItems.reduce((sum, item) => sum + item.price.value.centAmount * item.quantity, 0);
+
+  if (!cartItems) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Box
@@ -69,12 +74,14 @@ const CartPage = (): ReactElement => {
                     // src={item.variant.images[0].url}
                     // alt={item.variant.images[0].label}
                     objectFit='cover'
+                    maxH='150px'
+                    maxW='150px'
                     h='100%'
                     w='100%'
                   />
                   <VStack align='flex-start' gap={2}>
-                    <Text color='darkText.default'>{/* {item.name.['en-US']} */}</Text>
-                    <Text color='darkText.subtle'>${/* {item.variant.price.value.centAmount} */}</Text>
+                    <Text color='darkText.default'>{/* {item.name['en-US']} */}</Text>
+                    <Text color='darkText.subtle'>${/* {item.price.value.centAmount} */}</Text>
                   </VStack>
 
                   <Flex align='center' gap={4}>
@@ -97,7 +104,7 @@ const CartPage = (): ReactElement => {
                     </HStack>
 
                     <Text fontWeight='bold' color='darkText.default' minWidth='80px' textAlign='right'>
-                      ${/* {subtotal} */}
+                      ${/* {item.totalPrice.centAmount} */}
                     </Text>
 
                     <IconButton variant='ghost' marginLeft={4}>
