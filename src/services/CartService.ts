@@ -1,4 +1,4 @@
-import type { MyCartDraft, Cart, RemoveLineItemAction, AddLineItemAction } from '@/types/cart';
+import type { MyCartDraft, Cart, RemoveLineItemAction, AddLineItemAction, ApplyPromoCodeAction } from '@/types/cart';
 import axios from 'axios';
 import { clientAxios, authBearer } from './AuthService';
 
@@ -42,7 +42,7 @@ export async function updateCart(
   token: string,
   cartId: string,
   cartVersion: number,
-  actions: (AddLineItemAction | RemoveLineItemAction)[]
+  actions: (AddLineItemAction | RemoveLineItemAction | ApplyPromoCodeAction)[]
 ): Promise<Cart | undefined> {
   try {
     const response = await clientAxios.post(
@@ -106,6 +106,21 @@ export async function deleteLineItemFromCart(
     {
       action: 'removeLineItem',
       lineItemId,
+    },
+  ];
+  return await updateCart(token, cartId, cartVersion, actions);
+}
+
+export async function applyPromoCode(
+  token: string,
+  cartId: string,
+  cartVersion: number,
+  promo: string
+): Promise<Cart | undefined> {
+  const actions: ApplyPromoCodeAction[] = [
+    {
+      action: 'addDiscountCode',
+      code: promo,
     },
   ];
   return await updateCart(token, cartId, cartVersion, actions);

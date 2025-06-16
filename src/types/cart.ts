@@ -75,3 +75,10 @@ export interface RemoveLineItemAction extends Action {
   lineItemKey?: string;
   quantity?: number;
 }
+
+export interface ApplyPromoCodeAction extends Action {
+  action: 'addDiscountCode';
+  code?: string;
+  key?: string;
+  name?: LocalizedString;
+}
