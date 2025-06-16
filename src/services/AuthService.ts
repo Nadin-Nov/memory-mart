@@ -8,6 +8,7 @@ const API_URL = import.meta.env.VITE_CT_API_URL as string;
 const AUTH_URL = import.meta.env.VITE_CT_AUTH_URL as string;
 
 const authHeader = 'Basic ' + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
+
 export function authBearer(token: string): { Authorization: string } {
   return { Authorization: `Bearer ${token}` };
 }
@@ -27,11 +28,29 @@ export const clientAxios = axios.create({
   },
 });
 
+function getOrCreateAnonymousId(): string {
+  try {
+    let anonymousId = localStorage.getItem('anonymous_id');
+    if (!anonymousId) {
+      anonymousId = crypto.randomUUID();
+      localStorage.setItem('anonymous_id', anonymousId);
+    }
+    return anonymousId;
+  } catch (error) {
+    console.warn('localStorage is not avalible? generay=te temp anonymousId:', error);
+    return crypto.randomUUID();
+  }
+}
+
 export async function getAnonymousToken(): Promise<TokenResponse | undefined> {
   try {
+    const anonymousId = getOrCreateAnonymousId();
     const response = await tokenAxios.post(
       '/anonymous/token',
-      new URLSearchParams({ grant_type: 'client_credentials' }).toString()
+      new URLSearchParams({
+        grant_type: 'client_credentials',
+        anonymous_id: anonymousId,
+      }).toString()
     );
 
     return response.data as TokenResponse;
