@@ -2,6 +2,7 @@ import type { Product } from '@/types/product';
 import { Box, Flex, Heading, Image, LinkBox, Text } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CartActionButton from '../CartActionButton/CartActionButton';
 
 interface CatalogCardProps {
   product: Product;
@@ -35,33 +36,42 @@ export default function CatalogCard({ product }: CatalogCardProps): ReactElement
       }}
       display='flex'
       flexDirection='column'
+      justifyContent='space-between'
       alignItems='center'
+      h='100%'
     >
-      {imageUrl && (
-        <Box w='100%' h='220px' p={2} mb={4} boxShadow='base' border='1px solid' borderColor='gray.200'>
-          <Image loading='lazy' src={imageUrl} alt={name} objectFit='cover' h='100%' w='100%' />
-        </Box>
-      )}
-      <Heading as='h3' size='xs' textAlign='center' mb={2} lineHeight={'2rem'}>
-        {name}
-      </Heading>
-      <Text fontSize='xs' textAlign='center' color='gray.500' maxLines={2} mb={2}>
-        {description}
-      </Text>
-      {product.masterVariant?.prices?.[0]?.discounted ? (
-        <Flex flexDirection={'column'} textAlign='center'>
-          <Text as='span' fontWeight='bold' color='teal.600' fontSize='sm'>
-            ${(product.masterVariant.prices[0].discounted.value.centAmount / cents).toFixed(symb)}
-          </Text>
-          <Text as='s' color='gray.500' fontSize='sm'>
-            ${(product.masterVariant.prices[0].value.centAmount / cents).toFixed(symb)}
-          </Text>
-        </Flex>
-      ) : (
-        <Text fontWeight='bold' color='teal.600' fontSize='sm'>
-          ${priceDollars}
+      <Box w='100%'>
+        {imageUrl && (
+          <Box w='100%' h='220px' p={2} mb={4} boxShadow='base' border='1px solid' borderColor='gray.200'>
+            <Image loading='lazy' src={imageUrl} alt={name} objectFit='cover' h='100%' w='100%' />
+          </Box>
+        )}
+        <Heading as='h3' size='xs' textAlign='center' mb={2} lineHeight={'2rem'}>
+          {name}
+        </Heading>
+        <Text fontSize='xs' textAlign='center' color='gray.500' maxLines={2} mb={2}>
+          {description}
         </Text>
-      )}
+        <Box textAlign='center' mb={2}>
+          {product.masterVariant?.prices?.[0]?.discounted ? (
+            <Flex direction='column'>
+              <Text fontWeight='bold' color='teal.600' fontSize='sm'>
+                ${(product.masterVariant.prices[0].discounted.value.centAmount / cents).toFixed(symb)}
+              </Text>
+              <Text as='s' color='gray.500' fontSize='sm'>
+                ${(product.masterVariant.prices[0].value.centAmount / cents).toFixed(symb)}
+              </Text>
+            </Flex>
+          ) : (
+            <Text fontWeight='bold' color='teal.600' fontSize='sm'>
+              ${priceDollars}
+            </Text>
+          )}
+        </Box>
+      </Box>
+      <Box mt='auto' onClick={(event) => event.stopPropagation()}>
+        <CartActionButton product={product} />
+      </Box>
     </LinkBox>
   );
 }
