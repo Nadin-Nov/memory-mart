@@ -68,12 +68,14 @@ export async function addLineItemToCart(
   token: string,
   cartId: string,
   cartVersion: number,
-  productSku?: string
+  productId?: string,
+  variantId?: number
 ): Promise<Cart | undefined> {
   const actions: AddLineItemAction[] = [
     {
       action: 'addLineItem',
-      sku: productSku,
+      productId,
+      variantId,
       quantity: 1,
     },
   ];
