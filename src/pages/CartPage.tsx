@@ -1,6 +1,10 @@
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
+import { useAuth } from '@/context/useAuth';
+import { applyPromoCode, getActiveCart } from '@/services/CartService';
 import { cartResponsiveStyles } from '@/theme/theme';
+import type { Cart, LineItem } from '@/types/cart';
+import { addToast } from '@/utils/addToast';
 import {
   Box,
   Flex,
@@ -16,33 +20,55 @@ import {
   IconButton,
   Link,
 } from '@chakra-ui/react';
-import type { ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { FiTrash2, FiMinus, FiPlus } from 'react-icons/fi';
 
 const CartPage = (): ReactElement => {
-  const promoApplied = true;
-  const cartItems = [
-    {
-      id: 1,
-      name: 'Box of Crayons',
-      price: 1299,
-      quantity: 2,
-      image: '#',
-    },
-    {
-      id: 2,
-      name: 'Jar of Summer Rain',
-      price: 499,
-      quantity: 3,
-      image: '#',
-    },
-  ];
+  const { userData } = useAuth();
+  const [cart, setCart] = useState<Cart | undefined>();
+  const [cartItems, setCartItems] = useState<LineItem[] | undefined>();
+  const [cartTotal, setCartTotal] = useState<number | undefined>(0);
+  const [promoApplied, setPromoApplied] = useState<boolean>(false);
+  const [promoAmount, setPromoAmount] = useState<number | undefined>(0);
+  const [promoCode, setPromoCode] = useState<string>();
 
-  // const subtotal = cartItems.reduce((sum, item) => sum + item.price.value.centAmount * item.quantity, 0);
+  useEffect(() => {
+    if (userData?.token) {
+      const fetchActiveCart = async (): Promise<void> => {
+        const cart = await getActiveCart(userData?.token);
+        setCart(cart);
+        setCartItems(cart?.lineItems);
+        setCartTotal(cart?.totalPrice.centAmount);
+      };
+      fetchActiveCart();
+    }
+  }, [userData]);
+
+  console.log(cartItems);
 
   if (!cartItems) {
     return <LoadingSpinner />;
   }
+
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price.value.centAmount * item.quantity, 0);
+
+  const handlePromoCode = async (promo: string): Promise<Cart | undefined> => {
+    if (userData?.token && cart?.id) {
+      try {
+        const cartAfterPromo = await applyPromoCode(userData.token, cart?.id, cart?.version, promo);
+        setCartTotal(cartAfterPromo?.totalPrice.centAmount);
+        setPromoApplied(true);
+        setPromoAmount(cartAfterPromo?.discountOnTotalPrice?.discountedAmount.centAmount);
+        setPromoCode('');
+        addToast('success', 'Promo code applied', 'Just made your own magic!');
+      } catch (error) {
+        console.log(error);
+        addToast('error', 'Promo not applied', 'Something went wrong');
+        console.error('Failed to apply promo', error);
+        return;
+      }
+    }
+  };
 
   return (
     <Box
@@ -58,6 +84,7 @@ const CartPage = (): ReactElement => {
       <Heading as='h1' size='xs' marginBottom={8} color='darkText.default'>
         Your cart of memories
       </Heading>
+
       {cartItems.length === 0 ? (
         <Text fontSize='lg' color='darkText.subtle'>
           No memories in cart
@@ -71,8 +98,8 @@ const CartPage = (): ReactElement => {
               <Box key={item.id} padding={4} bg='lightBeige.500' borderRadius='lg' boxShadow='sm'>
                 <Grid {...cartResponsiveStyles.itemContainer} gap={6} alignItems='center'>
                   <Image
-                    // src={item.variant.images[0].url}
-                    // alt={item.variant.images[0].label}
+                    src={item.variant.images[0].url}
+                    alt={item.variant.images[0].label}
                     objectFit='cover'
                     maxH='150px'
                     maxW='150px'
@@ -80,8 +107,10 @@ const CartPage = (): ReactElement => {
                     w='100%'
                   />
                   <VStack align='flex-start' gap={2}>
-                    <Text color='darkText.default'>{/* {item.name['en-US']} */}</Text>
-                    <Text color='darkText.subtle'>${/* {item.price.value.centAmount} */}</Text>
+                    <Text color='darkText.default' textAlign='left'>
+                      {item.name['en-US']}{' '}
+                    </Text>
+                    <Text color='darkText.subtle'>${item.price.value.centAmount}</Text>
                   </VStack>
 
                   <Flex align='center' gap={4}>
@@ -90,7 +119,7 @@ const CartPage = (): ReactElement => {
                         <FiMinus color='teal' />
                       </IconButton>
                       <Input
-                        // value={item.quantity}
+                        value={item.quantity}
                         type='number'
                         min='1'
                         max='99'
@@ -104,7 +133,7 @@ const CartPage = (): ReactElement => {
                     </HStack>
 
                     <Text fontWeight='bold' color='darkText.default' minWidth='80px' textAlign='right'>
-                      ${/* {item.totalPrice.centAmount} */}
+                      ${item.totalPrice.centAmount}
                     </Text>
 
                     <IconButton variant='ghost' marginLeft={4}>
@@ -125,18 +154,20 @@ const CartPage = (): ReactElement => {
               <VStack gap={4} align='stretch'>
                 <Flex justify='space-between'>
                   <Text color='darkText.subtle'>Subtotal</Text>
-                  <Text color='darkText.default'>${/* {subtotal} */}</Text>
+                  <Text color='darkText.default'>${subtotal}</Text>
                 </Flex>
 
                 <Flex justify='space-between' fontWeight='bold'>
                   <Text color='darkText.default'>Total</Text>
-                  <Text color='darkText.default'>${/* {subtotal} */}</Text>
+                  <Text color='darkText.default'>${cartTotal}</Text>
                 </Flex>
               </VStack>
               <VStack gap={4} align='stretch' marginTop={4}>
                 <Text color='darkText.default'>Promo Code</Text>
                 <HStack>
                   <Input
+                    value={promoCode}
+                    onChange={(event) => setPromoCode(event.target.value.trim())}
                     placeholder='Enter promo code'
                     bg='lightBeige.500'
                     borderColor='teal.200'
@@ -147,18 +178,17 @@ const CartPage = (): ReactElement => {
                     color='primary.contrast'
                     borderRadius={10}
                     _hover={{ bg: 'primary._hover' }}
+                    onClick={() => void handlePromoCode(promoCode as string)}
                   >
                     Apply
                   </Button>
                 </HStack>
               </VStack>
-              {promoApplied ? (
+              {promoApplied && (
                 <Flex justify='space-between'>
                   <Text color='darkText.subtle'>Discount</Text>
-                  <Text color='darkText.default'>${/* {discount} */}</Text>
+                  <Text color='darkText.default'>${promoAmount}</Text>
                 </Flex>
-              ) : (
-                ''
               )}
               <PrimaryButton title='CHECKOUT' />
             </VStack>
