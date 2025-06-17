@@ -68,12 +68,14 @@ export async function addLineItemToCart(
   token: string,
   cartId: string,
   cartVersion: number,
-  productSku?: string
+  productId?: string,
+  variantId?: number
 ): Promise<Cart | undefined> {
   const actions: AddLineItemAction[] = [
     {
       action: 'addLineItem',
-      sku: productSku,
+      productId,
+      variantId,
       quantity: 1,
     },
   ];
@@ -123,7 +125,14 @@ export async function applyPromoCode(
       code: promo,
     },
   ];
-  return await updateCart(token, cartId, cartVersion, actions);
+
+  const result = await updateCart(token, cartId, cartVersion, actions);
+
+  if (!result) {
+    throw new Error('Failed to apply promo');
+  }
+
+  return result;
 }
 
 export async function getCartById(token: string, cartId: string): Promise<Cart | undefined> {
