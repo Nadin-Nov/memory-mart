@@ -15,7 +15,7 @@ const PromoCodes: FC = () => {
       background='none'
     >
       <Box
-        width={['100%', '80%', '80%', '80%', '100%']}
+        width={['100%', '100%', '100%', '100%', '100%']}
         maxW={['100%', '600px', '600px', '600px', '900px']}
         lineHeight='0'
         mx={['auto', 'auto', 'auto', 'auto', '0']}
