@@ -157,10 +157,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     }
   }, [userDataState?.token, cartId]);
 
-  const refreshCartItemCount = useCallback(async () => {
-    await fetchCartItemCount();
-  }, [fetchCartItemCount]);
-
   useEffect(() => {
     if (didFetchUserData.current) return;
 
