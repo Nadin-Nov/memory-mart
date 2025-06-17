@@ -125,7 +125,14 @@ export async function applyPromoCode(
       code: promo,
     },
   ];
-  return await updateCart(token, cartId, cartVersion, actions);
+
+  const result = await updateCart(token, cartId, cartVersion, actions);
+
+  if (!result) {
+    throw new Error('Failed to apply promo');
+  }
+
+  return result;
 }
 
 export async function getCartById(token: string, cartId: string): Promise<Cart | undefined> {

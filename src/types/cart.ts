@@ -1,4 +1,4 @@
-import type { LocalizedString, PriceValue } from './product';
+import type { LocalizedString, MasterVariant, Price, PriceValue } from './product';
 import type { Address } from './types';
 
 export interface MyCartDraft {
@@ -13,7 +13,7 @@ export interface MyCartDraft {
 export interface Cart {
   id: string;
   version: number;
-  totalPrice: number;
+  totalPrice: PriceValue;
   lineItems: LineItem[];
   createdAt: string;
   lastModifiedAt: string;
@@ -22,6 +22,11 @@ export interface Cart {
   customerId?: string;
   customerEmail?: string;
   anonymousId?: string;
+  discountOnTotalPrice?: TotalDiscount;
+}
+
+interface TotalDiscount {
+  discountedAmount: PriceValue;
 }
 
 interface ProductVariantById {
@@ -48,9 +53,10 @@ export interface LineItem {
   id: string;
   productId: string;
   name: LocalizedString;
-  price: PriceValue;
+  price: Price;
   quantity: number;
   totalPrice: PriceValue;
+  variant: MasterVariant;
   productSlug?: LocalizedString;
   productKey?: string;
   key?: string;
