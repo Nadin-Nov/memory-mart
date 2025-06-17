@@ -1,10 +1,13 @@
-// pages/MainPage.tsx
 import { Box, Heading, Text, Image } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
 import FlyingGirl from '@/components/MainPage/FlyingGirl';
 import PromoCodes from '@/components/MainPage/PromoCodes';
+import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = (): ReactElement => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Box width='100%' display='flex' flexDirection='column' alignItems='center'>
@@ -52,9 +55,7 @@ const MainPage = (): ReactElement => {
 
         <PromoCodes />
 
-        {/* //todo: insert product cards here */}
-
-        <Box maxW='900px' px={['20px', '40px']} mt='80px' mb='100px' textAlign='center'>
+        <Box maxW='900px' px={['20px', '40px']} mt='80px' textAlign='center'>
           <Heading
             fontSize={['36px', '32px', '28px', '24px']}
             fontWeight='500'
@@ -70,7 +71,14 @@ const MainPage = (): ReactElement => {
           <Text fontSize={['18px', '20px']} color='darkText.subtle' lineHeight='1.7' mb='4' fontFamily='body'>
             Step inside and discover treasures that whisper memories and dreams alike.
           </Text>
-          <Text fontSize={['18px', '20px']} color='darkText.subtle' lineHeight='1.7' mb='4' fontFamily='body'>
+
+          <Box mt='140px' mb='40px' display='flex' justifyContent='center' px={['20px', '0']}>
+            <Box maxW='300px' width='100%'>
+              <PrimaryButton title='let’s go memory hunting' onClick={() => void navigate('/catalog')} />
+            </Box>
+          </Box>
+
+          <Text fontSize={['14px', '14px', '18px']} color='gray.600' lineHeight='1.7' mb='50px' fontFamily='body'>
             Every item holds a story. Find your next treasure and keep the magic alive.
           </Text>
         </Box>
