@@ -1,11 +1,11 @@
-import type { ReactElement} from 'react';
+import type { ReactElement } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { useInfiniteScroll } from '@/utils/hooks/useInfiniteScroll';
 import { getFilteredProducts } from '@/services/CommerceService';
 import { LocalStorageService } from '@/services/LocalStorageService';
 import type { ProductFilters, Product } from '@/types/product';
-import type { userData} from '@/utils/validateUserData';
+import type { userData } from '@/utils/validateUserData';
 import { isUserData } from '@/utils/validateUserData';
 import { Flex, Heading, Button, Box } from '@chakra-ui/react';
 import { useForm, useWatch, FormProvider } from 'react-hook-form';

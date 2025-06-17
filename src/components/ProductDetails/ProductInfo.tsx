@@ -1,6 +1,6 @@
 import type { MasterVariant, PriceValue } from '@/types/product';
 import type { JSX } from 'react';
-import { Box, Button, Heading, Text } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 
 interface ProductInfoProps {
   name: string;
@@ -45,17 +45,6 @@ const ProductInfo = ({ name, description, masterVariant }: ProductInfoProps): JS
           )}
         </Text>
       )}
-
-      <Button
-        mt='4'
-        size='md'
-        variant='outline'
-        color='primary.solid'
-        borderColor='primary.solid'
-        _hover={{ bg: 'transparent', color: 'primary._hover', borderColor: 'primary._hover' }}
-      >
-        Buy
-      </Button>
     </Box>
   );
 };
