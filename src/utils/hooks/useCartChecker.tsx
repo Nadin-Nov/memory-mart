@@ -33,7 +33,6 @@ export default function useCartChecker(
 
       try {
         const activeCart = await getActiveCart(token);
-        console.log(activeCart);
 
         if (!activeCart) {
           throw new Error('Getting active cart failed');
