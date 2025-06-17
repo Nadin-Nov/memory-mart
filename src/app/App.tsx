@@ -1,4 +1,6 @@
 import type { ReactElement } from 'react';
+import { useEffect } from 'react';
+import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Header from '@/components/Header/Header';
@@ -20,6 +22,7 @@ function App(): ReactElement {
     <WrapperLayout>
       <Header />
       <Toaster />
+      <ScrollToTop />
       <Routes>
         <Route path='/' element={<MainPage />} />
         <Route path='/login' element={<LoginPage />} />
