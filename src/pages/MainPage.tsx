@@ -4,6 +4,8 @@ import FlyingGirl from '@/components/MainPage/FlyingGirl';
 import PromoCodes from '@/components/MainPage/PromoCodes';
 import PromoCodesReminder from '@/components/MainPage/PromoCodesReminder';
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
+import NewArrivalPreview from '@/components/MainPage/NewArrivalPreview';
+
 import { useNavigate } from 'react-router-dom';
 
 const MainPage = (): ReactElement => {
@@ -56,22 +58,18 @@ const MainPage = (): ReactElement => {
 
         <PromoCodes />
 
-        <Box maxW='900px' px={['20px', '40px']} mt='80px' textAlign='center'>
-          <Heading
-            fontSize={['36px', '32px', '28px', '24px']}
-            fontWeight='500'
-            mb='6'
-            color='gray.700'
-            fontFamily='heading'
-          >
-            Memory Shop — a place between dreams and dusty drawers.
+        <Box maxW='900px' px={['20px', '40px']} mt='80px' textAlign='center' borderRadius='md' p={6}>
+          <Heading fontSize={['28px', '32px', '36px']} fontWeight='500' mb='6' color='gray.700' fontFamily='heading'>
+            Memory Shop — a place where dreams meet dusty drawers
           </Heading>
           <Text fontSize={['18px', '20px']} color='darkText.subtle' lineHeight='1.7' mb='4' fontFamily='body'>
-            Where every keepsake tells a story, and every story feels like home.
+            Every keepsake tells a story — and every story feels like home.
           </Text>
           <Text fontSize={['18px', '20px']} color='darkText.subtle' lineHeight='1.7' mb='4' fontFamily='body'>
             Step inside and discover treasures that whisper memories and dreams alike.
           </Text>
+
+          <NewArrivalPreview />
 
           <Box mt='140px' mb='10px' display='flex' justifyContent='center' px={['20px', '0']}>
             <Box maxW='300px' width='100%'>
@@ -79,7 +77,6 @@ const MainPage = (): ReactElement => {
             </Box>
           </Box>
 
-          {/* Вот здесь вызываем новый компонент */}
           <PromoCodesReminder />
 
           <Text
