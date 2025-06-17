@@ -26,15 +26,26 @@ export default function CartActionButton({ product }: CartActionButtonProps): Re
     if (!token || !activeCartId || !cartVersion) return;
     setLoading(true);
 
+    let result;
     try {
       if (isInCart && lineItemId) {
-        await deleteLineItemFromCart(token, activeCartId, cartVersion, lineItemId);
-        addToast('success', 'Whoa!', 'Item is deleted from your cart');
+        result = await deleteLineItemFromCart(token, activeCartId, cartVersion, lineItemId);
+        if (result) {
+          addToast('success', 'Whoa!', 'Item is deleted from your cart');
+        } else {
+          throw new Error('Error deleting item');
+        }
       } else {
-        await addLineItemToCart(token, activeCartId, cartVersion, product.id, product.masterVariant.id);
-        addToast('success', 'Great!', 'Item is added to your cart');
+        result = await addLineItemToCart(token, activeCartId, cartVersion, product.id, product.masterVariant.id);
+        if (result) {
+          addToast('success', 'Great!', 'Item is added to your cart');
+        } else {
+          throw new Error('Error adding item');
+        }
       }
-      setCartUpdatedAt(Date.now());
+      if (result) {
+        setCartUpdatedAt(new Date(result.lastModifiedAt).getTime());
+      }
     } catch (error) {
       addToast('error', 'Whoops...', 'Action failed');
       console.error('Cart action failed', error);

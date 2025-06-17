@@ -40,16 +40,16 @@ export default function useCartChecker(
 
         const foundItem = activeCart.lineItems.find((item) => item.productId === productId);
 
+        setActiveCartId(activeCart.id);
         setIsInCart(!!foundItem);
         setLineItemId(foundItem?.id);
         setCartVersion(activeCart.version);
-        setActiveCartId(activeCart.id);
       } catch (error) {
         console.error(error);
+        setActiveCartId(undefined);
         setIsInCart(false);
         setLineItemId(undefined);
         setCartVersion(undefined);
-        setActiveCartId(undefined);
       }
     };
 
