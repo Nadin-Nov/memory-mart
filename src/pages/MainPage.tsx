@@ -2,6 +2,7 @@ import { Box, Heading, Text, Image } from '@chakra-ui/react';
 import type { ReactElement } from 'react';
 import FlyingGirl from '@/components/MainPage/FlyingGirl';
 import PromoCodes from '@/components/MainPage/PromoCodes';
+import PromoCodesReminder from '@/components/MainPage/PromoCodesReminder';
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
 import { useNavigate } from 'react-router-dom';
 
@@ -72,13 +73,23 @@ const MainPage = (): ReactElement => {
             Step inside and discover treasures that whisper memories and dreams alike.
           </Text>
 
-          <Box mt='140px' mb='40px' display='flex' justifyContent='center' px={['20px', '0']}>
+          <Box mt='140px' mb='10px' display='flex' justifyContent='center' px={['20px', '0']}>
             <Box maxW='300px' width='100%'>
               <PrimaryButton title='let’s go memory hunting' onClick={() => void navigate('/catalog')} />
             </Box>
           </Box>
 
-          <Text fontSize={['14px', '14px', '18px']} color='gray.600' lineHeight='1.7' mb='50px' fontFamily='body'>
+          {/* Вот здесь вызываем новый компонент */}
+          <PromoCodesReminder />
+
+          <Text
+            mt='100px'
+            fontSize={['14px', '14px', '18px']}
+            color='gray.600'
+            lineHeight='1.7'
+            mb='50px'
+            fontFamily='body'
+          >
             Every item holds a story. Find your next treasure and keep the magic alive.
           </Text>
         </Box>
