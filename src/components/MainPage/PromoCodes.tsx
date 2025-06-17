@@ -7,7 +7,7 @@ const PromoCodes: FC = () => {
       width='100%'
       maxW='1440px'
       display='flex'
-      justifyContent='flex-start'
+      justifyContent='center'
       px={['20px', '40px']}
       lineHeight='0'
       m='0'
@@ -15,8 +15,8 @@ const PromoCodes: FC = () => {
       background='none'
     >
       <Box
-        width={['100%', '80%', '80%', '80%', '40%']}
-        maxW={['100%', '600px', '600px', '600px', '600px']}
+        width={['100%', '80%', '80%', '80%', '100%']}
+        maxW={['100%', '600px', '600px', '600px', '900px']}
         lineHeight='0'
         mx={['auto', 'auto', 'auto', 'auto', '0']}
       >

@@ -48,7 +48,7 @@ export default function NewArrivalPreview(): ReactElement | undefined {
 
   return (
     <Box maxW='1200px' mx='auto' px={4} py={12}>
-      <Heading mt={8} mb={8} textAlign='center' fontSize={['2xl', '3xl', '4xl']} color='teal.700'>
+      <Heading mb={8} textAlign='center' fontSize={['2xl', '3xl', '4xl']} color='teal.700'>
         Today, fate has picked these treasures just for you
       </Heading>
 

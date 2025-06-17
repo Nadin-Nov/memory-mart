@@ -58,20 +58,10 @@ const MainPage = (): ReactElement => {
 
         <PromoCodes />
 
-        <Box maxW='900px' px={['20px', '40px']} mt='80px' textAlign='center' borderRadius='md' p={6}>
-          <Heading fontSize={['28px', '32px', '36px']} fontWeight='500' mb='6' color='gray.700' fontFamily='heading'>
-            Memory Shop — a place where dreams meet dusty drawers
-          </Heading>
-          <Text fontSize={['18px', '20px']} color='darkText.subtle' lineHeight='1.7' mb='4' fontFamily='body'>
-            Every keepsake tells a story — and every story feels like home.
-          </Text>
-          <Text fontSize={['18px', '20px']} color='darkText.subtle' lineHeight='1.7' mb='4' fontFamily='body'>
-            Step inside and discover treasures that whisper memories and dreams alike.
-          </Text>
-
+        <Box maxW='900px' px={['20px', '40px']} mt='40px' textAlign='center' borderRadius='md' p={6}>
           <NewArrivalPreview />
 
-          <Box mt='140px' mb='10px' display='flex' justifyContent='center' px={['20px', '0']}>
+          <Box mt='100px' mb='10px' display='flex' justifyContent='center' px={['20px', '0']}>
             <Box maxW='300px' width='100%'>
               <PrimaryButton title='let’s go memory hunting' onClick={() => void navigate('/catalog')} />
             </Box>
