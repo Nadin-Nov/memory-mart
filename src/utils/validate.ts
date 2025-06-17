@@ -137,3 +137,7 @@ export const validatePostalCode = (country: 'US' | 'RU' | 'BY'): ((code: string)
     return true;
   };
 };
+
+export function isString(value: unknown): value is string {
+  return typeof value === 'string';
+}

@@ -17,6 +17,7 @@ export interface Cart {
   lineItems: LineItem[];
   createdAt: string;
   lastModifiedAt: string;
+  totalLineItemQuantity: number;
   key?: string;
   customerId?: string;
   customerEmail?: string;
