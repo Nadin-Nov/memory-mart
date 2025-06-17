@@ -33,6 +33,7 @@ export interface AuthContextType {
   cartItemCount?: number;
   setCartId?: React.Dispatch<React.SetStateAction<string | undefined>>;
   setCartItemCount?: React.Dispatch<React.SetStateAction<number>>;
+  refreshCartItemCount?: () => Promise<void>;
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
@@ -156,6 +157,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
     }
   }, [userDataState?.token, cartId]);
 
+  const refreshCartItemCount = useCallback(async () => {
+    await fetchCartItemCount();
+  }, [fetchCartItemCount]);
+
   useEffect(() => {
     if (didFetchUserData.current) return;
 
@@ -273,6 +278,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
         cartItemCount,
         setCartId,
         setCartItemCount,
+        refreshCartItemCount,
       }}
     >
       {children}

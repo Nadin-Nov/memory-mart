@@ -15,10 +15,14 @@ import BasketPage from '@/pages/CartPage';
 import { Toaster } from '@/components/ui/toaster';
 import Footer from '@/components/Footer/Footer';
 
+import { useAuth } from '@/context/useAuth';
+
 function App(): ReactElement {
+  const { cartItemCount } = useAuth();
+
   return (
     <WrapperLayout>
-      <Header />
+      <Header cartItemCount={cartItemCount ?? 0} />
       <Toaster />
       <Routes>
         <Route path='/' element={<MainPage />} />

@@ -13,7 +13,7 @@ const CartBadge = ({ count }: CartBadgeProps): JSX.Element | undefined => {
       position='absolute'
       top='-6px'
       right='-6px'
-      bg='teal.500'
+      bg='pink.500'
       color='white'
       fontSize='10px'
       fontWeight='bold'
