@@ -39,7 +39,7 @@ export default function CatalogCard({ product }: CatalogCardProps): ReactElement
     >
       {imageUrl && (
         <Box w='100%' h='220px' p={2} mb={4} boxShadow='base' border='1px solid' borderColor='gray.200'>
-          <Image src={imageUrl} alt={name} objectFit='cover' h='100%' w='100%' />
+          <Image loading='lazy' src={imageUrl} alt={name} objectFit='cover' h='100%' w='100%' />
         </Box>
       )}
       <Heading as='h3' size='xs' textAlign='center' mb={2} lineHeight={'2rem'}>

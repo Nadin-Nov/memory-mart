@@ -17,6 +17,7 @@ export interface Cart {
   lineItems: LineItem[];
   createdAt: string;
   lastModifiedAt: string;
+  totalLineItemQuantity: number;
   key?: string;
   customerId?: string;
   customerEmail?: string;
@@ -74,4 +75,11 @@ export interface RemoveLineItemAction extends Action {
   lineItemId?: string;
   lineItemKey?: string;
   quantity?: number;
+}
+
+export interface ApplyPromoCodeAction extends Action {
+  action: 'addDiscountCode';
+  code?: string;
+  key?: string;
+  name?: LocalizedString;
 }

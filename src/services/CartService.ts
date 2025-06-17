@@ -1,4 +1,4 @@
-import type { MyCartDraft, Cart, RemoveLineItemAction, AddLineItemAction } from '@/types/cart';
+import type { MyCartDraft, Cart, RemoveLineItemAction, AddLineItemAction, ApplyPromoCodeAction } from '@/types/cart';
 import axios from 'axios';
 import { clientAxios, authBearer } from './AuthService';
 
@@ -42,7 +42,7 @@ export async function updateCart(
   token: string,
   cartId: string,
   cartVersion: number,
-  actions: (AddLineItemAction | RemoveLineItemAction)[]
+  actions: (AddLineItemAction | RemoveLineItemAction | ApplyPromoCodeAction)[]
 ): Promise<Cart | undefined> {
   try {
     const response = await clientAxios.post(
@@ -109,4 +109,58 @@ export async function deleteLineItemFromCart(
     },
   ];
   return await updateCart(token, cartId, cartVersion, actions);
+}
+
+export async function applyPromoCode(
+  token: string,
+  cartId: string,
+  cartVersion: number,
+  promo: string
+): Promise<Cart | undefined> {
+  const actions: ApplyPromoCodeAction[] = [
+    {
+      action: 'addDiscountCode',
+      code: promo,
+    },
+  ];
+  return await updateCart(token, cartId, cartVersion, actions);
+}
+
+export async function getCartById(token: string, cartId: string): Promise<Cart | undefined> {
+  if (!token || !cartId) return undefined;
+  try {
+    const response = await clientAxios.get<Cart>(`/me/carts/${cartId}`, {
+      headers: authBearer(token),
+    });
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.status, error.response?.data);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+    return undefined;
+  }
+}
+
+export async function getCartItemCount(token: string, cartId?: string): Promise<number | undefined> {
+  if (!token || !cartId) return undefined;
+
+  try {
+    if (cartId) {
+      const cart = await getCartById(token, cartId);
+      if (!cart) return undefined;
+
+      return cart.totalLineItemQuantity;
+    }
+    return undefined;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.status, error.response?.data);
+    } else {
+      console.error('Unexpected error:', error);
+    }
+    return undefined;
+  }
 }

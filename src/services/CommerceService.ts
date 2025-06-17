@@ -43,6 +43,7 @@ interface FilteredProductsQuery {
 
 export interface FilteredProductsResponse {
   results: Product[];
+  total: number;
 }
 
 function isValidFilterArray(value: unknown): value is string[] {
