@@ -1,9 +1,10 @@
 import { AuthContext } from '@/context/AuthContext';
 import { addLineItemToCart, deleteLineItemFromCart } from '@/services/CartService';
 import type { Product } from '@/types/product';
+import { addToast } from '@/utils/addToast';
 import useCartChecker from '@/utils/hooks/useCartChecker';
 import { Button } from '@chakra-ui/react';
-import type { ReactElement} from 'react';
+import type { ReactElement } from 'react';
 import { useContext, useState } from 'react';
 
 interface CartActionButtonProps {
@@ -26,9 +27,16 @@ export default function CartActionButton({ product }: CartActionButtonProps): Re
     setLoading(true);
 
     try {
-      await (isInCart && lineItemId ? deleteLineItemFromCart(token, activeCartId, cartVersion, lineItemId) : addLineItemToCart(token, activeCartId, cartVersion, product.id, product.masterVariant.id));
+      if (isInCart && lineItemId) {
+        await deleteLineItemFromCart(token, activeCartId, cartVersion, lineItemId);
+        addToast('success', 'Whoa!', 'Item is deleted from your cart');
+      } else {
+        await addLineItemToCart(token, activeCartId, cartVersion, product.id, product.masterVariant.id);
+        addToast('success', 'Great!', 'Item is added to your cart');
+      }
       setCartUpdatedAt(Date.now());
     } catch (error) {
+      addToast('error', 'Whoops...', 'Action failed');
       console.error('Cart action failed', error);
     } finally {
       setLoading(false);
