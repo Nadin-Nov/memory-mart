@@ -9,6 +9,7 @@ interface NavButtonLinkProps {
   display?: string | object;
   _hover?: { color: string };
   disableActiveState?: boolean;
+  preserveInteraction?: boolean;
 }
 
 const NavButtonLink = ({
@@ -17,6 +18,7 @@ const NavButtonLink = ({
   onClick,
   display,
   disableActiveState = false,
+  preserveInteraction = false,
 }: NavButtonLinkProps): JSX.Element => {
   return (
     <NavLink to={to}>
@@ -33,8 +35,8 @@ const NavButtonLink = ({
             height='auto'
             p={0}
             m={0}
-            disabled={active}
-            cursor={active ? 'default' : 'pointer'}
+            disabled={active && !preserveInteraction}
+            cursor={active && !preserveInteraction ? 'default' : 'pointer'}
             _hover={{
               color: active ? 'link.active' : 'link.hover',
               backgroundColor: 'transparent',

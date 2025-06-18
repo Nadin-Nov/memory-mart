@@ -44,7 +44,7 @@ const Header = (): JSX.Element => {
         )}
 
         <Flex justify='flex-end' align='center' gap={2.5}>
-          <NavButtonLink to='/cart' {...hoverStyles.linkHover} onClick={handleLinkClick}>
+          <NavButtonLink to='/cart' preserveInteraction {...hoverStyles.linkHover} onClick={handleLinkClick}>
             <Box position='relative' width={`${iconSizes.headerIcon}px`} height={`${iconSizes.headerIcon}px`}>
               <CiShoppingCart style={{ width: '100%', height: '100%' }} color='inherit' />
               <CartBadge count={cartItemCount ?? 0} />
