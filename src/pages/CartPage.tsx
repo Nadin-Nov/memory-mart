@@ -127,8 +127,10 @@ const CartPage = (): ReactElement => {
         setCart(updatedCart);
         setCartItems(updatedCart?.lineItems);
         setPromoApplied(false);
+        addToast('success', 'Your cart of memories is empty', 'Would you like shop for more?');
       } catch (error) {
         console.error('Failed to clear cart:', error);
+        addToast('error', "Can't clear your cart", 'Something went wrong');
       }
     }
   };
