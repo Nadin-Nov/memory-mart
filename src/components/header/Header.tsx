@@ -4,16 +4,16 @@ import { VscMenu } from 'react-icons/vsc';
 import NavMenu from './NavMenu';
 import Logo from './Logo';
 import NavButtonLink from './NavButtonLink';
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import type { JSX } from 'react';
 import { iconSizes, hoverStyles, layoutStyles } from '@/theme/theme';
 import CartBadge from '@/components/Header/CartBadge';
+import { useAuth } from '@/context/useAuth';
 
-interface HeaderProps {
-  cartItemCount: number;
-}
 
-const Header = ({ cartItemCount }: HeaderProps): JSX.Element => {
+const Header = (): JSX.Element => {
+  const { cartItemCount } = useAuth();
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDesktop] = useMediaQuery(['(min-width: 900px)']);
 
@@ -28,8 +28,6 @@ const Header = ({ cartItemCount }: HeaderProps): JSX.Element => {
   const handleLinkClick = (): void => {
     setIsMobileMenuOpen(false);
   };
-
-  // const testCartCount = 10;  // тест
 
   return (
     <Box as='header' {...layoutStyles.header}>
@@ -50,7 +48,7 @@ const Header = ({ cartItemCount }: HeaderProps): JSX.Element => {
           <NavButtonLink to='/cart' {...hoverStyles.linkHover} onClick={handleLinkClick}>
             <Box position='relative' width={`${iconSizes.headerIcon}px`} height={`${iconSizes.headerIcon}px`}>
               <CiShoppingCart style={{ width: '100%', height: '100%' }} color='inherit' />
-              <CartBadge count={cartItemCount} />
+              <CartBadge count={cartItemCount ?? 0} />
             </Box>
           </NavButtonLink>
 

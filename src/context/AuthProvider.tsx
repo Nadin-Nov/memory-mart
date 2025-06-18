@@ -273,7 +273,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
         cartId,
         cartItemCount,
         setCartId,
-        setCartItemCount
+        setCartItemCount,
+        refreshCartItemCount: fetchCartItemCount,
       }}
     >
       {children}

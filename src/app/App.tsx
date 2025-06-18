@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { useEffect } from 'react';
+//import { useEffect } from 'react';
 import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -17,14 +17,11 @@ import BasketPage from '@/pages/CartPage';
 import { Toaster } from '@/components/ui/toaster';
 import Footer from '@/components/Footer/Footer';
 
-import { useAuth } from '@/context/useAuth';
-
 function App(): ReactElement {
-  const { cartItemCount } = useAuth();
 
   return (
     <WrapperLayout>
-      <Header cartItemCount={cartItemCount ?? 0} />
+      <Header />
       <Toaster />
       <ScrollToTop />
       <Routes>

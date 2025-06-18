@@ -17,7 +17,7 @@ export default function CartActionButton({ product }: CartActionButtonProps): Re
 
   const context = useContext(AuthContext);
   if (!context) throw new Error('AuthContext is missing');
-  const { userData } = context;
+  const { userData, refreshCartItemCount } = context;
   const token = userData?.token;
 
   const { isInCart, lineItemId, cartVersion, activeCartId } = useCartChecker(product.id, cartUpdatedAt);
@@ -45,6 +45,7 @@ export default function CartActionButton({ product }: CartActionButtonProps): Re
       }
       if (result) {
         setCartUpdatedAt(new Date(result.lastModifiedAt).getTime());
+        refreshCartItemCount?.();
       }
     } catch (error) {
       addToast('error', 'Whoops...', 'Action failed');
@@ -63,8 +64,8 @@ export default function CartActionButton({ product }: CartActionButtonProps): Re
       }}
       loading={loading}
       colorPalette={isInCart ? 'pink' : 'teal'}
-      size='sm'
-      variant='solid'
+      size="sm"
+      variant="solid"
     >
       {isInCart ? 'Remove' : 'Add to cart'}
     </Button>
