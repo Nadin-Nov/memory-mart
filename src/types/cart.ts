@@ -89,3 +89,9 @@ export interface ApplyPromoCodeAction extends Action {
   key?: string;
   name?: LocalizedString;
 }
+
+export interface ChangeLineItemQuantity extends Action {
+  action: 'changeLineItemQuantity';
+  lineItemId?: string;
+  quantity?: number;
+}

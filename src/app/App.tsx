@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react';
-import { useEffect } from 'react';
 import ScrollToTop from '@/components/ScrollToTop/ScrollToTop';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
