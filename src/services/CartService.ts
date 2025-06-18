@@ -1,4 +1,11 @@
-import type { MyCartDraft, Cart, RemoveLineItemAction, AddLineItemAction, ApplyPromoCodeAction } from '@/types/cart';
+import type {
+  MyCartDraft,
+  Cart,
+  RemoveLineItemAction,
+  AddLineItemAction,
+  ApplyPromoCodeAction,
+  ChangeLineItemQuantity,
+} from '@/types/cart';
 import axios from 'axios';
 import { clientAxios, authBearer } from './AuthService';
 
@@ -42,7 +49,7 @@ export async function updateCart(
   token: string,
   cartId: string,
   cartVersion: number,
-  actions: (AddLineItemAction | RemoveLineItemAction | ApplyPromoCodeAction)[]
+  actions: (AddLineItemAction | RemoveLineItemAction | ApplyPromoCodeAction | ChangeLineItemQuantity)[]
 ): Promise<Cart | undefined> {
   try {
     const response = await clientAxios.post(
@@ -172,4 +179,21 @@ export async function getCartItemCount(token: string, cartId?: string): Promise<
     }
     return undefined;
   }
+}
+
+export async function changeLineItemQuantity(
+  token: string,
+  cartId: string,
+  cartVersion: number,
+  lineItemId: string,
+  newQuantity: number
+): Promise<Cart | undefined> {
+  const actions: ChangeLineItemQuantity[] = [
+    {
+      action: 'changeLineItemQuantity',
+      lineItemId,
+      quantity: newQuantity,
+    },
+  ];
+  return await updateCart(token, cartId, cartVersion, actions);
 }

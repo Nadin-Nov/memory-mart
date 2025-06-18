@@ -1,7 +1,7 @@
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
 import { useAuth } from '@/context/useAuth';
-import { applyPromoCode, getActiveCart } from '@/services/CartService';
+import { applyPromoCode, changeLineItemQuantity, getActiveCart } from '@/services/CartService';
 import { cartResponsiveStyles } from '@/theme/theme';
 import type { Cart, LineItem } from '@/types/cart';
 import { addToast } from '@/utils/addToast';
@@ -22,6 +22,10 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState, type ReactElement } from 'react';
 import { FiTrash2, FiMinus, FiPlus } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+
+const cents = 100;
+const symb = 2;
 
 const CartPage = (): ReactElement => {
   const { userData } = useAuth();
@@ -31,6 +35,7 @@ const CartPage = (): ReactElement => {
   const [promoApplied, setPromoApplied] = useState<boolean>(false);
   const [promoAmount, setPromoAmount] = useState<number | undefined>(0);
   const [promoCode, setPromoCode] = useState<string>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userData?.token) {
@@ -44,13 +49,45 @@ const CartPage = (): ReactElement => {
     }
   }, [userData]);
 
-  console.log(cartItems);
-
   if (!cartItems) {
     return <LoadingSpinner />;
   }
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price.value.centAmount * item.quantity, 0);
+  const cartTotalToFixed = cartTotal ? (cartTotal / cents).toFixed(symb) : 0;
+  const promoAmountToFixed = promoAmount ? (promoAmount / cents).toFixed(symb) : 0;
+
+  const handleRemoveItem = async (item: LineItem): Promise<void> => {
+    if (item.quantity > 1 && userData && cart) {
+      try {
+        const newCart = await changeLineItemQuantity(
+          userData?.token,
+          cart?.id,
+          cart?.version,
+          item.id,
+          item.quantity - 1
+        );
+        setCart(newCart);
+        setCartItems(newCart?.lineItems);
+        setCartTotal(newCart?.totalPrice.centAmount);
+      } catch (error) {
+        console.log('Failed to remove item', error);
+      }
+    }
+  };
+
+  const handleAddItem = async (item: LineItem): Promise<void> => {
+    if (userData && cart) {
+      try {
+        const newCart = await changeLineItemQuantity(userData.token, cart.id, cart.version, item.id, item.quantity + 1);
+        setCart(newCart);
+        setCartItems(newCart?.lineItems);
+        setCartTotal(newCart?.totalPrice.centAmount);
+      } catch (error) {
+        console.log('Failed to add item', error);
+      }
+    }
+  };
 
   const handlePromoCode = async (promo: string): Promise<Cart | undefined> => {
     if (userData?.token && cart?.id) {
@@ -62,7 +99,6 @@ const CartPage = (): ReactElement => {
         setPromoCode('');
         addToast('success', 'Promo code applied', 'Just made your own magic!');
       } catch (error) {
-        console.log(error);
         addToast('error', 'Promo not applied', 'Something went wrong');
         console.error('Failed to apply promo', error);
         return;
@@ -89,14 +125,14 @@ const CartPage = (): ReactElement => {
         <Text fontSize='lg' color='darkText.subtle'>
           No memories in cart
           <br />
-          <Link href='/catalog'>Would you like to go down the memory lane?</Link>
+          <Link onClick={void navigate('/catalog')}>Would you like to go down the memory lane?</Link>
         </Text>
       ) : (
         <Grid {...cartResponsiveStyles.cartContainer} gap={8}>
           <VStack gap={3} align='stretch' separator={<Separator />}>
             {cartItems.map((item) => (
               <Box key={item.id} padding={4} bg='lightBeige.500' borderRadius='lg' boxShadow='sm'>
-                <Grid {...cartResponsiveStyles.itemContainer} gap={6} alignItems='center'>
+                <Grid {...cartResponsiveStyles.itemContainer} gap={6} alignItems='center' justifyItems='flex-start'>
                   <Image
                     src={item.variant.images[0].url}
                     alt={item.variant.images[0].label}
@@ -110,12 +146,12 @@ const CartPage = (): ReactElement => {
                     <Text color='darkText.default' textAlign='left'>
                       {item.name['en-US']}{' '}
                     </Text>
-                    <Text color='darkText.subtle'>${item.price.value.centAmount}</Text>
+                    <Text color='darkText.subtle'>${(item.price.value.centAmount / cents).toFixed(symb)}</Text>
                   </VStack>
 
                   <Flex align='center' gap={4}>
                     <HStack gap={2}>
-                      <IconButton variant='ghost' size='sm'>
+                      <IconButton variant='ghost' size='sm' onClick={() => void handleRemoveItem(item)}>
                         <FiMinus color='teal' />
                       </IconButton>
                       <Input
@@ -127,13 +163,13 @@ const CartPage = (): ReactElement => {
                         textAlign='center'
                         readOnly
                       />
-                      <IconButton variant='ghost' size='sm'>
+                      <IconButton variant='ghost' size='sm' onClick={() => void handleAddItem(item)}>
                         <FiPlus color='teal' />
                       </IconButton>
                     </HStack>
 
                     <Text fontWeight='bold' color='darkText.default' minWidth='80px' textAlign='right'>
-                      ${item.totalPrice.centAmount}
+                      ${(item.totalPrice.centAmount / cents).toFixed(symb)}
                     </Text>
 
                     <IconButton variant='ghost' marginLeft={4}>
@@ -154,12 +190,12 @@ const CartPage = (): ReactElement => {
               <VStack gap={4} align='stretch'>
                 <Flex justify='space-between'>
                   <Text color='darkText.subtle'>Subtotal</Text>
-                  <Text color='darkText.default'>${subtotal}</Text>
+                  <Text color='darkText.default'>${(subtotal / cents).toFixed(symb)}</Text>
                 </Flex>
 
                 <Flex justify='space-between' fontWeight='bold'>
                   <Text color='darkText.default'>Total</Text>
-                  <Text color='darkText.default'>${cartTotal}</Text>
+                  <Text color='darkText.default'>${cartTotalToFixed}</Text>
                 </Flex>
               </VStack>
               <VStack gap={4} align='stretch' marginTop={4}>
@@ -187,7 +223,7 @@ const CartPage = (): ReactElement => {
               {promoApplied && (
                 <Flex justify='space-between'>
                   <Text color='darkText.subtle'>Discount</Text>
-                  <Text color='darkText.default'>${promoAmount}</Text>
+                  <Text color='darkText.default'>${promoAmountToFixed}</Text>
                 </Flex>
               )}
               <PrimaryButton title='CHECKOUT' />
