@@ -1,7 +1,7 @@
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton';
 import { useAuth } from '@/context/useAuth';
-import { applyPromoCode, changeLineItemQuantity, getActiveCart } from '@/services/CartService';
+import { applyPromoCode, changeLineItemQuantity, clearCart, getActiveCart } from '@/services/CartService';
 import { cartResponsiveStyles } from '@/theme/theme';
 import type { Cart, LineItem } from '@/types/cart';
 import { addToast } from '@/utils/addToast';
@@ -89,6 +89,19 @@ const CartPage = (): ReactElement => {
     }
   };
 
+  const handleDeleteItem = async (item: LineItem): Promise<void> => {
+    if (userData && cart) {
+      try {
+        const newCart = await changeLineItemQuantity(userData.token, cart.id, cart.version, item.id, 0);
+        setCart(newCart);
+        setCartItems(newCart?.lineItems);
+        setCartTotal(newCart?.totalPrice.centAmount);
+      } catch (error) {
+        console.log('Failed to delete item', error);
+      }
+    }
+  };
+
   const handlePromoCode = async (promo: string): Promise<Cart | undefined> => {
     if (userData?.token && cart?.id) {
       try {
@@ -102,6 +115,20 @@ const CartPage = (): ReactElement => {
         addToast('error', 'Promo not applied', 'Something went wrong');
         console.error('Failed to apply promo', error);
         return;
+      }
+    }
+  };
+
+  const handleClearAll = async (): Promise<void> => {
+    const itemIds = cartItems.map((item) => item.id);
+    if (userData?.token && cart?.id) {
+      try {
+        const updatedCart = await clearCart(userData.token, cart.id, cart.version, itemIds);
+        setCart(updatedCart);
+        setCartItems(updatedCart?.lineItems);
+        setPromoApplied(false);
+      } catch (error) {
+        console.error('Failed to clear cart:', error);
       }
     }
   };
@@ -125,7 +152,7 @@ const CartPage = (): ReactElement => {
         <Text fontSize='lg' color='darkText.subtle'>
           No memories in cart
           <br />
-          <Link onClick={void navigate('/catalog')}>Would you like to go down the memory lane?</Link>
+          <Link onClick={() => void navigate('/catalog')}>Would you like to go down the memory lane?</Link>
         </Text>
       ) : (
         <Grid {...cartResponsiveStyles.cartContainer} gap={8}>
@@ -172,14 +199,14 @@ const CartPage = (): ReactElement => {
                       ${(item.totalPrice.centAmount / cents).toFixed(symb)}
                     </Text>
 
-                    <IconButton variant='ghost' marginLeft={4}>
+                    <IconButton variant='ghost' marginLeft={4} onClick={() => void handleDeleteItem(item)}>
                       <FiTrash2 color='teal' />
                     </IconButton>
                   </Flex>
                 </Grid>
               </Box>
             ))}
-            <PrimaryButton title='Clear all' maxWidth='150px' />
+            <PrimaryButton title='Clear all' maxWidth='150px' onClick={() => void handleClearAll()} />
           </VStack>
 
           <Box padding={6} bg='lightBeige.500' borderRadius='lg' boxShadow='sm' height='fit-content'>

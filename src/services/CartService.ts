@@ -197,3 +197,18 @@ export async function changeLineItemQuantity(
   ];
   return await updateCart(token, cartId, cartVersion, actions);
 }
+
+export async function clearCart(
+  token: string,
+  cartId: string,
+  cartVersion: number,
+  lineItemIds: string[]
+): Promise<Cart | undefined> {
+  const actions: ChangeLineItemQuantity[] = lineItemIds.map((id) => ({
+    action: 'changeLineItemQuantity',
+    lineItemId: id,
+    quantity: 0,
+  }));
+
+  return await updateCart(token, cartId, cartVersion, actions);
+}
