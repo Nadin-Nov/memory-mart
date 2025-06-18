@@ -4,12 +4,11 @@ import { VscMenu } from 'react-icons/vsc';
 import NavMenu from './NavMenu';
 import Logo from './Logo';
 import NavButtonLink from './NavButtonLink';
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import type { JSX } from 'react';
 import { iconSizes, hoverStyles, layoutStyles } from '@/theme/theme';
 import CartBadge from '@/components/Header/CartBadge';
 import { useAuth } from '@/context/useAuth';
-
 
 const Header = (): JSX.Element => {
   const { cartItemCount } = useAuth();

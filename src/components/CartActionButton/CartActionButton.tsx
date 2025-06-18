@@ -64,8 +64,8 @@ export default function CartActionButton({ product }: CartActionButtonProps): Re
       }}
       loading={loading}
       colorPalette={isInCart ? 'pink' : 'teal'}
-      size="sm"
-      variant="solid"
+      size='sm'
+      variant='solid'
     >
       {isInCart ? 'Remove' : 'Add to cart'}
     </Button>

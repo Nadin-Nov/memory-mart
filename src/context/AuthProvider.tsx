@@ -148,14 +148,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   }, []);
 
   const fetchCartItemCount = useCallback(async () => {
-    if (!userDataState?.token || !cartId) return;
-    try {
-      const count = await getCartItemCount(userDataState.token, cartId);
-      if (typeof count === 'number') setCartItemCount(count);
-    } catch (error) {
-      console.error('Failed to fetch cart item count:', error);
+  if (!userDataState?.token || !cartId) return;
+  try {
+    const count = await getCartItemCount(userDataState.token, cartId);
+    if (typeof count === 'number') {
+      setCartItemCount(count);
+    } else {
+      setCartItemCount(0);
     }
-  }, [userDataState?.token, cartId]);
+  } catch (error) {
+    console.error('Failed to fetch cart item count:', error);
+  }
+}, [userDataState?.token, cartId]);
+
 
   useEffect(() => {
     if (didFetchUserData.current) return;
