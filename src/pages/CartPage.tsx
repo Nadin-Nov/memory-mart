@@ -58,7 +58,7 @@ const CartPage = (): ReactElement => {
   const promoAmountToFixed = promoAmount ? (promoAmount / cents).toFixed(symb) : 0;
 
   const handleRemoveItem = async (item: LineItem): Promise<void> => {
-    if (item.quantity > 1 && userData && cart) {
+    if (userData && cart) {
       try {
         const newCart = await changeLineItemQuantity(
           userData?.token,
@@ -149,11 +149,22 @@ const CartPage = (): ReactElement => {
       </Heading>
 
       {cartItems.length === 0 ? (
-        <Text fontSize='lg' color='darkText.subtle'>
-          No memories in cart
-          <br />
-          <Link onClick={() => void navigate('/catalog')}>Would you like to go down the memory lane?</Link>
-        </Text>
+        <VStack justify='center' gap={6}>
+          <Text fontSize='lg' color='darkText.subtle'>
+            No memories in cart
+          </Text>
+          <Image
+            src='/public/assets/Cart_Girl.webp'
+            alt='Girl'
+            objectFit='cover'
+            maxH='200px'
+            maxW='150px'
+            h='100%'
+            w='100%'
+            textAlign='center'
+          />
+          <Link onClick={() => void navigate('/catalog')}>Would you like to walk down the memory lane?</Link>
+        </VStack>
       ) : (
         <Grid {...cartResponsiveStyles.cartContainer} gap={8}>
           <VStack gap={3} align='stretch' separator={<Separator />}>
@@ -184,10 +195,11 @@ const CartPage = (): ReactElement => {
                       <Input
                         value={item.quantity}
                         type='number'
-                        min='1'
+                        min='0'
                         max='99'
                         width='50px'
                         textAlign='center'
+                        paddingX='0'
                         readOnly
                       />
                       <IconButton variant='ghost' size='sm' onClick={() => void handleAddItem(item)}>
