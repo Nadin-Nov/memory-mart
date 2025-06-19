@@ -5,6 +5,7 @@ import { applyPromoCode, changeLineItemQuantity, clearCart, getActiveCart } from
 import { cartResponsiveStyles } from '@/theme/theme';
 import type { Cart, LineItem } from '@/types/cart';
 import { addToast } from '@/utils/addToast';
+import { CartPortal } from '@/components/CartPortal/CartPortal';
 import {
   Box,
   Flex,
@@ -21,6 +22,7 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { useEffect, useState, type ReactElement } from 'react';
+import { createPortal } from 'react-dom';
 import { FiTrash2, FiMinus, FiPlus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,6 +37,7 @@ const CartPage = (): ReactElement => {
   const [promoApplied, setPromoApplied] = useState<boolean>(false);
   const [promoAmount, setPromoAmount] = useState<number | undefined>(0);
   const [promoCode, setPromoCode] = useState<string>();
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -127,10 +130,20 @@ const CartPage = (): ReactElement => {
         setCart(updatedCart);
         setCartItems(updatedCart?.lineItems);
         setPromoApplied(false);
+        setShowModal(false);
+        addToast('success', 'Your cart of memories is empty', 'Would you like shop for more?');
       } catch (error) {
         console.error('Failed to clear cart:', error);
       }
     }
+  };
+
+  const handleConfirmClear = (): void => {
+    setShowModal(true);
+  };
+
+  const handleCancelClear = (): void => {
+    setShowModal(false);
   };
 
   return (
@@ -154,7 +167,7 @@ const CartPage = (): ReactElement => {
             No memories in cart
           </Text>
           <Image
-            src='/public/assets/Cart_Girl.webp'
+            src='/assets/Cart_Girl.webp'
             alt='Girl'
             objectFit='cover'
             maxH='200px'
@@ -218,8 +231,18 @@ const CartPage = (): ReactElement => {
                 </Grid>
               </Box>
             ))}
-            <PrimaryButton title='Clear all' maxWidth='150px' onClick={() => void handleClearAll()} />
+            <PrimaryButton title='Clear all' maxWidth='150px' onClick={handleConfirmClear} />
           </VStack>
+
+          {showModal &&
+            createPortal(
+              <CartPortal
+                onConfirm={() => handleClearAll()}
+                onCancel={handleCancelClear}
+                message='Are you sure you want to clear your cart?'
+              />,
+              document.body
+            )}
 
           <Box padding={6} bg='lightBeige.500' borderRadius='lg' boxShadow='sm' height='fit-content'>
             <VStack gap={4} align='stretch'>
