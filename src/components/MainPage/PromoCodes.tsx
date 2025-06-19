@@ -20,7 +20,7 @@ const PromoCodes: FC = () => {
         lineHeight='0'
         mx={['auto', 'auto', 'auto', 'auto', '0']}
       >
-        <Image src='/assets/promo.png' alt='Promo Codes' width='100%' height='auto' display='block' m='0' p='0' />
+        <Image src='/assets/promo.webp' alt='Promo Codes' width='100%' height='auto' display='block' m='0' p='0' />
       </Box>
     </Box>
   );
