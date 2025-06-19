@@ -30,7 +30,7 @@ const cents = 100;
 const symb = 2;
 
 const CartPage = (): ReactElement => {
-  const { userData } = useAuth();
+  const { userData, refreshCartItemCount } = useAuth();
   const [cart, setCart] = useState<Cart | undefined>();
   const [cartItems, setCartItems] = useState<LineItem[] | undefined>();
   const [cartTotal, setCartTotal] = useState<number | undefined>(0);
@@ -73,6 +73,7 @@ const CartPage = (): ReactElement => {
         setCart(newCart);
         setCartItems(newCart?.lineItems);
         setCartTotal(newCart?.totalPrice.centAmount);
+        refreshCartItemCount?.();
       } catch (error) {
         console.log('Failed to remove item', error);
       }
@@ -86,6 +87,7 @@ const CartPage = (): ReactElement => {
         setCart(newCart);
         setCartItems(newCart?.lineItems);
         setCartTotal(newCart?.totalPrice.centAmount);
+        refreshCartItemCount?.();
       } catch (error) {
         console.log('Failed to add item', error);
       }
@@ -99,6 +101,7 @@ const CartPage = (): ReactElement => {
         setCart(newCart);
         setCartItems(newCart?.lineItems);
         setCartTotal(newCart?.totalPrice.centAmount);
+        refreshCartItemCount?.();
       } catch (error) {
         console.log('Failed to delete item', error);
       }
@@ -130,10 +133,13 @@ const CartPage = (): ReactElement => {
         setCart(updatedCart);
         setCartItems(updatedCart?.lineItems);
         setPromoApplied(false);
+        refreshCartItemCount?.();
+        addToast('success', 'Your cart of memories is empty', 'Would you like shop for more?');
         setShowModal(false);
         addToast('success', 'Your cart of memories is empty', 'Would you like shop for more?');
       } catch (error) {
         console.error('Failed to clear cart:', error);
+        addToast('error', "Can't clear your cart", 'Something went wrong');
       }
     }
   };

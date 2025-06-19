@@ -131,3 +131,7 @@ export interface PasswordUpdateRequest {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface HeaderProps {
+  cartItemCount?: number;
+}
