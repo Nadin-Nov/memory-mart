@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
         if (refreshed?.access_token) {
           const newUserData: userData = {
             token: refreshed.access_token,
-            isLoggedIn: true,
+            isLoggedIn: stored.isLoggedIn,
             expirationDate: refreshed.expires_in * MS_IN_S + now,
             refreshToken: refreshed.refresh_token ?? stored.refreshToken,
           };
@@ -148,19 +148,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   }, []);
 
   const fetchCartItemCount = useCallback(async () => {
-  if (!userDataState?.token || !cartId) return;
-  try {
-    const count = await getCartItemCount(userDataState.token, cartId);
-    if (typeof count === 'number') {
-      setCartItemCount(count);
-    } else {
-      setCartItemCount(0);
+    if (!userDataState?.token || !cartId) return;
+    try {
+      const count = await getCartItemCount(userDataState.token, cartId);
+      if (typeof count === 'number') {
+        setCartItemCount(count);
+      } else {
+        setCartItemCount(0);
+      }
+    } catch (error) {
+      console.error('Failed to fetch cart item count:', error);
     }
-  } catch (error) {
-    console.error('Failed to fetch cart item count:', error);
-  }
-}, [userDataState?.token, cartId]);
-
+  }, [userDataState?.token, cartId]);
 
   useEffect(() => {
     if (didFetchUserData.current) return;
