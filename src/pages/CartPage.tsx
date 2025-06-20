@@ -134,7 +134,6 @@ const CartPage = (): ReactElement => {
         setCartItems(updatedCart?.lineItems);
         setPromoApplied(false);
         refreshCartItemCount?.();
-        addToast('success', 'Your cart of memories is empty', 'Would you like shop for more?');
         setShowModal(false);
         addToast('success', 'Your cart of memories is empty', 'Would you like shop for more?');
       } catch (error) {
