@@ -61,8 +61,6 @@ export interface Customer {
   key?: string;
 }
 
-//TODO: implement cart interface
-
 export interface CustomerSignInResult {
   customer: Customer;
   cart?: unknown;
@@ -132,4 +130,8 @@ export interface PasswordUpdateRequest {
   version: number;
   currentPassword: string;
   newPassword: string;
+}
+
+export interface HeaderProps {
+  cartItemCount?: number;
 }

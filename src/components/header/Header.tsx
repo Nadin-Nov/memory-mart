@@ -7,10 +7,13 @@ import NavButtonLink from './NavButtonLink';
 import { useState, useEffect } from 'react';
 import type { JSX } from 'react';
 import { iconSizes, hoverStyles, layoutStyles } from '@/theme/theme';
+import CartBadge from '@/components/Header/CartBadge';
+import { useAuth } from '@/context/useAuth';
 
 const Header = (): JSX.Element => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { cartItemCount } = useAuth();
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDesktop] = useMediaQuery(['(min-width: 900px)']);
 
   const onToggle = (): void => setIsMobileMenuOpen((previos) => !previos);
@@ -41,9 +44,10 @@ const Header = (): JSX.Element => {
         )}
 
         <Flex justify='flex-end' align='center' gap={2.5}>
-          <NavButtonLink to='/cart' {...hoverStyles.linkHover} onClick={handleLinkClick}>
-            <Box width={`${iconSizes.headerIcon}px`} height={`${iconSizes.headerIcon}px`}>
+          <NavButtonLink to='/cart' preserveInteraction {...hoverStyles.linkHover} onClick={handleLinkClick}>
+            <Box position='relative' width={`${iconSizes.headerIcon}px`} height={`${iconSizes.headerIcon}px`}>
               <CiShoppingCart style={{ width: '100%', height: '100%' }} color='inherit' />
+              <CartBadge count={cartItemCount ?? 0} />
             </Box>
           </NavButtonLink>
 

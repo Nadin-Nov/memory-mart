@@ -7,12 +7,11 @@ import { useAuth } from '@/context/useAuth';
 import type { Product } from '@/types/product';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner';
 
-
-
 import ProductAttributes from '@/components/ProductDetails/ProductAttributes';
 import ProductImage from '@/components/ProductDetails/ProductImage';
 import ProductInfo from '@/components/ProductDetails/ProductInfo';
 import ProductImageModal from '@/components/ProductDetails/ProductImageModal';
+import CartActionButton from '@/components/CartActionButton/CartActionButton';
 
 const ProductDetailPage = (): JSX.Element => {
   const { userData } = useAuth();
@@ -57,6 +56,7 @@ const ProductDetailPage = (): JSX.Element => {
           <Box flex='1'>
             <ProductInfo name={name} description={description} masterVariant={product.masterVariant} />
             <ProductAttributes attributes={product.masterVariant.attributes} />
+            <CartActionButton product={product} />
           </Box>
 
           <Box flex='1' maxW={{ base: '100%', md: '500px' }} w='100%' ml={{ base: 0, md: 4, lg: 6 }}>

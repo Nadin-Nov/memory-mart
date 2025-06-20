@@ -9,7 +9,7 @@ Our store is filled with magical and surreal items that seem to find you, not th
 Memory Mart is a whimsical marketplace offering “objects” that exist somewhere between dreams and reality.
 From spontaneous surprises to emotionally evocative filters — our store is designed to be felt, not just browsed.
 
-🤝 **Team LazyLoad**
+## 🤝 **Team LazyLoad**
 
 Alena Volf — @alvorie
 
@@ -17,7 +17,8 @@ Ekaterina Podorova — @gnarkill33
 
 Nadezhda Novoselova — @nadin-nov
 
-**Tech Stack**
+### **Tech Stack**
+
 React
 Vite
 Vitest
@@ -25,17 +26,19 @@ TypeScript
 CommerceTools API
 ESLint + Prettier
 Husky
+Chakra UI
 
-**Project Status**
-We are currently in Sprint 2: Login, registration, and main pages
+### **Project Status**
 
-**Future Sprints:**
+All planned sprints have been completed ✅
 
-Sprint 3: Product catalog, detailed views, and user profile
+- Sprint 1: Project setup and CommerceTools integration
 
-Sprint 4: Basket functionality, catalog improvements, and About Us page
+- Sprint 2: Login, registration, and main pages
 
-Stay tuned as Memory Mart takes shape — piece by dreamy piece ✨
+- Sprint 3: Product catalog, detailed views, and user profile
+
+- Sprint 4: Basket functionality, catalog improvements, and About Us page
 
 ## **Commercetools API Integration**
 

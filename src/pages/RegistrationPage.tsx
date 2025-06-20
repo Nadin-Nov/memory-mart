@@ -71,23 +71,23 @@ export default function RegistrationPage(): ReactElement {
 
       const localStorageToken = LocalStorageService.getItem<userData>('userData', isUserData);
       let token: string | undefined = localStorageToken?.token;
-      if (!localStorageToken) {
-        const anonymousToken: TokenResponse | undefined = await getAnonymousToken();
-        if (anonymousToken) {
-          token = anonymousToken.access_token;
-        }
+      let anonToken;
+      const anonymousToken: TokenResponse | undefined = await getAnonymousToken();
+      if (anonymousToken) {
+        token = anonymousToken.access_token;
+        anonToken = anonymousToken.access_token;
       }
 
       console.log('Sending signup with token:', token, localStorageToken);
       console.log('Signup payload:', normalizedData);
 
-      if (!token) {
-        console.error('Failed to get anonymous token');
+      if (!token || !anonToken) {
+        console.error('Failed to get tokens');
         return;
       }
 
       try {
-        const result = await handleSignup(token, normalizedData);
+        const result = await handleSignup(anonToken, normalizedData);
 
         if (!result.success) {
           console.error('Signup failed:', result.error);
